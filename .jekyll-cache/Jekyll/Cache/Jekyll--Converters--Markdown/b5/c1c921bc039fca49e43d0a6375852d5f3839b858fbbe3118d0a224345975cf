@@ -1,0 +1,281 @@
+I"�N<ul id="markdown-toc">
+  <li><a href="#水平居中---horizontally" id="markdown-toc-水平居中---horizontally">水平居中 - Horizontally</a>    <ul>
+      <li><a href="#是inline元素或者inline-元素吗-就像text-或-links" id="markdown-toc-是inline元素或者inline-元素吗-就像text-或-links">是inline元素或者inline-*元素吗 （就像text 或 links</a></li>
+      <li><a href="#是一个block元素吗" id="markdown-toc-是一个block元素吗">是一个block元素吗</a></li>
+      <li><a href="#是多个块级元素吗" id="markdown-toc-是多个块级元素吗">是多个块级元素吗</a></li>
+    </ul>
+  </li>
+  <li><a href="#垂直居中---vertically" id="markdown-toc-垂直居中---vertically">垂直居中 - Vertically</a>    <ul>
+      <li><a href="#是inline元素或者inline-元素吗" id="markdown-toc-是inline元素或者inline-元素吗">是inline元素或者inline-*元素吗</a>        <ul>
+          <li><a href="#是单行吗" id="markdown-toc-是单行吗">是单行吗</a></li>
+          <li><a href="#是多行吗" id="markdown-toc-是多行吗">是多行吗</a></li>
+        </ul>
+      </li>
+      <li><a href="#是一个块级元素吗" id="markdown-toc-是一个块级元素吗">是一个块级元素吗</a>        <ul>
+          <li><a href="#你知道这个元素的高度吗" id="markdown-toc-你知道这个元素的高度吗">你知道这个元素的高度吗</a></li>
+          <li><a href="#你并不知道这个元素的高度" id="markdown-toc-你并不知道这个元素的高度">你并不知道这个元素的高度</a></li>
+          <li><a href="#还是使用弹性盒吧" id="markdown-toc-还是使用弹性盒吧">还是使用弹性盒吧</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#同时水平垂直居中" id="markdown-toc-同时水平垂直居中">同时水平/垂直居中</a>    <ul>
+      <li><a href="#知道元素的宽度和高度" id="markdown-toc-知道元素的宽度和高度">知道元素的宽度和高度</a></li>
+      <li><a href="#不知道元素的宽度和高度" id="markdown-toc-不知道元素的宽度和高度">不知道元素的宽度和高度</a></li>
+      <li><a href="#弹性盒" id="markdown-toc-弹性盒">弹性盒</a></li>
+    </ul>
+  </li>
+  <li><a href="#结论" id="markdown-toc-结论">结论</a></li>
+</ul>
+
+<blockquote>
+  <p>文章翻译自Chris Coyier的<a href="https://css-tricks.com/centering-css-complete-guide/">Centering in CSS: A Complete Guide</a>。</p>
+</blockquote>
+
+<p>居中在CSS当中是颇让人抱怨的。<strong>为何如此艰难？</strong>。我认为问题不是因为太难，而是有太多不同的方法，在不同的场景中，很难知道如何去选择。</p>
+
+<p>所以，让我们实现一个决定树(decision tree)，希望能简化这个问题。</p>
+
+<p>我想居中….</p>
+
+<!-- more -->
+
+<h2 id="水平居中---horizontally">水平居中 - Horizontally</h2>
+
+<h3 id="是inline元素或者inline-元素吗-就像text-或-links">是inline元素或者inline-*元素吗 （就像text 或 links</h3>
+
+<p>在一个块级父元素中，你可以这样水平居中一个行内元素。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.center-children</span> <span class="p">{</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这种方法适用于<code class="highlighter-rouge">inline</code>、<code class="highlighter-rouge">inline-block</code>、<code class="highlighter-rouge">inline-table</code>、<code class="highlighter-rouge">inline-flex</code>等等。</p>
+
+<h3 id="是一个block元素吗">是一个block元素吗</h3>
+
+<p>你可以通过将<code class="highlighter-rouge">margin-left</code>和<code class="highlighter-rouge">margin-right</code>设置为<code class="highlighter-rouge">auto</code>将一个块级元素水平居中(当然它还必须设置<code class="highlighter-rouge">width</code>或者<code class="highlighter-rouge">max-width</code>属性，否则就会全宽，也就不需要居中了)。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.center-me</span> <span class="p">{</span>
+    <span class="nl">max-width</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span> <span class="nb">auto</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>无论这个你要居中的块级元素多宽，这种方法都能工作。值得注意的是，<code class="highlighter-rouge">float</code>不能浮动一个元素到居中位置(就是说你没办法将一个元素通过<code class="highlighter-rouge">float</code>属性居中)。</p>
+
+<h3 id="是多个块级元素吗">是多个块级元素吗</h3>
+
+<p>如果你在<strong>一行内</strong>(in a row)有两个或多个块级元素需要水平居中，更好的方法是让它们有不同的<code class="highlighter-rouge">display</code>类型。你可以使用<code class="highlighter-rouge">inline-block</code>或者<code class="highlighter-rouge">flex</code>来实现。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.inline-block-parent-center</span> <span class="p">{</span>
+    <span class="nl">text-align</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.inline-block-children-center</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>译者注，先对子块级元素设置<code class="highlighter-rouge">display: inline-block</code>，如何对父元素设置<code class="highlighter-rouge">text-align: center</code>。</p>
+</blockquote>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.flex-center</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
+    <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>译者注，使用弹性盒，在父元素上添加<code class="highlighter-rouge">justify-content</code>对子项进行对齐。</p>
+</blockquote>
+
+<p>如果你的意思是想让多个块级元素堆叠，这种情况下，使用<code class="highlighter-rouge">auto margin</code>是可行的。</p>
+
+<hr />
+
+<h2 id="垂直居中---vertically">垂直居中 - Vertically</h2>
+
+<p>在CSS中进行垂直居中有点棘手。</p>
+
+<h3 id="是inline元素或者inline-元素吗">是inline元素或者inline-*元素吗</h3>
+
+<h4 id="是单行吗">是单行吗</h4>
+
+<p>一般情况下，<code class="highlighter-rouge">inline/text</code> 元素在垂直方向上表现出来的就已经是垂直的了。这是因为在它们的上边和下边都有相等的内边距。所以可以用<code class="highlighter-rouge">padding</code>来控制垂直居中。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.link</span> <span class="p">{</span>
+    <span class="nl">padding-top</span><span class="p">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="nl">padding-bottom</span><span class="p">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>有些情况下，<code class="highlighter-rouge">padding</code>不可用，而且你试图垂直居中一些不会换行(not wrap)的文字。有一个小技巧就是使用<code class="highlighter-rouge">line-height</code>等于<code class="highlighter-rouge">height</code>的值。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.center-text-trick</span> <span class="p">{</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="nl">line-height</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="nl">white-space</span><span class="p">:</span> <span class="nb">nowrap</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>译者注，比如文字被包裹在<code class="highlighter-rouge">&lt;div&gt;</code>标签中。</p>
+</blockquote>
+
+<h4 id="是多行吗">是多行吗</h4>
+
+<p><code class="highlighter-rouge">padding</code>也可以用来垂直居中多行文本，但是如果不管用，你可以将文本元素设置成<code class="highlighter-rouge">table-cell</code>，然后使用<code class="highlighter-rouge">vertical-align</code>属性处理它。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.center-table</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">table</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">250px</span><span class="p">;</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">240px</span><span class="p">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.center-table</span> <span class="nt">p</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="nb">table-cell</span><span class="p">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="no">black</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="no">white</span><span class="p">;</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+  <span class="nl">border</span><span class="p">:</span> <span class="m">10px</span> <span class="nb">solid</span> <span class="no">white</span><span class="p">;</span>
+  <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">middle</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>如果上面不行，可能你需要使用弹性盒。单个子元素在一个弹性父元素中很简单就可以居中。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.flex-center-vertically</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
+  <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+  <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">column</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">400px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>值得注意的是，如果父容器有固定高度(px, %等)，则它是真正相关的(？？？)，这也是为什么我们的父容器有一个<code class="highlighter-rouge">height</code>。</p>
+
+<p>如果以上两者都无效，则可以使用<strong>伪元素</strong>。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.ghost-center</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.ghost-center</span><span class="nd">::before</span> <span class="p">{</span>
+  <span class="nl">content</span><span class="p">:</span> <span class="s1">" "</span><span class="p">;</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">1%</span><span class="p">;</span>
+  <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">middle</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.ghost-center</span> <span class="nt">p</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+  <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">middle</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="是一个块级元素吗">是一个块级元素吗</h3>
+
+<h4 id="你知道这个元素的高度吗">你知道这个元素的高度吗</h4>
+
+<p>在页面布局中不知道高度是非常正常的，因为: 宽度改变，文字reflow会改变高度；文字样式的改变会改变高度；文字数目的变化也会改变高度；元素有一固定的长宽比，比如图片，尺寸变化时也会改变高度。</p>
+
+<p>但是，如果你知道高度，你可以这样进行垂直居中:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.parent</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.child</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="nl">margin-top</span><span class="p">:</span> <span class="m">-50px</span><span class="p">;</span> <span class="c">/* account for padding and border if not using box-sizing: border-box; */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="你并不知道这个元素的高度">你并不知道这个元素的高度</h4>
+
+<p>你还是可以通过将这个元素下调一半，然后上调它高度的一半来居中它。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.parent</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.child</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="nl">transform</span><span class="p">:</span> <span class="n">translateY</span><span class="p">(</span><span class="m">-50%</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="还是使用弹性盒吧">还是使用弹性盒吧</h4>
+
+<p>没什么大的惊喜，用弹性盒会格外简单。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.parent</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
+  <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">column</span><span class="p">;</span>
+  <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="同时水平垂直居中">同时水平/垂直居中</h2>
+
+<h3 id="知道元素的宽度和高度">知道元素的宽度和高度</h3>
+
+<p>在你将这个元素定位到高度/宽度的50%之后，再使用绝对值等于宽度/高度一半的负外边距进行居中。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.parent</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child</span> <span class="p">{</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">300px</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="nl">left</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">-70px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">-170px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="不知道元素的宽度和高度">不知道元素的宽度和高度</h3>
+
+<p>如果你不知道宽度和高度，你可以使用<code class="highlighter-rouge">transform</code>属性来居中一个元素。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.parent</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.child</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="nl">left</span><span class="p">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="nl">transform</span><span class="p">:</span> <span class="n">translate</span><span class="p">(</span><span class="m">-50%</span><span class="p">,</span> <span class="m">-50%</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="弹性盒">弹性盒</h3>
+
+<blockquote>
+  <p>译者注： 对父容器使用<code class="highlighter-rouge">justify-content</code>和<code class="highlighter-rouge">align-items</code></p>
+</blockquote>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.parent</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span>
+  <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+  <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="结论">结论</h2>
+
+<blockquote>
+  <p>译者: 不要考虑浏览器兼容了，直接使用flexbox吧。</p>
+</blockquote>
+:ET

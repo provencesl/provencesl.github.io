@@ -1,0 +1,66 @@
+I"�<ul id="markdown-toc">
+  <li><a href="#elements-面板" id="markdown-toc-elements-面板">Elements 面板</a></li>
+  <li><a href="#console-面板" id="markdown-toc-console-面板">Console 面板</a>    <ul>
+      <li><a href="#如何打开抽屉式-console-面板" id="markdown-toc-如何打开抽屉式-console-面板">如何打开抽屉式 console 面板</a></li>
+    </ul>
+  </li>
+  <li><a href="#source-面板" id="markdown-toc-source-面板">Source 面板</a></li>
+  <li><a href="#performance-面板" id="markdown-toc-performance-面板">Performance 面板</a></li>
+</ul>
+
+<p>Chorme Dev Tools 是前端都要打交道的一个工具，以前一直没有非常系统的研究过。</p>
+
+<p>因此，主要是放一些使用要点。</p>
+
+<!-- more -->
+
+<h2 id="elements-面板">Elements 面板</h2>
+
+<p>功能：</p>
+
+<p>Elements 面板检查和实时编辑页面的 HTML 与 CSS。</p>
+
+<ul>
+  <li>Elements 面中可以查看 html 元素，这个功能用得多。编辑 html 元素，<strong>双击选定的元素</strong></li>
+  <li>实时编辑样式，在 Styles 窗格。样式的修改一般不是永久性的</li>
+  <li>查看和编辑当前元素的盒模型参数，在 Computed 窗格。盒模型中的所有值都可以进行修改，双击盒模型的值。</li>
+</ul>
+
+<hr />
+
+<h2 id="console-面板">Console 面板</h2>
+
+<ul>
+  <li>消息堆叠：如果一条消息连续重复，控制台会“堆叠”消息并在左侧显示一个表示重复次数的数字。(可以在 setting 中更改，<code class="highlighter-rouge">Show timestamps</code>)</li>
+  <li>有一个下拉菜单是 Execution Context Selector，通常是 <code class="highlighter-rouge">top</code>，可以选择其他环境。</li>
+</ul>
+
+<h4 id="如何打开抽屉式-console-面板">如何打开抽屉式 console 面板</h4>
+
+<p>在其他面板中，右侧有一个 <code class="highlighter-rouge">Customize and control DevTools</code>，点击 <code class="highlighter-rouge">Show console drawer</code></p>
+
+<blockquote>
+  <p>打开 Console 面板时，抽屉式 console 面板自动折叠。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="source-面板">Source 面板</h2>
+
+<p>Source 面板用来调试 JavaScript 代码。</p>
+
+<p>除了在文件中自行加入断点，还有一种是利用<strong>右侧</strong>的 XHR/fetch、DOM Breakpoints、Event Listener Breakpoints 等设置。在这个面板中，还可调出 console drawer 面板对代码进行调试。参考这里<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/?hl=zh-cn">在 Chrome DevTools 中调试 JavaScript 入门</a></p>
+
+<hr />
+
+<h2 id="performance-面板">Performance 面板</h2>
+
+<p>Performance 面板记录和分析应用在运行时的所有活动</p>
+
+<ul>
+  <li>火焰图有三条垂直的虚线，蓝线代表 DOMContentLoaded 事件；绿线代表首次绘制的时间；红线代表 load 事件</li>
+</ul>
+
+<p>参考这里<a href="https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/timeline-tool?hl=zh-cn">如何使用 Timeline 工具</a></p>
+
+:ET

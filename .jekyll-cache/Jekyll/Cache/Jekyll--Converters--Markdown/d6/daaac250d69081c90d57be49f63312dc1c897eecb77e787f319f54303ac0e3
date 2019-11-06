@@ -1,0 +1,23 @@
+I")
+<p>其他链接：</p>
+
+<ul>
+  <li><a href="/2017/05/18/Webpack-second">Webpack第二课 – HTML、插件和webpack-dev-server篇</a></li>
+  <li><a href="/2017/05/19/Webpack-third">Webpack第三课 – HTML、CSS篇</a></li>
+</ul>
+
+<p>代码<code class="highlighter-rouge">Github</code>地址：</p>
+
+<ul>
+  <li><a href="https://github.com/maoxiaoke/You-know-what-is-webpack">https://github.com/maoxiaoke/You-know-what-is-webpack</a></li>
+</ul>
+
+<p>想不到<code class="highlighter-rouge">webpack</code>比我想象中要难一点。</p>
+
+<p><code class="highlighter-rouge">webpack</code>是一个现代的<code class="highlighter-rouge">JavaScript</code>应用程序的<strong>模块打包器</strong>(<code class="highlighter-rouge">module bundler</code>)。但随着它的发展，有向前端代码管理工具演变的趋势。</p>
+
+<p>对于一个网站而言，之前的管理方式是：<code class="highlighter-rouge">HTML</code>文件、<code class="highlighter-rouge">CSS</code>样式、<code class="highlighter-rouge">JavaScript</code>文件、图片文件各自都是独立的，需要分开地管理每一个文件，然后确保一切正常运行。<code class="highlighter-rouge">Gulp</code>这样的任务管理工具就是在这个基础上发展而来，能处理不同的预处理器和编译器，任务一个接着一个进行。</p>
+
+<p>而<code class="highlighter-rouge">webpack</code>抛开了这种管理方式，在开发过程中的某一个阶段通过<code class="highlighter-rouge">JavaScript</code>去处理所有的依赖。比如说，我们可以利用<code class="highlighter-rouge">loader</code>将<code class="highlighter-rouge">HTML/CSS</code>文件打包成<code class="highlighter-rouge">JS</code>文件，然后再解析出来(这里说的有点糊涂，下次理解透彻再来)。</p>
+
+:ET

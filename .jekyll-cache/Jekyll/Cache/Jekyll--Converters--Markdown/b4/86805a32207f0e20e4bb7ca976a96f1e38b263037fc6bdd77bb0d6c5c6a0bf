@@ -1,0 +1,157 @@
+I"�-<ul id="markdown-toc">
+  <li><a href="#模块引用" id="markdown-toc-模块引用">模块引用</a></li>
+  <li><a href="#模块定义" id="markdown-toc-模块定义">模块定义</a></li>
+  <li><a href="#模块标识" id="markdown-toc-模块标识">模块标识</a></li>
+  <li><a href="#moduleexports" id="markdown-toc-moduleexports">module.exports</a></li>
+  <li><a href="#可重用的模块" id="markdown-toc-可重用的模块">可重用的模块</a></li>
+  <li><a href="#注意事项" id="markdown-toc-注意事项">注意事项</a></li>
+  <li><a href="#amd-和-cmd" id="markdown-toc-amd-和-cmd">AMD 和 CMD</a>    <ul>
+      <li><a href="#amd规范" id="markdown-toc-amd规范">AMD规范</a></li>
+      <li><a href="#cmd规范" id="markdown-toc-cmd规范">CMD规范</a></li>
+    </ul>
+  </li>
+  <li><a href="#驼峰式命名法" id="markdown-toc-驼峰式命名法">驼峰式命名法</a></li>
+</ul>
+
+<p>CommonJS的模块规范，是一种定位于<em>服务器端</em>的模块规范。</p>
+
+<blockquote>
+  <p>CommonJS对模块的定义十分简单，主要分为模块引用、模块定义和模块标识。</p>
+</blockquote>
+
+<!-- more -->
+
+<h2 id="模块引用">模块引用</h2>
+
+<p>示例如下：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">math</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">math</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>存在<code class="highlighter-rouge">require()</code>方法，这个方法接受模块标识，以此引入一个模块的API。</p>
+
+<blockquote>
+  <p><code class="highlighter-rouge">require()</code>是<code class="highlighter-rouge">Node</code>中少数几个同步<code class="highlighter-rouge">I/O</code>操作之一。在程序中<code class="highlighter-rouge">I/O</code>密集的地方尽量少用<code class="highlighter-rouge">require()</code>，所以通常都只在程序最初加载时才使用<code class="highlighter-rouge">require()</code>和其他同步操作。</p>
+</blockquote>
+
+<p>在引入的时候，<code class="highlighter-rouge">.js</code>扩展可以忽略。</p>
+
+<hr />
+
+<h2 id="模块定义">模块定义</h2>
+
+<p>上下文提供<code class="highlighter-rouge">exports</code>对象来提供用于<strong>导出当前模块的方法或者变量</strong>。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//math.js</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+	<span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="nx">args</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">;</span>
+	<span class="nx">l</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span><span class="nx">l</span><span class="p">){</span>
+		<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="o">++</span><span class="p">];</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">sum</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>在模块中，还存在一个<code class="highlighter-rouge">moudle</code>对象，它代表模块自身，而<code class="highlighter-rouge">exports</code>是<code class="highlighter-rouge">module</code>属性。在Node中，一个文件就是一个模块。</p>
+</blockquote>
+
+<p>另一个文件中，我们通过<code class="highlighter-rouge">require()</code>方法引入模块后，就能调用定义的属性或方法了。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//program.js</span>
+<span class="kd">var</span> <span class="nx">math</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">math</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">increment</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">math</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="模块标识">模块标识</h2>
+
+<p>模块标识就是传递给<code class="highlighter-rouge">require()</code>方法的参数，它必须是符合<strong>小驼峰命名</strong>的字符串，或者以<code class="highlighter-rouge">.</code> / <code class="highlighter-rouge">..</code>开头的<strong>相对路径</strong>，或者是<strong>绝对路径</strong>。它可以没有后缀<code class="highlighter-rouge">.js</code>。</p>
+
+<hr />
+
+<h2 id="moduleexports">module.exports</h2>
+
+<p>要创建只返回一个变量或函数的模块，被<code class="highlighter-rouge">exports</code>直接赋值给函数或变量是不行的。因为<code class="highlighter-rouge">Node</code>不能用任何其他对象、函数和变量给<code class="highlighter-rouge">exports</code>赋值。这个时候，需要用到<code class="highlighter-rouge">module.exports</code>。如：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Currency</span>  <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">canadianDollar</span><span class="p">){</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">canadianDollar</span> <span class="o">=</span> <span class="nx">canadianDollar</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Currency</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">roundTwoDecimals</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">amount</span><span class="p">){</span>
+	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">amount</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Currency</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">canadianToUS</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">canadian</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundTwoDecimals</span> <span class="p">(</span><span class="nx">canadian</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">canadianDollar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//error</span>
+<span class="nx">exports</span> <span class="o">=</span> <span class="nx">Currency</span><span class="p">;</span>
+
+<span class="c1">//it should be</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Currency</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>用<code class="highlighter-rouge">module.exports</code>可以对外提供单个变量、函数或者对象。如果模块中既有<code class="highlighter-rouge">exports</code>又有<code class="highlighter-rouge">module.exports</code>的模块，那它只会返回<code class="highlighter-rouge">module.exports</code>。</p>
+
+<blockquote>
+  <p>因为<code class="highlighter-rouge">exports</code>只是对<code class="highlighter-rouge">module.exports</code>的全局引用。所以，<code class="highlighter-rouge">exports.myFun()</code>只是<code class="highlighter-rouge">module.exports.myFun()</code>的缩写。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="可重用的模块">可重用的模块</h2>
+
+<p><code class="highlighter-rouge">node_modules</code>目录中存放的就是我们所重用的模块。这个目录的模块引用不需要使用<em>相对或绝对</em>路径。比如我们引入<code class="highlighter-rouge">require('math')</code>模块。这很好理解。</p>
+
+<hr />
+
+<h2 id="注意事项">注意事项</h2>
+
+<ol>
+  <li>如果模块是目录，在目录中定义模块的文件必须被命名为<code class="highlighter-rouge">index.js</code>，或者在<code class="highlighter-rouge">package.json</code>文件中的<code class="highlighter-rouge">main</code>键中指定入口文件。</li>
+</ol>
+
+<blockquote>
+  <p>意思就是说，模块不是简单的模块，而是一个目录?</p>
+</blockquote>
+
+<ol>
+  <li><code class="highlighter-rouge">Node</code>能把模块作为对象缓存起来。如果程序中的两个文件引入了相同的模块，第一个文件会把模块返回的数据存到程序的内存中，这样第二个文件就不用再去访问和计算模块的源文件了。</li>
+</ol>
+
+<hr />
+
+<h2 id="amd-和-cmd">AMD 和 CMD</h2>
+
+<p>鉴于网络原因，<code class="highlighter-rouge">CommonJS</code>为后端<code class="highlighter-rouge">JavaScript</code>制定的规范并不完全适合前端的场景。</p>
+
+<h3 id="amd规范">AMD规范</h3>
+
+<p>AMD(Asynchronous Module Definition)，中文介绍在这里： <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">https://github.com/amdjs/amdjs-api/wiki/AMD</a></p>
+
+<p>模块的定义如下：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">define</span><span class="p">(</span><span class="nx">id</span><span class="p">?,</span><span class="nx">dependencies</span><span class="p">?,</span><span class="nx">factory</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="cmd规范">CMD规范</h3>
+
+<p>关于<code class="highlighter-rouge">CMD</code>的介绍，可以参考<code class="highlighter-rouge">Sea.js</code>的介绍：<a href="https://github.com/seajs/seajs/issues/242">https://github.com/seajs/seajs/issues/242</a>。具体不推荐使用。</p>
+
+<h2 id="驼峰式命名法">驼峰式命名法</h2>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/CamelCase.svg/368px-CamelCase.svg.png" alt="驼峰式命名来源" /></p>
+
+<p>规则如下：单字之间不以空格断开或连字符(<code class="highlighter-rouge">-</code>)或下划线(<code class="highlighter-rouge">_</code>)连接。有两种格式。</p>
+
+<ul>
+  <li>小驼峰命名法(lower camel case): 第一个单字以小写字母开始，第二个单字的首字母大写。</li>
+  <li>大驼峰命名法(upper camel case): 每一个单字的首字母都采用大写字母。</li>
+</ul>
+:ET

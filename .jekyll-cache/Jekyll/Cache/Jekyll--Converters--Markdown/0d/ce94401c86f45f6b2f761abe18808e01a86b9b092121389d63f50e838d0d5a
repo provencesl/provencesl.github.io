@@ -1,0 +1,12 @@
+I"�
+<p>Web Worker 的引入是因为 JavaScript 的单线程问题，使大计算量的问题会造成页面阻塞。为此，HTML 5 制订了 Web Worker 标准，通过创建<strong>工作线程</strong>来进行计算。</p>
+
+<p>Web Workers 一般说来分为三类：</p>
+
+<ul>
+  <li>Dedicated workers: 专用 workers，Dedicated workers 只能被创建它的 JavaScript 所调用。它们是专门为某个特定的页面服务的，不能在页面中共享。</li>
+  <li>Shared workers: 共享 workers，Shared worker 可以多个浏览器上下文中调用，所有这些浏览器上下文必须同源(相同的协议，主机和端口号)。</li>
+  <li>Service workers</li>
+</ul>
+
+:ET

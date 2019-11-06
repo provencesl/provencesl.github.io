@@ -1,0 +1,8 @@
+I")
+<p><code class="highlighter-rouge">JavaScript</code>是一种基于<strong>原型</strong>的面向对象的语言，而不是基于类的。</p>
+
+<p>基于类的面向对象的语言，是构建在两个不同实体的概念之上的：<strong>类和实例</strong></p>
+
+<p>基于原型的语言不存在这种区别：<strong>只有对象</strong>。基于原型的语言具有所谓原型对象<code class="highlighter-rouge">rototypical object</code>的概念。原型对象可以作为一个模板，新对象可以从中获得原始的属性。任何对象都可以指定其自身的属性，既可以是创建时也可以在运行时创建。而且，任何对象都可以作为另一个对象的原型<code class="highlighter-rouge">prototype</code>，从而允许后者共享前者的属性。</p>
+
+:ET

@@ -1,0 +1,170 @@
+I"�7<ul id="markdown-toc">
+  <li><a href="#一种全排列的思考方法" id="markdown-toc-一种全排列的思考方法">一种全排列的思考方法</a></li>
+  <li><a href="#heaps-algorithm" id="markdown-toc-heaps-algorithm">Heap’s Algorithm</a>    <ul>
+      <li><a href="#伪代码" id="markdown-toc-伪代码">伪代码</a></li>
+      <li><a href="#算法过程" id="markdown-toc-算法过程">算法过程</a></li>
+      <li><a href="#算法的javascript实现" id="markdown-toc-算法的javascript实现">算法的JavaScript实现</a></li>
+    </ul>
+  </li>
+  <li><a href="#还有一种递归思路的算法" id="markdown-toc-还有一种递归思路的算法">还有一种递归思路的算法</a></li>
+</ul>
+
+<p>全排列是一个是一个常见的问题，对于学过简单数学的人都知道，没有重复元素的全排列的个数是<code class="highlighter-rouge">n! = n * (n-1) * ... * 2 * 1</code>。比如：有三个元素<code class="highlighter-rouge">[a,b,c]</code>，全排列的结果是<code class="highlighter-rouge">[a,b,c] [b,a,c] [a,c,b] [c,a,b] [b,c,a] [c,b,a]</code>6种。</p>
+
+<!-- more -->
+
+<h2 id="一种全排列的思考方法">一种全排列的思考方法</h2>
+
+<p>一种遵循大脑的全排列方法是：假设有一个空集合，依次插入各元素，得到最终结果。比如，以<code class="highlighter-rouge">[a,b,c]</code>三个元素为例，有一个空集合<code class="highlighter-rouge">[?,?,?]</code>，首先插入元素<code class="highlighter-rouge">a</code>，得到<code class="highlighter-rouge">[a]</code>，然后插入元素<code class="highlighter-rouge">b</code>，有两种情况，分别是插入<code class="highlighter-rouge">[a]</code>之前得到<code class="highlighter-rouge">[b,a]</code>，插入<code class="highlighter-rouge">[a]</code>之后得到<code class="highlighter-rouge">[a,b]</code>。以此类推。示意图如下图：</p>
+
+<p><img src="/styles/images/algorithms/a-method-of-full-arrangement.png" alt="a-method-of-full-arrangement" /></p>
+
+<blockquote>
+  <p>图片来源： <a href="https://camo.githubusercontent.com/b03b14d937879d36804ead55a10d4d73712b9a96/68747470733a2f2f692e696d6775722e636f6d2f7a466d356752782e706e67">freecodecamp github</a></p>
+</blockquote>
+
+<p>但是这种算法有一种弊端，如果我们需要全排列的元素过多，就需要多次移动元素，这是非常费力的一件事情。</p>
+
+<hr />
+
+<h2 id="heaps-algorithm">Heap’s Algorithm</h2>
+
+<p><code class="highlighter-rouge">Heap's Algorithm</code> 是B. R. Heap在1963提出的一种全排列的算法。核心思想就是每次保持<code class="highlighter-rouge">n - 2</code>个元素不动，对剩余的两个元素进行交换。什么意思呢？我们以<code class="highlighter-rouge">[a,b,c,d]</code>这四个元素的全排列为例，首先，我们将元素<code class="highlighter-rouge">d</code>作为固定元素拿出来，对<code class="highlighter-rouge">[a,b,c]</code>进行全排列，而对<code class="highlighter-rouge">[a,b,c]</code>进行全排列的过程中，我们又将<code class="highlighter-rouge">c</code>作为固定元素拿出来，对元素<code class="highlighter-rouge">a</code>、<code class="highlighter-rouge">b</code>进行交换，这样就得到全排列的两种可能。同理，下一步是我们将<code class="highlighter-rouge">b</code>作为固定元素拿出来，对<code class="highlighter-rouge">a</code>、<code class="highlighter-rouge">c</code>进行交换。依次类推。这张图详细地展示了这一种算法思想，<a href="https://upload.wikimedia.org/wikipedia/commons/1/19/Heap_algorithm_with_4_elements.svg">请参考</a>。</p>
+
+<h3 id="伪代码">伪代码</h3>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>procedure generate(n : integer, A : array of any):
+    if n = 1 then
+          output(A)
+    else
+        for i := 0; i &lt; n - 1; i += 1 do
+            generate(n - 1, A)
+            if n is even then
+                swap(A[i], A[n-1])
+            else
+                swap(A[0], A[n-1])
+            end if
+        end for
+        generate(n - 1, A)
+    end if
+</code></pre></div></div>
+
+<blockquote>
+  <p>来源：<a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm">wiki百科</a></p>
+</blockquote>
+
+<h3 id="算法过程">算法过程</h3>
+
+<ol>
+  <li>保持第<code class="highlighter-rouge">n</code>个元素不动，对前<code class="highlighter-rouge">n-1</code>个元素进行全排列。</li>
+  <li>如果<code class="highlighter-rouge">n</code>是奇数，交换第一个和最后一个元素；如果<code class="highlighter-rouge">n</code>是偶数，交换低<code class="highlighter-rouge">i</code>个和最后一个元素。重复上诉过程。</li>
+</ol>
+
+<h3 id="算法的javascript实现">算法的JavaScript实现</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Created by timi on 2017/5/8.
+ */</span>
+
+<span class="kd">function</span> <span class="nx">heapPermutation</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span><span class="nx">size</span><span class="p">,</span><span class="nx">n</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">swap</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">index1</span><span class="p">,</span><span class="nx">index2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">index1</span><span class="p">];</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">index1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">index2</span><span class="p">];</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">index2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">===</span> <span class="mi">1</span><span class="p">){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="nx">heapPermutation</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">size</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">n</span><span class="p">);</span>
+
+        <span class="nx">swap</span><span class="p">(</span><span class="nx">size</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">?</span> <span class="mi">0</span> <span class="p">:</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">b</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">c</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">d</span><span class="dl">'</span><span class="p">];</span>
+
+<span class="nx">heapPermutation</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>程序输出：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ 'a', 'b', 'c', 'd' ]
+[ 'b', 'a', 'c', 'd' ]
+[ 'c', 'a', 'b', 'd' ]
+[ 'a', 'c', 'b', 'd' ]
+[ 'b', 'c', 'a', 'd' ]
+[ 'c', 'b', 'a', 'd' ]
+[ 'd', 'b', 'c', 'a' ]
+[ 'b', 'd', 'c', 'a' ]
+[ 'c', 'd', 'b', 'a' ]
+[ 'd', 'c', 'b', 'a' ]
+[ 'b', 'c', 'd', 'a' ]
+[ 'c', 'b', 'd', 'a' ]
+[ 'd', 'a', 'c', 'b' ]
+[ 'a', 'd', 'c', 'b' ]
+[ 'c', 'd', 'a', 'b' ]
+[ 'd', 'c', 'a', 'b' ]
+[ 'a', 'c', 'd', 'b' ]
+[ 'c', 'a', 'd', 'b' ]
+[ 'd', 'a', 'b', 'c' ]
+[ 'a', 'd', 'b', 'c' ]
+[ 'b', 'd', 'a', 'c' ]
+[ 'd', 'b', 'a', 'c' ]
+[ 'a', 'b', 'd', 'c' ]
+[ 'b', 'a', 'd', 'c' ]
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="还有一种递归思路的算法">还有一种递归思路的算法</h2>
+
+<p>这种递归想法是如图所示：</p>
+
+<p><img src="/styles/images/algorithms/anther-method-of-full-arrangement.png" alt="recursion-tree-for-permutations" /></p>
+
+<blockquote>
+  <p>图片来源：<a href="https://www.youtube.com/watch?v=KBHFyg2AcZ4">https://www.youtube.com/watch?v=KBHFyg2AcZ4</a> 其中也有对该思想的理解。</p>
+</blockquote>
+
+<p>这种想法也是通过固定一个元素，进行剩余元素的交换。缺点是，每次交换过后需要再次交换以回到上一层数组。</p>
+
+<p>当然，也给出这种方法的<code class="highlighter-rouge">JavaScript</code>代码。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">generate</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">swap</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">start</span><span class="p">,</span><span class="nx">current</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">start</span><span class="p">];</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">start</span><span class="p">]</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">current</span><span class="p">];</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">current</span><span class="p">]</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">start</span> <span class="o">===</span> <span class="nx">end</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">start</span><span class="p">;</span> <span class="nx">current</span> <span class="o">&lt;</span> <span class="nx">end</span><span class="p">;</span> <span class="nx">current</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">swap</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span><span class="nx">current</span><span class="p">)</span>
+            <span class="nx">generate</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="nx">start</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+            <span class="nx">swap</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span><span class="nx">current</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">b</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">c</span><span class="dl">'</span><span class="p">];</span>
+<span class="nx">generate</span><span class="p">(</span><span class="nx">arr</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>为了跟回归树相对应，我们给出三个元素的全排列结果。输出结果如下：</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ 'a', 'b', 'c' ]
+[ 'a', 'c', 'b' ]
+[ 'b', 'a', 'c' ]
+[ 'b', 'c', 'a' ]
+[ 'c', 'b', 'a' ]
+[ 'c', 'a', 'b' ]
+</code></pre></div></div>
+
+<blockquote>
+  <p>更多可参考： <a href="https://forum.freecodecamp.com/t/no-repeats-please-heaps-algorithm-and-frustration-with-recursions/15909">freecodecamp forum</a></p>
+</blockquote>
+:ET

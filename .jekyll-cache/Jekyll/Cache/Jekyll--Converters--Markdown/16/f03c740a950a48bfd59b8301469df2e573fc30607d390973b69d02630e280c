@@ -1,0 +1,118 @@
+I"� <ul id="markdown-toc">
+  <li><a href="#bfc-的创建" id="markdown-toc-bfc-的创建">BFC 的创建</a></li>
+  <li><a href="#bfc-的规则" id="markdown-toc-bfc-的规则">BFC 的规则</a></li>
+  <li><a href="#bfc-的应用" id="markdown-toc-bfc-的应用">BFC 的应用</a>    <ul>
+      <li><a href="#自适应两栏三栏布局" id="markdown-toc-自适应两栏三栏布局">自适应两栏/三栏布局</a></li>
+      <li><a href="#清除内部浮动" id="markdown-toc-清除内部浮动">清除内部浮动</a></li>
+    </ul>
+  </li>
+  <li><a href="#防止垂直-margin-重叠" id="markdown-toc-防止垂直-margin-重叠">防止垂直 margin 重叠</a></li>
+</ul>
+
+<p>BFC(Block Formatting Context)，中文译成 “块级格式上下文”。标准解释:</p>
+
+<blockquote>
+  <p>Floats, absolutely positioned elements, block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes, and block boxes with ‘overflow’ other than ‘visible’ (except when that value has been propagated to the viewport) establish new block formatting contexts for their contents. – <a href="https://www.w3.org/TR/CSS2/visuren.html#block-formatting">w3c</a></p>
+</blockquote>
+
+<p>首先，我们要理解什么是 <code class="highlighter-rouge">block boxes</code>(块盒子)。block boxes 和块级元素是不一致的。</p>
+
+<blockquote>
+  <p>标准中，是这样阐述的。每个 block-level element (块级元素) 产生 block-level box (块级盒)。<strong>block-level boxes</strong> 是参与到 BFC 的盒子。除了 table boxes，block-level box 也是 block container box (块容器盒)，block container box 要么包含 block-level boxes，要么创建 IFC 从而包含 inline-level box。并非所有的 block container boxes 是 block-level boxes。<strong>block-level boxes，同时也是 block containers 的就是 block boxes</strong>。好绕！标准就是这么绕人的。</p>
+</blockquote>
+
+<p>所以，我们理解: 浮动的、绝对定位的元素和块容器(比如 inline-blocks, table-cells 这些)都<strong>不是</strong> block boxes，block boxes 是那些 <code class="highlighter-rouge">overflow</code> 不是 <code class="highlighter-rouge">visible</code> 的，两者共同为它们的内容创建了一个 BFC。</p>
+
+<blockquote>
+  <p>Formatting Context 是 W3C CSS2.1 规范中的一个概念它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。最常见的 Formatting context 有 BFC 和 Inline formatting context (简称 IFC)。CSS3 还增加了 GFC 和 FFC。</p>
+</blockquote>
+
+<!-- more -->
+
+<h2 id="bfc-的创建">BFC 的创建</h2>
+
+<p>不要误认为 BFC 是 block boxes 创建的哦。我们开头标准里的这句话，是有浮动的、绝对定位的元素和块容器、还有 block boxes 共同创建的(也就是 block-level boxes 创建的)。</p>
+
+<ul>
+  <li>根元素</li>
+  <li>float 元素(float 不等于 none)</li>
+  <li>绝对定位元素 (position 等于 absolute 或者 fixed)</li>
+  <li>inline-blocks (display: inline-box)</li>
+  <li>table-cell (display: table-cell)</li>
+  <li>块级元素，其中 overflow 不等于 visible</li>
+</ul>
+
+<blockquote>
+  <p>来源: <a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context">Block formatting context</a> 。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="bfc-的规则">BFC 的规则</h2>
+
+<p>查阅标准，可以总结到这么几点:</p>
+
+<ul>
+  <li>内部的 boxes 会在垂直方向上一个一个地叠放</li>
+  <li>两个相邻子boxes 之间的垂直距离由 margin 属性确定。同属一个 BFC 的相邻子 boxes 的 margin 会发生 collapse</li>
+  <li>每个子 boxes 的 left outer edge (左外侧) 接触 容器块(就是外层容器) 的 left edge (左边缘)。即便存在 float 元素也是如此。除非，子 boxes 建立一个新的 BFC</li>
+  <li>BFC 是页面上一个隔离的容器，容器内的子元素不会影响到外面的元素，反之也成立</li>
+  <li>计算 BFC 的高度时，浮动元素也参与计算</li>
+</ul>
+
+<blockquote>
+  <p>主要关注 第二条、第三条和第四条</p>
+</blockquote>
+
+<hr />
+
+<h2 id="bfc-的应用">BFC 的应用</h2>
+
+<h3 id="自适应两栏三栏布局">自适应两栏/三栏布局</h3>
+
+<p>以三栏布局为例:</p>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="KvQgKr" data-default-tab="css,result" data-user="maoxiake" data-embed-version="2" data-pen-title="KvQgKr" class="codepen">See the Pen <a href="https://codepen.io/maoxiake/pen/KvQgKr/">KvQgKr</a> by maoxiaoke (<a href="https://codepen.io/maoxiake">@maoxiake</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async="" src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<blockquote>
+  <p>根据第三条，存在 float 元素，中间的元素仍然接触外容器的左边缘。注意后边那句话，<em>除非建立一个新的 BFC</em>。</p>
+</blockquote>
+
+<p>如何建立一个新的 BFC，从 BFC 的创建看，可以使用 <code class="highlighter-rouge">overflow: hidden</code> 创建一个 block boxes。</p>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="BdYLLx" data-default-tab="css,result" data-user="maoxiake" data-embed-version="2" data-pen-title="BdYLLx" class="codepen">See the Pen <a href="https://codepen.io/maoxiake/pen/BdYLLx/">BdYLLx</a> by maoxiaoke (<a href="https://codepen.io/maoxiake">@maoxiake</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async="" src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<h3 id="清除内部浮动">清除内部浮动</h3>
+
+<p>这就是以前我常说 <code class="highlighter-rouge">overflow:hidden</code> 的怪异之处。</p>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="JypRJR" data-default-tab="css,result" data-user="maoxiake" data-embed-version="2" data-pen-title="JypRJR" class="codepen">See the Pen <a href="https://codepen.io/maoxiake/pen/JypRJR/">JypRJR</a> by maoxiaoke (<a href="https://codepen.io/maoxiake">@maoxiake</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async="" src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<blockquote>
+  <p>子元素使用浮动脱离了文档流，根据最后一条，我们给父元素添加 BFC 来包含 浮动元素的高度。</p>
+</blockquote>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="WEMGEL" data-default-tab="css,result" data-user="maoxiake" data-embed-version="2" data-pen-title="WEMGEL" class="codepen">See the Pen <a href="https://codepen.io/maoxiake/pen/WEMGEL/">WEMGEL</a> by maoxiaoke (<a href="https://codepen.io/maoxiake">@maoxiake</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async="" src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<h2 id="防止垂直-margin-重叠">防止垂直 margin 重叠</h2>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="eEVdym" data-default-tab="css,result" data-user="maoxiake" data-embed-version="2" data-pen-title="eEVdym" class="codepen">See the Pen <a href="https://codepen.io/maoxiake/pen/eEVdym/">eEVdym</a> by maoxiaoke (<a href="https://codepen.io/maoxiake">@maoxiake</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async="" src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<blockquote>
+  <p>这是因为 BFC 的 相邻两个 margin 的 collapse 塌陷造成的。(因为根元素会创建一个 BFC)。解决方法，为子元素创建一个新的 BFC，则满足 容器内的子元素不会影响到外面的元素。</p>
+</blockquote>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="vJdXRp" data-default-tab="css,result" data-user="maoxiake" data-embed-version="2" data-pen-title="vJdXRp" class="codepen">See the Pen <a href="https://codepen.io/maoxiake/pen/vJdXRp/">vJdXRp</a> by maoxiaoke (<a href="https://codepen.io/maoxiake">@maoxiake</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async="" src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>参考：</p>
+<ul>
+  <li><a href="http://www.cnblogs.com/lhb25/p/inside-block-formatting-ontext.html">BFC 神奇背后的原理</a></li>
+  <li><a href="https://www.w3.org/TR/CSS2/visuren.html#block-formatting">Visual formatting model</a></li>
+</ul>
+:ET

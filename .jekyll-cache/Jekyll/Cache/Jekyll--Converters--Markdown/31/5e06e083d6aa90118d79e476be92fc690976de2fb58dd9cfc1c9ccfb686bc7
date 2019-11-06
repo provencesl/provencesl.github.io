@@ -1,0 +1,368 @@
+I"�<ul id="markdown-toc">
+  <li><a href="#初始化配置-webpack" id="markdown-toc-初始化配置-webpack">初始化配置 Webpack</a></li>
+  <li><a href="#目录结构" id="markdown-toc-目录结构">目录结构</a></li>
+  <li><a href="#配置-babel" id="markdown-toc-配置-babel">配置 Babel</a></li>
+  <li><a href="#html-webpack-plugin" id="markdown-toc-html-webpack-plugin">Html-Webpack-Plugin</a></li>
+  <li><a href="#webpack-dev-server-配置" id="markdown-toc-webpack-dev-server-配置">webpack-dev-server 配置</a></li>
+  <li><a href="#小甜点" id="markdown-toc-小甜点">小甜点</a>    <ul>
+      <li><a href="#babel-preset-react-hmre" id="markdown-toc-babel-preset-react-hmre">babel-preset-react-hmre</a></li>
+      <li><a href="#react-hot-loader" id="markdown-toc-react-hot-loader">react-hot-loader</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>完成一个 React 之初，就是要构建一个脚手架工具，要支持 ES6 和 JSX 语法。在这一块，用 Webpack 就胜过 Gulp，所以我们使用 Webpack 来进行模块打包。当然，也可以使用 Gulp + Webpack 来构建，这个有心情的时候再整整吧。</p>
+
+<blockquote>
+  <p>官方也提供一个 <code class="highlighter-rouge">react-scripts</code> 模块来提供脚手架。你也可以使用它，但能够自定义的话，也许是最好的选择。</p>
+</blockquote>
+
+<!-- more -->
+
+<p>原材料:</p>
+
+<p><strong>devDependencies</strong></p>
+<ul>
+  <li>Webpack v3.5.5 版本更新换代，保不定这篇文章就失效了</li>
+  <li>webpack-dev-server 提供热更新</li>
+  <li>babel-core 核心模块</li>
+  <li>babel-loader 加载器</li>
+  <li>babel-preset-es2015 提供 ES6 语法支持</li>
+  <li>babel-preset-react 提供 JXP 语法支持</li>
+  <li>html-webpack-plugin 提供 html 插件</li>
+</ul>
+
+<p><strong>dependencies</strong></p>
+<ul>
+  <li>react</li>
+  <li>react-dom</li>
+</ul>
+
+<p>用包管理器 <code class="highlighter-rouge">npm</code> 将上述模块都加载好。</p>
+
+<hr />
+
+<h2 id="初始化配置-webpack">初始化配置 Webpack</h2>
+
+<p>在根目录建立一个 <code class="highlighter-rouge">webpack.config.js</code> 文件，这个文件类似于 Gulp 的 <code class="highlighter-rouge">gulpfile.js</code>。初始配置如下:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//webpack.config.js</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">entry</span><span class="p">:</span><span class="dl">'</span><span class="s1">./app/app.js</span><span class="dl">'</span><span class="p">,</span> <span class="c1">//入口文件</span>
+    <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bundle.js</span><span class="dl">'</span><span class="p">,</span> <span class="c1">//出口文件</span>
+        <span class="na">path</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="dl">'</span><span class="s1">./build</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>这里，只简单地配置了入口和出口。</p>
+
+<hr />
+
+<h2 id="目录结构">目录结构</h2>
+
+<p>作为最为一个最简单的应用，我们用最简单的目录结构。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
+|-- index.html
+|-- package.json
+|-- webpack.config.js
+|-- app
+    |-- components
+        |-- Tab.jsx
+    |-- app.js
+|-- node_modules
+</code></pre></div></div>
+
+<p>我们的 React 应用的入口是 <code class="highlighter-rouge">./app/app.js</code> 文件，组件存放在 <code class="highlighter-rouge">./app/components</code> 文件夹中，为了配合 React 的命名规范，首字母大写，后缀使用 <code class="highlighter-rouge">.jsx</code> 或 <code class="highlighter-rouge">.js</code> 都可以，为了区分，我们使用 <code class="highlighter-rouge">.jsx</code> 后缀(之后的 babel 设置也因此会有所不同)。</p>
+
+<p>之后，我们添加 <code class="highlighter-rouge">app.js</code>、<code class="highlighter-rouge">Tab.jsx</code> 和 <code class="highlighter-rouge">index.html</code> 的内容。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--index.html--&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1.0"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"X-UA-Compatible"</span> <span class="na">content=</span><span class="s">"ie=edge"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>react-webpack<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"app"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>我们并没有通过 <code class="highlighter-rouge">&lt;script&gt;</code> 来引入出口文件 <code class="highlighter-rouge">bundle.js</code>，这个我们是交给 <code class="highlighter-rouge">html-webpack-plugin</code> 来处理的。</p>
+</blockquote>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//app.js</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Tab</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./components/Tab.jsx</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// attention</span>
+
+<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Tab</span> <span class="o">/&gt;</span><span class="p">,</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>入口文件 <code class="highlighter-rouge">app.js</code> 用来渲染整个 react 应用。需要注意的是，我们引入 <code class="highlighter-rouge">Tab</code> 组件的时候，是加上了后缀名 <code class="highlighter-rouge">.jsx</code> 的。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Tab.jsx</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Tab</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">style</span><span class="o">=&gt;</span>
+              <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">yuer</span> <span class="o">&lt;</span><span class="nx">span</span> <span class="nx">style</span><span class="o">=&gt;</span><span class="err">❤</span><span class="o">&lt;</span><span class="sr">/span&gt; xiaoke&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+              <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">xiaoke</span> <span class="o">&lt;</span><span class="nx">span</span> <span class="nx">style</span><span class="o">=&gt;</span><span class="err">❤</span><span class="o">&lt;</span><span class="sr">/span&gt; yuer&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Tab</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>好的，我们的目录文件基本完成。</p>
+
+<hr />
+
+<h2 id="配置-babel">配置 Babel</h2>
+
+<p>我们需要这么几个插件，babel-core/babel-loader/babel-preset-es2015/babel-preset-react，请先安装这几个模块。然后我们配置 <code class="highlighter-rouge">webpack.config.js</code> 文件。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//webpack.config.js</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">HtmlWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-webpack-plugin</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">entry</span><span class="p">:</span><span class="dl">'</span><span class="s1">./app/app.js</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bundle.js</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">path</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="dl">'</span><span class="s1">./build</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">},</span>
+
+    <span class="c1">//我们在下面添加了 loader</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">loaders</span><span class="p">:[</span>
+            <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">js</span><span class="se">?</span><span class="sr">$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span><span class="p">,</span><span class="na">exclude</span><span class="p">:</span><span class="sr">/node_modules/</span><span class="p">},</span>  <span class="c1">//for .js files</span>
+            <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">jsx</span><span class="se">?</span><span class="sr">$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span><span class="p">,</span><span class="na">exclude</span><span class="p">:</span><span class="sr">/node_modules/</span><span class="p">}</span>  <span class="c1">//for .jsx files</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>为了使用 ES6 和 JSX 语法，我们新建一个 <code class="highlighter-rouge">.babelrc</code>，文件内容如下:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"presets"</span><span class="p">:[</span><span class="s2">"es2015"</span><span class="p">,</span><span class="w"> </span><span class="s2">"react"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Babel 配置完成。</p>
+
+<hr />
+
+<h2 id="html-webpack-plugin">Html-Webpack-Plugin</h2>
+
+<p>安装 <code class="highlighter-rouge">html-webpack-plugin</code> 插件。在 <code class="highlighter-rouge">webpack.config.js</code> 中的配置如下:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//webpack.config.js</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack</span><span class="dl">'</span><span class="p">);</span>
+<span class="c1">//here, look here</span>
+<span class="kd">var</span> <span class="nx">HtmlWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-webpack-plugin</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">entry</span><span class="p">:</span><span class="dl">'</span><span class="s1">./app/app.js</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bundle.js</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">path</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="dl">'</span><span class="s1">./build</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">loaders</span><span class="p">:[</span>
+            <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">js</span><span class="se">?</span><span class="sr">$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span><span class="p">,</span><span class="na">exclude</span><span class="p">:</span><span class="sr">/node_modules/</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">jsx</span><span class="se">?</span><span class="sr">$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span><span class="p">,</span><span class="na">exclude</span><span class="p">:</span><span class="sr">/node_modules/</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+
+    <span class="c1">//添加了这一行</span>
+    <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">HtmlWebpackPlugin</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="na">template</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./index.html</span><span class="dl">'</span><span class="p">,</span>  <span class="c1">//模板是根目录的 index.html 文件</span>
+                <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">index.html</span><span class="dl">'</span><span class="p">,</span>   <span class="c1">//会在 build 文件夹内生成一个 index.html 文件</span>
+                <span class="na">inject</span><span class="p">:</span> <span class="dl">'</span><span class="s1">body</span><span class="dl">'</span>  <span class="c1">//插入到 body 元素后面</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="webpack-dev-server-配置">webpack-dev-server 配置</h2>
+
+<p>webpack-dev-server 是一个小型的 Node.js Express 服务器，提供实时的页面重载。</p>
+
+<p>安装 <code class="highlighter-rouge">webpack-dev-server</code> 插件。然后配置 <code class="highlighter-rouge">webpack.config.js</code> 文件。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//webpack.config.js</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">HtmlWebpackPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">html-webpack-plugin</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">entry</span><span class="p">:</span><span class="dl">'</span><span class="s1">./app/app.js</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">output</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bundle.js</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">path</span><span class="p">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="dl">'</span><span class="s1">./build</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="c1">//添加这一行</span>
+    <span class="na">devServer</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">inline</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>   <span class="c1">//inline 模式</span>
+        <span class="na">port</span><span class="p">:</span> <span class="mi">8181</span>     <span class="c1">//端口自定义</span>
+    <span class="p">},</span>
+    <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">loaders</span><span class="p">:[</span>
+            <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">js</span><span class="se">?</span><span class="sr">$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span><span class="p">,</span><span class="na">exclude</span><span class="p">:</span><span class="sr">/node_modules/</span><span class="p">},</span>
+            <span class="p">{</span><span class="na">test</span><span class="p">:</span><span class="sr">/</span><span class="se">\.</span><span class="sr">jsx</span><span class="se">?</span><span class="sr">$/</span><span class="p">,</span><span class="na">loader</span><span class="p">:</span><span class="dl">'</span><span class="s1">babel-loader</span><span class="dl">'</span><span class="p">,</span><span class="na">exclude</span><span class="p">:</span><span class="sr">/node_modules/</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">HtmlWebpackPlugin</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="na">template</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./index.html</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">index.html</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">inject</span><span class="p">:</span> <span class="dl">'</span><span class="s1">body</span><span class="dl">'</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>inline 是默认，默认端口是 8080。如果不配置 devServer 参数，就会以 inline 模式打开 8080 端口。</p>
+</blockquote>
+
+<p>到现在为止，只要在命令行运行 <code class="highlighter-rouge">webpack-dev-server</code> (这意味这你全局安装了这个模块)。当然，最好的方式是利用 <code class="highlighter-rouge">package.json</code> 的 <code class="highlighter-rouge">scripts</code> 属性。</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span><span class="w">
+ </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"echo </span><span class="se">\"</span><span class="s2">Error: no test specified</span><span class="se">\"</span><span class="s2"> &amp;&amp; exit 1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webpack-dev-server"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+ </span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>直接在命令行运行 <code class="highlighter-rouge">npm start</code> 即可。</p>
+
+<hr />
+
+<p>好。现在我们完整的代码已经上传至 <a href="https://github.com/maoxiaoke/react-webpack-es6-jsx">react-webpack-es6-jsx</a>。</p>
+
+<hr />
+
+<h2 id="小甜点">小甜点</h2>
+
+<h3 id="babel-preset-react-hmre">babel-preset-react-hmre</h3>
+
+<blockquote>
+  <p>Babel preset for React HMR and Error Catching.</p>
+</blockquote>
+
+<p>备注: HMR: Hot Module Replacement</p>
+
+<p>这个 Babel preset 的目的是因为，如果在 react 应用中，如果页面重新刷新的话，组件状态是无法保留的。所以我们用 HMR 来解决这个问题。</p>
+
+<p>首先，我们要设计一个 有状态 的组件，为此更改 <code class="highlighter-rouge">Tab.jsx</code>。</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Tab.jsx</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Tab</span> <span class="kd">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">){</span>
+        <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="na">counter</span><span class="p">:</span> <span class="mi">0</span><span class="p">};</span>
+    <span class="p">}</span>
+    <span class="nx">componentDidMount</span><span class="p">(){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">interval</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">increment</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">),</span><span class="mi">1000</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">increment</span><span class="p">(){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">(({</span><span class="nx">counter</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">{</span><span class="na">counter</span><span class="p">:</span> <span class="nx">counter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">};</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    <span class="nx">componentWillUnmount</span><span class="p">(){</span>
+        <span class="nx">clearInterval</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">interval</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">render</span><span class="p">(){</span>
+        <span class="kd">const</span> <span class="p">{</span><span class="nx">counter</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">style=</span><span class="err">&gt;
+              &lt;p&gt;yuer &lt;span style=&gt;❤&lt;/span&gt; xiaoke&lt;/p&gt;
+              &lt;p&gt;xiaoke &lt;span style=&gt;❤&lt;/span&gt; yuer&lt;/p&gt;
+              &lt;p&gt;a timer of love&lt;/p&gt;
+              &lt;p&gt;</span><span class="si">{</span><span class="nx">counter</span><span class="si">}</span><span class="err">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Tab</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>安装 <code class="highlighter-rouge">babel-preset-react-hmre</code>，在 <code class="highlighter-rouge">.babelrc</code> 中补充:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"presets"</span><span class="p">:[</span><span class="w">
+        </span><span class="s2">"es2015"</span><span class="p">,</span><span class="w"> </span><span class="s2">"react"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"development"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"presets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"react-hmre"</span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>在 <code class="highlighter-rouge">webpack.config.js</code> 中引入 <code class="highlighter-rouge">hot</code> 模式。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//webpack.config.js</span>
+<span class="p">...</span>
+ <span class="nx">devServer</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">inline</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">hot</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">port</span><span class="p">:</span> <span class="mi">8181</span>
+    <span class="p">}</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p>最后在命令行中引入 <code class="highlighter-rouge">hot</code> 模式。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+  <span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">test</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">Error: no test specified</span><span class="se">\"</span><span class="s2"> &amp;&amp; exit 1</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">webpack-dev-server --hot</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p>代码放在 <a href="https://github.com/maoxiaoke/react-webpack-es6-jsx/tree/hmr">react-webpack-es6-jsx</a> 的 <code class="highlighter-rouge">hmr</code> 分支上。</p>
+
+<hr />
+
+<h3 id="react-hot-loader">react-hot-loader</h3>
+
+<p>和上面的这个 <code class="highlighter-rouge">babel-preset-react-hmre</code> 差别尚不明朗。还在专研中。</p>
+:ET

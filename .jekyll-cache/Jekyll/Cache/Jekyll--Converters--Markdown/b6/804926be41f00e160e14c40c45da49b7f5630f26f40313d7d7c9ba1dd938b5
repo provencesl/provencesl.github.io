@@ -1,0 +1,156 @@
+I"m)<ul id="markdown-toc">
+  <li><a href="#for-statement" id="markdown-toc-for-statement">for statement</a></li>
+  <li><a href="#do-while" id="markdown-toc-do-while">do while</a></li>
+  <li><a href="#while" id="markdown-toc-while">while</a></li>
+  <li><a href="#labeled-statement" id="markdown-toc-labeled-statement">labeled statement</a></li>
+  <li><a href="#break-statement" id="markdown-toc-break-statement">break statement</a></li>
+  <li><a href="#continue-statement" id="markdown-toc-continue-statement">continue statement</a>    <ul>
+      <li><a href="#example" id="markdown-toc-example">Example</a></li>
+    </ul>
+  </li>
+  <li><a href="#forin-statement" id="markdown-toc-forin-statement">for…in statement</a></li>
+  <li><a href="#forof-statement" id="markdown-toc-forof-statement">for…of statement</a>    <ul>
+      <li><a href="#the-difference-of-for--of-and-for--in" id="markdown-toc-the-difference-of-for--of-and-for--in">The difference of for … of and for … in</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Loops offer a quick and easy way to do something repeatedly.</p>
+
+<!-- more -->
+
+<h2 id="for-statement">for statement</h2>
+
+<hr />
+
+<h2 id="do-while">do while</h2>
+
+<hr />
+
+<h2 id="while">while</h2>
+
+<hr />
+
+<h2 id="labeled-statement">labeled statement</h2>
+
+<p>A <code class="highlighter-rouge">label</code> provides a statement with an identifier that lets you refer to it elsewhere in your program(引用到别的位置).</p>
+
+<p>The syntax:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">label</span> <span class="p">:</span>
+   <span class="nx">statement</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>For example, you can use a <code class="highlighter-rouge">label</code> to identify a loop, and then use the <code class="highlighter-rouge">break</code> or <code class="highlighter-rouge">continue</code> statements to indicate whether a program should interrupt the loop or continue its execution.</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">markLoop</span><span class="p">:</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">theMark</span> <span class="o">==</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">doSomething</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The label <code class="highlighter-rouge">markloop</code> identifies a while loop.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="break-statement">break statement</h2>
+
+<p>Use the <code class="highlighter-rouge">break</code> statement to <strong>terminate</strong> a loop, switch, or in conjunction with (链接到) a labeled statement.</p>
+
+<p>The syntax：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">break</span><span class="p">;</span>
+<span class="k">break</span> <span class="nx">label</span><span class="p">;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The first form of the syntax terminates the innermost(最内层) enclosing loop or switch; the second form of the syntax terminates the specified enclosing labeled statement.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="continue-statement">continue statement</h2>
+
+<p>The <code class="highlighter-rouge">continue</code> statement can be used to <strong>restart</strong> a <code class="highlighter-rouge">while</code>, <code class="highlighter-rouge">do-while</code>, <code class="highlighter-rouge">for</code>, or <code class="highlighter-rouge">label statement</code>.</p>
+
+<p>The syntax：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">continue</span><span class="p">;</span>
+<span class="k">continue</span> <span class="nx">label</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="example">Example</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">checkiandj</span><span class="p">:</span>
+  <span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nl">checkj</span><span class="p">:</span>
+      <span class="k">while</span> <span class="p">(</span><span class="nx">j</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
+        <span class="nx">j</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">((</span><span class="nx">j</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">continue</span> <span class="nx">checkj</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">j</span> <span class="o">+</span> <span class="dl">'</span><span class="s1"> is odd.</span><span class="dl">'</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">i = </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">i</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">j = </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">j</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>A statement labeled <code class="highlighter-rouge">checkiandj</code> contains a statement labeled <code class="highlighter-rouge">checkj</code>. If <code class="highlighter-rouge">continue</code> is encountered, the program terminates the current iteration of <code class="highlighter-rouge">checkj</code> and begins the next iteration.</p>
+</blockquote>
+
+<blockquote>
+  <p>If <code class="highlighter-rouge">continue</code> had a label of <code class="highlighter-rouge">checkiandj</code>, the program would continue at the top of the <code class="highlighter-rouge">checkiandj</code> statement.(如果<code class="highlighter-rouge">continue</code>只有一个<code class="highlighter-rouge">label</code>标记，就会从标记循环语句的上面的代码执行)</p>
+</blockquote>
+
+<hr />
+
+<h2 id="forin-statement">for…in statement</h2>
+
+<p>The <code class="highlighter-rouge">for...in</code> statement iterates a specified variable over all the enumerable properties(可枚举的属性) of an object.</p>
+
+<p>The syntax：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="nx">variable</span> <span class="k">in</span> <span class="nx">object</span><span class="p">){</span>
+    <span class="nx">statement</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="forof-statement">for…of statement</h2>
+
+<p>The <code class="highlighter-rouge">for...of</code> statement creates a loop Iterating over iterable objects (including <code class="highlighter-rouge">Array</code>, <code class="highlighter-rouge">Map</code>, <code class="highlighter-rouge">Set</code>, arguments object and so on), invoking a custom iteration hook with statements to be executed for the value of each distinct property (对值的每一个独特的属性调用一个将被执行的自定义的和语句挂钩的迭代).</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="nx">variable</span> <span class="k">of</span> <span class="nx">object</span><span class="p">){</span>
+    <span class="nx">statement</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-difference-of-for--of-and-for--in">The difference of for … of and for … in</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">];</span>
+<span class="nx">arr</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// logs "0", "1", "2", "foo"</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="k">of</span> <span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// logs 3, 5, 7</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>While <code class="highlighter-rouge">for...in</code> iterates over property names(属性名), `for…of iterates over property values(属性值).</p>
+</blockquote>
+:ET

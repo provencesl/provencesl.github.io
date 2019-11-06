@@ -1,0 +1,93 @@
+I"�<ul id="markdown-toc">
+  <li><a href="#异步-io" id="markdown-toc-异步-io">异步 I/O</a></li>
+  <li><a href="#事件与回调函数" id="markdown-toc-事件与回调函数">事件与回调函数</a></li>
+  <li><a href="#单线程" id="markdown-toc-单线程">单线程</a></li>
+</ul>
+
+<h2 id="异步-io">异步 I/O</h2>
+
+<p>在<code class="highlighter-rouge">Node</code>中，绝大多数的操作都是以异步的方式进行调用。 这样的意义在于：在<code class="highlighter-rouge">Node</code>中，我们可以从语言层面很自然地进行并行<code class="highlighter-rouge">I/O</code>操作。</p>
+
+<p>每个调用之间无须等待之前的<code class="highlighter-rouge">I/O</code>调用结束，极大提高了效率。<!-- more --></p>
+
+<p>举例：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="dl">'</span><span class="s1">/path</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Well Done!</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Calling for file!</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">"Well Done!"</code>是在<code class="highlighter-rouge">"Calling for file!"</code>之后输入的。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="事件与回调函数">事件与回调函数</h2>
+
+<p>无论在<strong>前端</strong>和<strong>后端</strong>，事件都是常用的。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">querystring</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">querystring</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">//侦听服务器的request事件</span>
+<span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">postData</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="c1">//侦听请求的data事件</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">trunk</span><span class="p">){</span>
+        <span class="nx">postData</span> <span class="o">+=</span> <span class="nx">trunk</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="c1">//侦听请求的end事件</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">postData</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}).</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">服务器启动完成！</span><span class="dl">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">Node</code>创建了一个<code class="highlighter-rouge">Web</code>服务器，并侦听<code class="highlighter-rouge">8080</code>端口。对于服务器，为其绑定了<code class="highlighter-rouge">request</code>事件，对于请求对象，我们为其绑定了<code class="highlighter-rouge">data</code>事件和<code class="highlighter-rouge">end</code>事件。</p>
+</blockquote>
+
+<p>相应地，我们在前端为<code class="highlighter-rouge">Ajax</code>请求绑定了<code class="highlighter-rouge">success</code>事件，在发出请求后，只需关心请求成功时执行相应的业务逻辑即可。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/url</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">method</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="dl">'</span><span class="s1">success</span><span class="dl">'</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="c1">// success事件</span>
+    <span class="p">}</span> 
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>除了事件外，<strong>回调函数</strong>也无处不在。但是，回调函数也是最好的接收<strong>异步调用</strong>返回数据的方式。</p>
+
+<h2 id="单线程">单线程</h2>
+
+<p>在<code class="highlighter-rouge">Node</code>中，<code class="highlighter-rouge">javascript</code>与其余线程是无法共享任何状态的。</p>
+
+<blockquote>
+  <p>单线程的最好好处是不用像多线程那样要在意状态的<strong>同步</strong>问题，没有<strong>死锁</strong>的存在，也没有线程上下文交换所带来的性能上的<strong>开销</strong>。</p>
+</blockquote>
+
+<p><strong>缺点</strong>也是有的：</p>
+
+<ul>
+  <li>无法利用多核<code class="highlighter-rouge">CPU</code></li>
+  <li>错误会引起整个应用的退出，健壮性问题</li>
+  <li>大量计算占用<code class="highlighter-rouge">CPU</code>导致无法继续调用异步<code class="highlighter-rouge">I/O</code></li>
+</ul>
+
+<p><code class="highlighter-rouge">Node</code>采用<strong>子进程</strong>来解决单线程中大计算量的问题： <code class="highlighter-rouge">chile_process</code>。</p>
+
+<blockquote>
+  <p>朴灵. 深入浅出Node.js[M]. 人民邮电出版社, 2013.</p>
+</blockquote>
+:ET

@@ -1,0 +1,161 @@
+I"�H<ul id="markdown-toc">
+  <li><a href="#map" id="markdown-toc-map">map()</a></li>
+  <li><a href="#reduce" id="markdown-toc-reduce">reduce()</a>    <ul>
+      <li><a href="#语法解释" id="markdown-toc-语法解释">语法解释</a>        <ul>
+          <li><a href="#数组降维扁平化处理" id="markdown-toc-数组降维扁平化处理">数组降维(扁平化)处理</a></li>
+          <li><a href="#用reduce擦出对象的火花" id="markdown-toc-用reduce擦出对象的火花">用reduce()擦出对象的火花</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>最近经常用到<code class="highlighter-rouge">Array.prototype.map()</code>和<code class="highlighter-rouge">Array.prototype.reduce()</code>函数，根据自己的理解，在此处记录。</p>
+
+<p>这两个都是内置对象<code class="highlighter-rouge">Array</code>的两个函数，用法也存在相似性。</p>
+
+<!-- more -->
+
+<h2 id="map">map()</h2>
+
+<p><code class="highlighter-rouge">map()</code>方法创建一个新数组，其结果是为该数组的每个元素调用一个函数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">];</span>
+<span class="kd">let</span> <span class="nx">roots</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="c1">// roots is now [2, 10, 20, 30]</span>
+<span class="c1">// numbers is still [1, 5, 10, 15]</span>
+
+<span class="kd">let</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">];</span>
+<span class="c1">// let roots = numbers.map(Math.sqrt);</span>
+<span class="kd">let</span> <span class="nx">roots</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="c1">// roots is now [1, 2, 3]</span>
+<span class="c1">// numbers is still [1, 4, 9]</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>你当然可以使用循环，但显然这样更方便。</p>
+</blockquote>
+
+<p><code class="highlighter-rouge">map()</code>不会修改调用它原数组本身。</p>
+
+<p>举例：反转字符串</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">12345</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">map</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">}).</span><span class="nx">reverse</span><span class="p">().</span><span class="nx">join</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+
+<span class="c1">// Output: '54321'</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="reduce">reduce()</h2>
+
+<p><code class="highlighter-rouge">reduce()</code>方法对累加器和数组的每个值 (从左到右)应用一个函数，以将其减少为单个值。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">sum</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">acc</span> <span class="o">+</span> <span class="nx">val</span><span class="p">;</span>
+<span class="p">},</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 0是可选的参数</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sum</span><span class="p">);</span><span class="c1">//6</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">reduce()</code>的返回值是函数累积处理的结果。</p>
+
+<p>你也可以使用箭头函数来编写。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">sum</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">].</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">acc</span> <span class="o">+</span> <span class="nx">val</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 0是可选的参数</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sum</span><span class="p">);</span><span class="c1">//6</span>
+</code></pre></div></div>
+
+<p>这只是<code class="highlighter-rouge">reduce()</code>的简单介绍，真正有意思的是下面的知识点，你会发现<code class="highlighter-rouge">reduce()</code>没有你想象的那么单纯。</p>
+
+<h3 id="语法解释">语法解释</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">arr</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">callback</span><span class="p">,[</span><span class="nx">initialValue</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">callback</code>包含四个参数：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">accumlator</code>: 上一次调用返回的值或者提供的初始值(<code class="highlighter-rouge">initialValue</code>)</li>
+  <li><code class="highlighter-rouge">currentValue</code>: 数组中正在处理的元素</li>
+  <li><code class="highlighter-rouge">currentIndex</code>: 数组中正在处理的元素索引，如果提供了<code class="highlighter-rouge">initialValue</code>，从<code class="highlighter-rouge">0</code>开始，否则，从<code class="highlighter-rouge">1</code>开始</li>
+  <li><code class="highlighter-rouge">array</code>: 调用<code class="highlighter-rouge">reduce</code>的数组</li>
+</ul>
+
+<p><code class="highlighter-rouge">initialValue</code>: 可选项，其值用于第一次调用<code class="highlighter-rouge">callback</code>的第一个参数。</p>
+
+<p>其上，反复说到<code class="highlighter-rouge">initialValue</code>，这到底是什么东西。</p>
+
+<p>我们来举个例子：</p>
+
+<h4 id="数组降维扁平化处理">数组降维(扁平化)处理</h4>
+
+<p>代码如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">list1</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]];</span>
+<span class="kd">var</span> <span class="nx">list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">]]]]]]];</span>
+
+<span class="kd">function</span> <span class="nx">flatten</span><span class="p">(</span><span class="nx">arr</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">val</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">?</span> <span class="nx">flatten</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">:</span> <span class="nx">val</span><span class="p">);</span>
+    <span class="p">},</span> <span class="p">[]);</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">flatten</span><span class="p">(</span><span class="nx">list1</span><span class="p">));</span>  <span class="c1">// [0, 1, 2, 3, 4, 5]</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">flatten</span><span class="p">(</span><span class="nx">list2</span><span class="p">));</span>  <span class="c1">// [0, 1, 2, 3, 4, 5, 6]</span>
+</code></pre></div></div>
+
+<p>注意，简化一下，<code class="highlighter-rouge">arr.reduce(xxx, [])</code>，则，<code class="highlighter-rouge">[]</code>是作为<code class="highlighter-rouge">initialValue</code>添加进去的。那么，我们以数组<code class="highlighter-rouge">list1</code>为例，前两个传入<code class="highlighter-rouge">reduce(function(acc,val)){}</code>的值分别是<code class="highlighter-rouge">[]</code>和<code class="highlighter-rouge">[0,1]</code>。如果我们没有初始化值，则传入的是<code class="highlighter-rouge">[0,1]</code>和<code class="highlighter-rouge">[2,3]</code>。</p>
+
+<p>如果使用<code class="highlighter-rouge">ES6</code>的<code class="highlighter-rouge">=&gt;</code>函数，我们有更优雅的形式：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">list1</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]];</span>
+<span class="kd">var</span> <span class="nx">list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">]]]]]]];</span>
+
+<span class="kd">var</span> <span class="nx">flatten</span> <span class="o">=</span> <span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+        <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">?</span> <span class="nx">flatten</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">:</span> <span class="nx">val</span><span class="p">);</span>
+        <span class="p">},</span> <span class="p">[]);</span>
+<span class="p">};</span>
+
+<span class="nx">flatten</span><span class="p">(</span><span class="nx">list1</span><span class="p">);</span> <span class="c1">// [0, 1, 2, 3, 4, 5]</span>
+<span class="nx">flatten</span><span class="p">(</span><span class="nx">list2</span><span class="p">);</span> <span class="c1">// [ 0, 1, 2, 3, 4, 5, 6 ]</span>
+</code></pre></div></div>
+
+<p>再看下面这个例子</p>
+
+<h4 id="用reduce擦出对象的火花">用reduce()擦出对象的火花</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">cid</span> <span class="o">=</span> <span class="p">[[</span><span class="dl">"</span><span class="s2">PENNY</span><span class="dl">"</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">NICKEL</span><span class="dl">"</span><span class="p">,</span> <span class="mf">2.05</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">DIME</span><span class="dl">"</span><span class="p">,</span> <span class="mf">3.10</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">QUARTER</span><span class="dl">"</span><span class="p">,</span> <span class="mf">4.25</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">ONE</span><span class="dl">"</span><span class="p">,</span> <span class="mf">90.00</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">FIVE</span><span class="dl">"</span><span class="p">,</span> <span class="mf">55.00</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">TEN</span><span class="dl">"</span><span class="p">,</span> <span class="mf">20.00</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">TWENTY</span><span class="dl">"</span><span class="p">,</span> <span class="mf">60.00</span><span class="p">],</span> <span class="p">[</span><span class="dl">"</span><span class="s2">ONE HUNDRED</span><span class="dl">"</span><span class="p">,</span> <span class="mf">100.00</span><span class="p">]];</span>
+<span class="kd">var</span> <span class="nx">register</span> <span class="o">=</span> <span class="nx">cid</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">curr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">acc</span><span class="p">.</span><span class="nx">total</span> <span class="o">+=</span> <span class="nx">curr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="nx">acc</span><span class="p">[</span><span class="nx">curr</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">curr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">return</span> <span class="nx">acc</span><span class="p">;</span>
+<span class="p">},</span> <span class="p">{</span><span class="na">total</span><span class="p">:</span> <span class="mi">0</span><span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">register</span><span class="p">);</span>
+<span class="cm">/*
+{ total: 335.40999999999997,
+  PENNY: 1.01,
+  NICKEL: 2.05,
+  DIME: 3.1,
+  QUARTER: 4.25,
+  ONE: 90,
+  FIVE: 55,
+  TEN: 20,
+  TWENTY: 60,
+  'ONE HUNDRED': 100 }
+*/</span>
+</code></pre></div></div>
+
+<p>这个程序中，<code class="highlighter-rouge">initialValue</code>是<code class="highlighter-rouge">{total: 0}</code>，然后我们试着走第一遍，先传入的两个值是<code class="highlighter-rouge">{total:0}</code>和<code class="highlighter-rouge">["PENNY", 1.01]</code>，传入的<code class="highlighter-rouge">{total:0}</code>是对象，函数内则是对象的添加属性操作。</p>
+:ET

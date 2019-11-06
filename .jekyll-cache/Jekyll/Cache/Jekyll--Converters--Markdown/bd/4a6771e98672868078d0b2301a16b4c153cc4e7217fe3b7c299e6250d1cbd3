@@ -1,0 +1,144 @@
+I"�7<ul id="markdown-toc">
+  <li><a href="#模块模式--modulet-pattern" id="markdown-toc-模块模式--modulet-pattern">模块模式 – Modulet Pattern</a></li>
+  <li><a href="#构造函数的私有成员" id="markdown-toc-构造函数的私有成员">构造函数的私有成员</a></li>
+  <li><a href="#mixins--混入" id="markdown-toc-mixins--混入">Mixins – 混入</a></li>
+</ul>
+
+<p><code class="highlighter-rouge">JavaScript</code>的所有属性都是公有的，没有显式的方法可以指定某个属性不能被外界某个对象访问。通常的方法是通过<em>命名规则</em>，比如我们在不希望公有的属性名前加上下划线(<code class="highlighter-rouge">_</code>)。此外，还有些其他的方法。</p>
+
+<!-- more -->
+
+<h2 id="模块模式--modulet-pattern">模块模式 – Modulet Pattern</h2>
+
+<p>模块模式是一种对象创建模式，被设计用来创建一个拥有私有数据的单一对象(The <em>module pattern</em> is an object-creation pattern designed to create singleton objects with private data)。</p>
+
+<p>基本的方法是使用<code class="highlighter-rouge">IIFE</code>(immediately invoked function expression)来返回一个对象。<code class="highlighter-rouge">IIFE</code>是一个一经定义就立即调用并运行的函数表达式。它可以包含任意数量的本地变量，这些Local variable在函数外并不可见。因为返回的对象被定义在函数内部，对象的方法可以访问这些数据。以这种方式访问私有变量的方法，叫<code class="highlighter-rouge">privileged method</code>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">yourobject</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">//private data variable</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1">//public methods and properties</span>
+    <span class="p">};</span> <span class="c1">//此处，返回的是一个对象</span>
+<span class="p">}());</span>
+</code></pre></div></div>
+
+<p>该模式创建了一个匿名函数并立即执行，这意味着这个函数仅存在于被调用的瞬间，一旦执行后立即被销毁了。</p>
+
+<p>模块模式允许你使用普通变量作为非公有的对象的属性，通过创建<em>闭包</em>函数作为对象的方法来操作它们。<strong>闭包函数就是一个可以访问外部作用域数据的函数</strong>。在模块模式中，变量定义在<code class="highlighter-rouge">IIFE</code>中，而访问变量的函数也定义在<code class="highlighter-rouge">IIFE</code>中。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">age</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">getAge</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="k">return</span> <span class="nx">age</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="na">growOlder</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">age</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}());</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>   <span class="c1">//"Nicholas"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>   <span class="c1">//25</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>   <span class="c1">//外部无法访问</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>   <span class="sr">/2</span><span class="err">5
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>变量<code class="highlighter-rouge">age</code>就是<code class="highlighter-rouge">person</code>对象的一个私有属性，它无法被外界直接访问，但可以通过对象的方法来操作。该对象上有两个特权方法：<code class="highlighter-rouge">getAge()</code>和<code class="highlighter-rouge">growOlder()</code>。它们是可以直接访问<code class="highlighter-rouge">age</code>的，因为都定义在同一个<code class="highlighter-rouge">IIFE</code>中。</p>
+</blockquote>
+
+<p>还有一种<em>暴露式写法</em>：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">age</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+    <span class="kd">function</span> <span class="nx">getAge</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="nx">age</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">function</span> <span class="nx">growOlder</span><span class="p">(){</span>
+        <span class="nx">age</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">getAge</span><span class="p">:</span> <span class="nx">getAge</span><span class="p">,</span>
+        <span class="na">growOlder</span><span class="p">:</span> <span class="nx">growOlder</span>
+    <span class="p">};</span>
+<span class="p">}());</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>这个例子与前例是一样的。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="构造函数的私有成员">构造函数的私有成员</h2>
+
+<p>在前面的例子中，我们提过对象字面值的方式构建了一个具有私有变量的对象。但如果是构造函数呢，我们指导，构造函数也是函数，函数内定义的变量不能被外部访问。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+    <span class="c1">//define a variable only accessible inside of the Person constructor</span>
+
+    <span class="kd">var</span> <span class="nx">age</span>  <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span>  <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">getAge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="nx">age</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">growOlder</span> <span class="o">=</span>  <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">age</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>   <span class="c1">//"Nicholas"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>   <span class="c1">//25</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>   <span class="c1">//外部无法访问</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>   <span class="c1">//25</span>
+
+<span class="nx">person</span><span class="p">.</span><span class="nx">growOlder</span><span class="p">();</span>
+<span class="nx">cosole</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>    <span class="c1">//26</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>  <span class="c1">//25</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>正如我们在<code class="highlighter-rouge">再谈原型与继承</code>时说的，将方法放在实例上不如放在原型上有效。但是，如果你想要私有的实例化的数据，这是唯一的方法。</p>
+</blockquote>
+
+<p>但是，如果需要所有实例都可共享私有数据，就好像它被定义在原型里那样，你可以结合两者：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">//everyone shares the same age</span>
+    <span class="kd">var</span> <span class="nx">age</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+    <span class="kd">function</span> <span class="nx">InnerPerson</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">InnerPerson</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getAge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="nx">age</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="nx">InnerPerson</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">growOlder</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">age</span><span class="o">++</span>
+    <span class="p">};</span>
+    <span class="k">return</span> <span class="nx">InnerPerson</span><span class="p">;</span>
+<span class="p">}());</span>
+
+<span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">person2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">person1</span><span class="p">.</span><span class="nx">growOlder</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>  <span class="c1">//26</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person2</span><span class="p">.</span><span class="nx">getAge</span><span class="p">());</span>  <span class="c1">//26</span>
+</code></pre></div></div>
+
+<p>最终，所有实例得以共享<code class="highlighter-rouge">age</code>变量。</p>
+
+<h2 id="mixins--混入">Mixins – 混入</h2>
+
+<p>混入时一种给对象添加功能，同时避免继承的强有力的方式。混入将一个属性从一个对象复制到另一个，从而使得接收者在不需要继承的情况下就能获得其功能。</p>
+:ET

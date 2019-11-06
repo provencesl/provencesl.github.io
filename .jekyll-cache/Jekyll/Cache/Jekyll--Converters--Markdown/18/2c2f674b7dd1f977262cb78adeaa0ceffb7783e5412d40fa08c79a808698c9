@@ -1,0 +1,8 @@
+I"�
+<p><code class="highlighter-rouge">JavaScript</code> is designed on a simple object-based paradigm(简单的基于对象的范式)。</p>
+
+<p>An <code class="highlighter-rouge">object</code> is a collection of <strong>properties</strong>, and a property is an association between a <strong>name</strong> (or key) and a <strong>value</strong>.</p>
+
+<p>A <strong>property’s value</strong> can be a function, 这种情况下，属性也被称为方法。</p>
+
+:ET

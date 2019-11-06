@@ -1,0 +1,6 @@
+I"�
+<p>在<a href="/2017/03/15/Object-model"><code class="highlighter-rouge">Object Model</code></a>这一节简单介绍了一下原型链和继承，由于最近在读<code class="highlighter-rouge">Nicholas C.Zakas</code>的<code class="highlighter-rouge">The Principles of Object-Oriented JavaScript</code>，又有了很多的启发，特记录在本文中。</p>
+
+<p>最开始，也是最基本的，我们需要了解构造函数、原型和实例的概念和它们之间的关系。</p>
+
+:ET

@@ -1,0 +1,12 @@
+I"�
+<blockquote>
+  <p>文章翻译自Chris Coyier的<a href="https://css-tricks.com/centering-css-complete-guide/">Centering in CSS: A Complete Guide</a>。</p>
+</blockquote>
+
+<p>居中在CSS当中是颇让人抱怨的。<strong>为何如此艰难？</strong>。我认为问题不是因为太难，而是有太多不同的方法，在不同的场景中，很难知道如何去选择。</p>
+
+<p>所以，让我们实现一个决定树(decision tree)，希望能简化这个问题。</p>
+
+<p>我想居中….</p>
+
+:ET

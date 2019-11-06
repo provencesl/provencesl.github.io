@@ -1,0 +1,20 @@
+I"n
+<p>在讲解异步编程的时候，有必要先提到<code class="highlighter-rouge">Event Loop</code>(事件轮询)的概念。首先是运行时的一些概念。</p>
+
+<ul>
+  <li>函数调用形成了一个<code class="highlighter-rouge">Stack</code>(栈)</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">bar</span><span class="p">(){</span>
+    <span class="nx">foo</span><span class="p">();</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+<span class="nx">bar</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>代码的最后一行调用<code class="highlighter-rouge">bar()</code>时，会在栈内创建第一个<em>帧</em>(帧的概念就是想表达一个意思)，包含了<code class="highlighter-rouge">bar</code>的参数和局部变量。当<code class="highlighter-rouge">bar</code>调用<code class="highlighter-rouge">foo</code>时，第二帧被创建，并压到<code class="highlighter-rouge">bar</code>创建的帧上。<code class="highlighter-rouge">foo</code>返回时，<code class="highlighter-rouge">foo</code>创建的帧就被弹出。直到所有函数返回，栈空。。</p>
+
+:ET

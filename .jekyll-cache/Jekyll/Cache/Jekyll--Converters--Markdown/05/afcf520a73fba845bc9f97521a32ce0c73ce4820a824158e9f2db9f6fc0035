@@ -1,0 +1,622 @@
+I")�<ul id="markdown-toc">
+  <li><a href="#objects-and-properties" id="markdown-toc-objects-and-properties">Objects and properties</a>    <ul>
+      <li><a href="#定义属性" id="markdown-toc-定义属性">定义属性</a></li>
+    </ul>
+  </li>
+  <li><a href="#属性检测--detecting-properties" id="markdown-toc-属性检测--detecting-properties">属性检测 – Detecting Properties</a></li>
+  <li><a href="#删除属性" id="markdown-toc-删除属性">删除属性</a></li>
+  <li><a href="#枚举一个对象的所有属性" id="markdown-toc-枚举一个对象的所有属性">枚举一个对象的所有属性</a></li>
+  <li><a href="#属性类型" id="markdown-toc-属性类型">属性类型</a></li>
+  <li><a href="#property-attributes--属性特征暂译" id="markdown-toc-property-attributes--属性特征暂译">Property Attributes – 属性特征(暂译)</a>    <ul>
+      <li><a href="#通用特征--common-attributes" id="markdown-toc-通用特征--common-attributes">通用特征 – Common Attributes</a></li>
+      <li><a href="#数据属性特征" id="markdown-toc-数据属性特征">数据属性特征</a></li>
+      <li><a href="#访问器属性特征" id="markdown-toc-访问器属性特征">访问器属性特征</a></li>
+      <li><a href="#定义多重属性" id="markdown-toc-定义多重属性">定义多重属性</a></li>
+      <li><a href="#获取属性特征" id="markdown-toc-获取属性特征">获取属性特征</a></li>
+    </ul>
+  </li>
+  <li><a href="#对象的内部特征" id="markdown-toc-对象的内部特征">对象的内部特征</a>    <ul>
+      <li><a href="#preventing-extensions--禁止扩展" id="markdown-toc-preventing-extensions--禁止扩展">Preventing Extensions – 禁止扩展</a></li>
+      <li><a href="#sealing-objects--对象封印" id="markdown-toc-sealing-objects--对象封印">Sealing Objects – 对象封印</a></li>
+      <li><a href="#freezing-objects--对象冻结" id="markdown-toc-freezing-objects--对象冻结">Freezing Objects – 对象冻结</a></li>
+    </ul>
+  </li>
+  <li><a href="#创建新对象" id="markdown-toc-创建新对象">创建新对象</a>    <ul>
+      <li><a href="#using-object-initializers--使用对象初始化器" id="markdown-toc-using-object-initializers--使用对象初始化器">Using object initializers – 使用对象初始化器</a></li>
+      <li><a href="#using-a-constructor-function--使用构造函数" id="markdown-toc-using-a-constructor-function--使用构造函数">Using a constructor function – 使用构造函数</a></li>
+      <li><a href="#使用objectcreate方法" id="markdown-toc-使用objectcreate方法">使用Object.create方法</a></li>
+    </ul>
+  </li>
+  <li><a href="#继承" id="markdown-toc-继承">继承</a></li>
+  <li><a href="#defining-properties-for-an-object-type" id="markdown-toc-defining-properties-for-an-object-type">Defining properties for an object type</a></li>
+  <li><a href="#定义方法" id="markdown-toc-定义方法">定义方法</a></li>
+  <li><a href="#通过this引用对象" id="markdown-toc-通过this引用对象">通过this引用对象</a></li>
+  <li><a href="#定义get与set方法" id="markdown-toc-定义get与set方法">定义Get与Set方法</a>    <ul>
+      <li><a href="#使用对象初始化器定义" id="markdown-toc-使用对象初始化器定义">使用对象初始化器定义</a></li>
+      <li><a href="#使用objectdefineproperties的方法" id="markdown-toc-使用objectdefineproperties的方法">使用Object.defineProperties的方法</a></li>
+    </ul>
+  </li>
+  <li><a href="#删除属性-1" id="markdown-toc-删除属性-1">删除属性</a></li>
+</ul>
+
+<p><code class="highlighter-rouge">JavaScript</code> is designed on a simple object-based paradigm(简单的基于对象的范式)。</p>
+
+<p>An <code class="highlighter-rouge">object</code> is a collection of <strong>properties</strong>, and a property is an association between a <strong>name</strong> (or key) and a <strong>value</strong>.</p>
+
+<p>A <strong>property’s value</strong> can be a function, 这种情况下，属性也被称为方法。</p>
+
+<!-- more -->
+
+<h2 id="objects-and-properties">Objects and properties</h2>
+
+<blockquote>
+  <p>一个<code class="highlighter-rouge">javascript</code>对象有很多属性。一个对象的属性可以被解释成<strong>一个附加到对象上的变量</strong>。可以通过点符号来访问一个对象的属性。</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">objectName</span><span class="p">.</span><span class="nx">propertyName</span>
+</code></pre></div></div>
+
+<h3 id="定义属性">定义属性</h3>
+
+<p>可以在定义一个属性的时候就给它赋值。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">myCar</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+<span class="nx">myCar</span><span class="p">.</span><span class="nx">make</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Ford</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myCar</span><span class="p">.</span><span class="nx">model</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mustang</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myCar</span><span class="p">.</span><span class="nx">year</span> <span class="o">=</span> <span class="mi">1969</span><span class="p">;</span>
+
+<span class="c1">//未赋值的属性值为undefined</span>
+<span class="nx">myCar</span><span class="p">.</span><span class="nx">noProperty</span><span class="p">;</span> <span class="c1">// undefined</span>
+</code></pre></div></div>
+
+<p>当一个属性第一次被添加给对象时，<code class="highlighter-rouge">JavaScript</code>在对象上调用了一个名为<code class="highlighter-rouge">[[Put]]</code>的内部方法。<code class="highlighter-rouge">[[Put]]</code>方法会在对象上创建一个新的节点来保存属性。所以当属性<code class="highlighter-rouge">make</code>、<code class="highlighter-rouge">model</code>、<code class="highlighter-rouge">year</code>在对象上被第一次定义时，<code class="highlighter-rouge">[[Put]]</code>方法都在该对象上被调用了。</p>
+
+<blockquote>
+  <p>调用<code class="highlighter-rouge">[[Put]]</code>的结果是在对象上创建了一个<strong>自有属性(own property)</strong>，一个<em>自有属性</em>表明仅仅该指定的<em>对象实例</em>拥有的属性。</p>
+</blockquote>
+
+<p>当一个已有的属性被赋予一个新的值时，调用的是一个名为<code class="highlighter-rouge">[[Set]]</code>的方法。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">mycar</span><span class="p">.</span><span class="nx">year</span> <span class="o">=</span> <span class="mi">1988</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">JavaScript</code>对象的属性也可以通过<strong>方括号访问或者设置</strong>。对象有时也被叫作<em>关联数组</em>, 因为每个属性都有一个用于访问它的字符串值。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">myCar</span><span class="p">[</span><span class="dl">"</span><span class="s2">make</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Ford</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myCar</span><span class="p">[</span><span class="dl">"</span><span class="s2">model</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mustang</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myCar</span><span class="p">[</span><span class="dl">"</span><span class="s2">year</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1969</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>一个对象的属性名可以是任何有效的<code class="highlighter-rouge">JavaScript</code>字符串，或者<strong>可以被转换为字符串的任何类型</strong>，包括空字符串。然而，一个属性的名称如果不是一个有效的<code class="highlighter-rouge">JavaScript</code>标识符（例如，一个由空格或连字符，或者以数字开头的属性名），就<strong>只能通过方括号</strong>标记访问。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 同时创建四个变量，用逗号分隔</span>
+<span class="kd">var</span> <span class="nx">myObj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">(),</span>
+    <span class="nx">str</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">myString</span><span class="dl">"</span><span class="p">,</span>
+    <span class="nx">rand</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">(),</span>
+    <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+
+<span class="nx">myObj</span><span class="p">.</span><span class="nx">type</span>              <span class="o">=</span> <span class="dl">"</span><span class="s2">Dot syntax</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myObj</span><span class="p">[</span><span class="dl">"</span><span class="s2">date created</span><span class="dl">"</span><span class="p">]</span>   <span class="o">=</span> <span class="dl">"</span><span class="s2">String with space</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myObj</span><span class="p">[</span><span class="nx">str</span><span class="p">]</span>              <span class="o">=</span> <span class="dl">"</span><span class="s2">String value</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myObj</span><span class="p">[</span><span class="nx">rand</span><span class="p">]</span>             <span class="o">=</span> <span class="dl">"</span><span class="s2">Random Number</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myObj</span><span class="p">[</span><span class="nx">obj</span><span class="p">]</span>              <span class="o">=</span> <span class="dl">"</span><span class="s2">Object</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myObj</span><span class="p">[</span><span class="dl">""</span><span class="p">]</span>               <span class="o">=</span> <span class="dl">"</span><span class="s2">Even an empty string</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myObj</span><span class="p">);</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>方括号中的所有键都将转换为字符串类型，因为<code class="highlighter-rouge">JavaScript</code>中的对象只能使用<code class="highlighter-rouge">String</code>类型作为键类型。</p>
+</blockquote>
+
+<p>也可以通过存储在变量中的字符串来访问属性：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">propertyName</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">make</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myCar</span><span class="p">[</span><span class="nx">propertyName</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Ford</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">propertyName</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">model</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">myCar</span><span class="p">[</span><span class="nx">propertyName</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Mustang</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>可以在<code class="highlighter-rouge">for...in</code>语句中使用方括号标记以枚举一个对象的所有属性。下面的函数当你将对象及其名称作为参数传入时，显示对象的属性：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">showProps</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">objName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">result</span> <span class="o">+=</span> <span class="nx">objName</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">.</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> = </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="dl">"</span><span class="se">\n</span><span class="dl">"</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="c1">//</span>
+<span class="nx">showProps</span><span class="p">(</span><span class="nx">myCar</span><span class="p">,</span> <span class="dl">"</span><span class="s2">myCar</span><span class="dl">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">for...in</code> 与 <code class="highlighter-rouge">for...of</code>的区别</p>
+</blockquote>
+
+<hr />
+
+<h2 id="属性检测--detecting-properties">属性检测 – Detecting Properties</h2>
+
+<p>初学者通常使用以下代码去检测一个属性是否存在：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//unreliable</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">age</span><span class="p">){</span>
+  <span class="c1">//do something</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>因为对象是可以包含一些<strong>假值</strong>的，所以上述的判断是不准确的。更加可靠的判断属性是否存在的方法是使用<code class="highlighter-rouge">in</code>操作符。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Timi</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">sayName</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">sayName</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">in</code>操作符会检查<em>自有属性</em>和<em>原型属性</em>(prototype properties)，所以如果仅希望检测一个自有属性，可以选择另外一条途径：所有的对象都拥有<code class="highlighter-rouge">hasOwnProperty()</code>方法，该方法在给定的属性存在且为自有属性时返回<code class="highlighter-rouge">true</code>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>         <span class="c1">//true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">));</span>  <span class="c1">//true</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">toString</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>   <span class="c1">//true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="dl">"</span><span class="s2">toString</span><span class="dl">"</span><span class="p">));</span>  <span class="c1">//false</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="删除属性">删除属性</h2>
+
+<p>将一个属性的值设置为<code class="highlighter-rouge">null</code>并不是删除那个属性，而是调用<code class="highlighter-rouge">[[Set]]</code>将<code class="highlighter-rouge">null</code>替换了属性原来的值而已。你需要使用<code class="highlighter-rouge">delete</code>操作符来彻底移除对象的一个属性。</p>
+
+<p><code class="highlighter-rouge">delete</code>操作符针对单个对象的属性调用名为<code class="highlighter-rouge">[[Delete]]</code>的内部方法，你可以认为该操作在哈希表中移除了一个键值对。</p>
+
+<hr />
+
+<h2 id="枚举一个对象的所有属性">枚举一个对象的所有属性</h2>
+
+<p>从<code class="highlighter-rouge">ECMAScript 5</code>开始，有三种原生的方法用于列出或枚举对象的属性：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">for...in</code>循环 : 该方法依次访问一个对象及其原型链中所有可枚举的属性</li>
+  <li><code class="highlighter-rouge">Object.keys(o)</code> : 该方法返回一个对象<code class="highlighter-rouge">o</code>自身包含（不包括原型中）的所有属性的名称的数组</li>
+  <li><code class="highlighter-rouge">Object.getOwnPropertyNames(o)</code> : 该方法返回一个数组，它包含了对象<code class="highlighter-rouge">o</code>所有拥有的属性（无论是否可枚举）的名称</li>
+</ul>
+
+<hr />
+
+<h2 id="属性类型">属性类型</h2>
+
+<p>属性有两种类型：<strong>数据属性(data properties)</strong>和<strong>访问器属性(accessor properties)</strong>。数据属性包含一个值，<code class="highlighter-rouge">[[Put]]</code>方法的默认行为是创建数据属性。访问器属性不包含值而是定义了一个当属性被读取时调用的函数(称为<code class="highlighter-rouge">getter</code>)和一个当属性被写入时调用的函数(称为<code class="highlighter-rouge">setter</code>)。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">_name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">,</span>
+
+  <span class="kd">get</span> <span class="nx">name</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">set</span> <span class="nx">name</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+
+<span class="nx">persole1</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">cosole</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>本例定义了一个访问器属性<code class="highlighter-rouge">name</code></strong>。一个数据属性<code class="highlighter-rouge">_name</code>保存了访问器属性的实际值(前置下划线是一个约定俗成的命名规范，表示该属性被认为是私有的，但实际它还是公开的。)，</p>
+</blockquote>
+
+<hr />
+
+<h2 id="property-attributes--属性特征暂译">Property Attributes – 属性特征(暂译)</h2>
+
+<p><code class="highlighter-rouge">ECMAScript 5</code>引入了多种方法来与属性特征直接互动。</p>
+
+<h3 id="通用特征--common-attributes">通用特征 – Common Attributes</h3>
+
+<p>有两个属性特征是数据和访问器属性都具有的。一个是<code class="highlighter-rouge">[[Enumerable]]</code>，决定了你是否可以遍历该属性；另一个是<code class="highlighter-rouge">[[Configurable]]</code>，决定了该属性是否可配置。你可以使用<code class="highlighter-rouge">delete</code>删除一个可配置的属性，但无法删除一个不可配置属性。</p>
+
+<p>可以使用<code class="highlighter-rouge">Object.defineProperty()</code>方法来改变属性特征，该方法接受3个参数：拥有该属性的对象、属性名和包含需要设置的特征的属性描述对象。所以可以用<code class="highlighter-rouge">enumerable</code>属性来设置<code class="highlighter-rouge">[[Enumerable]]</code>特征，用<code class="highlighter-rouge">configurable</code>来设置<code class="highlighter-rouge">[[Configurable]]</code>特征。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,{</span>
+  <span class="na">enumerable</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span> <span class="c1">//true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">propertyIsEnumerable</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">));</span>  <span class="c1">//false</span>
+
+<span class="kd">var</span> <span class="nx">properties</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">person1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">properties</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>     <span class="c1">//0</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,{</span>
+  <span class="na">configurable</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+
+<span class="c1">//试图删除不可配置属性，删除失败，但并没有错误</span>
+<span class="k">delete</span> <span class="nx">person1</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span> <span class="c1">//true</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,{</span>  <span class="c1">//试图回复可配置属性，失败，并抛出错误</span>
+  <span class="na">configurable</span><span class="p">:</span><span class="kc">true</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>配置属性的概念就是可以对属性进行操作，一旦修改配置属性为不可配置，则很多操作都失效了。</p>
+</blockquote>
+
+<h3 id="数据属性特征">数据属性特征</h3>
+
+<p>数据属性有两个独有的特征，一个是<code class="highlighter-rouge">[[Value]]</code>，包含属性的值。当你在对象上创建属性时该特征被自动赋值。所有的属性的值都保存在<code class="highlighter-rouge">[[Value]]</code>中，哪怕该值是一个函数。</p>
+
+<p>第二个特征是<code class="highlighter-rouge">[[Writable]]</code>，该特征是一个布尔值，指示该属性是否可以写入。所有的属性都是默认可写入的，除非你额外指定。</p>
+
+<p>同样，你可以使用<code class="highlighter-rouge">Object.defineProperty()</code>方法来设置这些属性。特别注意的是，当你用<code class="highlighter-rouge">Object.defineProperty()</code>定义一个新的属性时一定记得为所有的特征指定一个值，否则布尔型的特征会被默认为<code class="highlighter-rouge">false</code>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">value</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>   <span class="c1">//true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person1</span><span class="p">.</span><span class="nx">propertyIsEnumerable</span><span class="p">(</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">));</span>  <span class="c1">//false</span>
+</code></pre></div></div>
+
+<h3 id="访问器属性特征">访问器属性特征</h3>
+
+<p>访问器属性也有两个额外特征，<code class="highlighter-rouge">[[Get]]</code>和<code class="highlighter-rouge">[[Set]]</code>，内含<code class="highlighter-rouge">getter</code>和<code class="highlighter-rouge">setter</code>函数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">_name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">,{</span>
+  <span class="na">get</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">set</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">enumerable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="na">configurable</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="c1">//这段代码与下面是一致的</span>
+<span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">_name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">,</span>
+
+  <span class="kd">get</span> <span class="nx">name</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="kd">set</span> <span class="nx">name</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>使用访问器属性特征比使用对象字面形式定义访问器属性的优势在于：你可以为已有的对象定义这些属性。如果你想要用对象字面值形式，你只能在创建对象时定义访问器属性。</p>
+</blockquote>
+
+<h3 id="定义多重属性">定义多重属性</h3>
+
+<p>使用<code class="highlighter-rouge">Object.defineProperties()</code>方法可以为一个对象同时定义多个属性。这个方法接受两个参数：需要改变的对象和一个包含所有属性信息的对象。</p>
+
+<h3 id="获取属性特征">获取属性特征</h3>
+
+<p>使用<code class="highlighter-rouge">Object.getOwnPropertyDescriptor()</code>方法，该方法只可用于自有属性。接受两个参数：对象名和属性名。如果属性存在，返回一个属性描述对象。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">descriptor</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">getOwnPropertyDescriptor</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">consol</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">descriptor</span><span class="p">.</span><span class="nx">enumerable</span><span class="p">);</span>  <span class="c1">//true</span>
+<span class="nx">consol</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">descriptor</span><span class="p">.</span><span class="nx">configurable</span><span class="p">);</span>  <span class="c1">//true</span>
+<span class="nx">consol</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">descriptor</span><span class="p">.</span><span class="nx">writable</span><span class="p">);</span>  <span class="c1">//true</span>
+<span class="nx">consol</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">descriptor</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>  <span class="c1">//"Nicholas"</span>
+
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="对象的内部特征">对象的内部特征</h2>
+
+<p>对象也具有指导其行为的内部特征。其中，<code class="highlighter-rouge">[[Extensible]]</code>是一个布尔值，指明该对象本身是否可以被修改。默认都是可扩展的，意味着新的属性可以随时被添加。你有三种方法可以帮助你锁定对象属性。</p>
+
+<h3 id="preventing-extensions--禁止扩展">Preventing Extensions – 禁止扩展</h3>
+
+<p>第一种方法是<code class="highlighter-rouge">Object.preventExtensions()</code>创建一个不可扩展的对象，该方法接受一个参数：对象。一旦对象使用了该方法，就永远不能再给它添加新的属性了。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">isExtensible</span><span class="p">(</span><span class="nx">person1</span><span class="p">));</span>  <span class="c1">//true</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">preventExtensions</span><span class="p">(</span><span class="nx">person1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">isExtensible</span><span class="p">(</span><span class="nx">person1</span><span class="p">));</span>  <span class="c1">//false</span>
+
+<span class="nx">person1</span><span class="p">.</span><span class="nx">sayName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">sayName</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>  <span class="c1">//false</span>
+</code></pre></div></div>
+
+<h3 id="sealing-objects--对象封印">Sealing Objects – 对象封印</h3>
+
+<p>一个被封印的对象是不可扩展且其所有的属性都不可配置。如果一个对象被封印，只能读写它的属性。</p>
+
+<p>方法是<code class="highlighter-rouge">Object.seal()</code>，该方法被调用时，<code class="highlighter-rouge">[[Extensible]]</code>特征被置为<code class="highlighter-rouge">false</code>，其所有属性的<code class="highlighter-rouge">[[Configurable]]</code>特征被置为<code class="highlighter-rouge">false</code>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">isExtensible</span><span class="p">(</span><span class="nx">person1</span><span class="p">));</span>  <span class="c1">//true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">isSealed</span><span class="p">(</span><span class="nx">person1</span><span class="p">));</span>      <span class="c1">//false</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">seal</span><span class="p">(</span><span class="nx">person1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">isExtensible</span><span class="p">(</span><span class="nx">person1</span><span class="p">));</span>  <span class="c1">//false</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">isSealed</span><span class="p">(</span><span class="nx">person1</span><span class="p">));</span>      <span class="c1">//true</span>
+
+<span class="nx">person1</span><span class="p">.</span><span class="nx">sayName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">sayName</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">person1</span><span class="p">);</span>  <span class="c1">//false</span>
+</code></pre></div></div>
+
+<h3 id="freezing-objects--对象冻结">Freezing Objects – 对象冻结</h3>
+
+<p>如果一个对象被冻结，则不能在其上添加或删除属性，不能改变属性类型，也不能写入任何数据类型。简而言之，被冻结的对象是一个数据属性都为<strong>只读</strong>的被封印对象。被冻结对象无法解冻。可以用<code class="highlighter-rouge">Object.freeze()</code>来冻结一个对象，用<code class="highlighter-rouge">Object.isFrozen()</code>来判断一个对象是否被冻结。</p>
+
+<hr />
+
+<h2 id="创建新对象">创建新对象</h2>
+
+<h3 id="using-object-initializers--使用对象初始化器">Using object initializers – 使用对象初始化器</h3>
+
+<p>语法如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="na">property_1</span><span class="p">:</span>   <span class="nx">value_1</span><span class="p">,</span>   <span class="c1">// property_# may be an identifier...</span>
+            <span class="mi">2</span><span class="p">:</span>            <span class="nx">value_2</span><span class="p">,</span>   <span class="c1">// or a number...</span>
+            <span class="c1">// ...,</span>
+            <span class="dl">"</span><span class="s2">property n</span><span class="dl">"</span><span class="p">:</span> <span class="nx">value_n</span> <span class="p">};</span> <span class="c1">// or a string</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>也可以使用对象初始化器来创建数组。</p>
+</blockquote>
+
+<h3 id="using-a-constructor-function--使用构造函数">Using a constructor function – 使用构造函数</h3>
+
+<p>1.通过创建一个构造函数来定义对象的类型。<strong>首字母大写</strong>是非常普遍而且很恰当的惯用法，用来与非构造函数进行区分
+2.通过<code class="highlighter-rouge">new</code>创建对象实例</p>
+
+<p>首先，为了定义对象类型，为对象类型创建一个函数以声明类型的名称、属性和方法，例如：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Car</span><span class="p">(</span><span class="nx">make</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">year</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">make</span> <span class="o">=</span> <span class="nx">make</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">model</span> <span class="o">=</span> <span class="nx">model</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">year</span> <span class="o">=</span> <span class="nx">year</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>然后，可以通过调用<code class="highlighter-rouge">new</code>创建任意数量的<code class="highlighter-rouge">car</code>对象。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">kenscar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">(</span><span class="dl">"</span><span class="s2">Nissan</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">300ZX</span><span class="dl">"</span><span class="p">,</span> <span class="mi">1992</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">vpgscar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">(</span><span class="dl">"</span><span class="s2">Mazda</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Miata</span><span class="dl">"</span><span class="p">,</span> <span class="mi">1990</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="使用objectcreate方法">使用Object.create方法</h3>
+
+<p>对象也可以用<code class="highlighter-rouge">Object.create()</code>方法创建。该方法非常有用，因为它允许你为创建的对象选择其原型对象，而不用定义一个构造函数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Animal properties and method encapsulation</span>
+<span class="kd">var</span> <span class="nx">Animal</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Invertebrates</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// Default value of properties</span>
+  <span class="na">displayType</span> <span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="c1">// Method which will display type of Animal</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">type</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Create new animal type called animal1</span>
+<span class="kd">var</span> <span class="nx">animal1</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Animal</span><span class="p">);</span>
+<span class="nx">animal1</span><span class="p">.</span><span class="nx">displayType</span><span class="p">();</span> <span class="c1">// Output:Invertebrates</span>
+
+<span class="c1">// Create new animal type called Fishes</span>
+<span class="kd">var</span> <span class="nx">fish</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Animal</span><span class="p">);</span>
+<span class="nx">fish</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Fishes</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">fish</span><span class="p">.</span><span class="nx">displayType</span><span class="p">();</span> <span class="c1">// Output:Fishes</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="继承">继承</h2>
+
+<p>所有的<code class="highlighter-rouge">JavaScript</code>对象继承于至少一个对象。被继承的对象被称作原型，并且继承的属性可通过构造函数的<code class="highlighter-rouge">prototype</code>对象找到。</p>
+
+<hr />
+
+<h2 id="defining-properties-for-an-object-type">Defining properties for an object type</h2>
+
+<p>You can add a property to a previously defined object type by using the <code class="highlighter-rouge">prototype</code> property. This defines a property that is shared by all objects of the specified type, rather than by just one instance of the object.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Car</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="nx">car1</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">black</span><span class="dl">"</span><span class="p">;</span>       <span class="c1">//为所有类型为car的对象增加了color属性</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="定义方法">定义方法</h2>
+
+<p>一个<em>方法</em>是关联到某个对象的函数，或者简单地说，方法就是对象的属性是函数(a method is a property of an object that is a function)。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">objectName</span><span class="p">.</span><span class="nx">methodname</span> <span class="o">=</span> <span class="nx">function_name</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">myObj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">myMethod</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...do something</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 或者 这样写也可以</span>
+
+  <span class="nx">myOtherMethod</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...do something else</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>这里<code class="highlighter-rouge">objectName</code>是一个已经存在的对象，<code class="highlighter-rouge">methodname</code>是方法的名称，而<code class="highlighter-rouge">function_name</code>是函数的名称。</p>
+</blockquote>
+
+<p>可以在对象的上下文中这样调用方法:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">object</span><span class="p">.</span><span class="nx">methodname</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>可以在对象的构造函数中包含方法定义</strong>来为某个对象类型定义方法。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//定义了一个Person对象</span>
+<span class="kd">function</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">,</span> <span class="nx">sex</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">sex</span> <span class="o">=</span> <span class="nx">sex</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">//创建两个Person实例</span>
+
+<span class="kd">var</span> <span class="nx">rand</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="dl">"</span><span class="s2">Rand McKinnon</span><span class="dl">"</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="dl">"</span><span class="s2">M</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">ken</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="dl">"</span><span class="s2">Ken Jones</span><span class="dl">"</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="dl">"</span><span class="s2">M</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="c1">//定义一个Car对象，拥有一个owner属性和displayerCar方法</span>
+<span class="kd">function</span> <span class="nx">Car</span><span class="p">(</span><span class="nx">make</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">owner</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">make</span> <span class="o">=</span> <span class="nx">make</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">model</span> <span class="o">=</span> <span class="nx">model</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">year</span> <span class="o">=</span> <span class="nx">year</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">owner</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">displayCar</span> <span class="o">=</span> <span class="nx">displayCar</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//定义方法</span>
+<span class="kd">function</span> <span class="nx">displayCar</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">A Beautiful </span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">year</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> </span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">make</span>
+    <span class="o">+</span> <span class="dl">"</span><span class="s2"> </span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">;</span>
+  <span class="nx">pretty_print</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//创建两个Car实例</span>
+<span class="kd">var</span> <span class="nx">car1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">(</span><span class="dl">"</span><span class="s2">Eagle</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Talon TSi</span><span class="dl">"</span><span class="p">,</span> <span class="mi">1993</span><span class="p">,</span> <span class="nx">rand</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">car2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">(</span><span class="dl">"</span><span class="s2">Nissan</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">300ZX</span><span class="dl">"</span><span class="p">,</span> <span class="mi">1992</span><span class="p">,</span> <span class="nx">ken</span><span class="p">);</span>
+
+<span class="c1">//调用方法</span>
+<span class="nx">car1</span><span class="p">.</span><span class="nx">displayCar</span><span class="p">();</span>
+<span class="nx">car2</span><span class="p">.</span><span class="nx">displayCar</span><span class="p">();</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="通过this引用对象">通过this引用对象</h2>
+
+<p>关键字<code class="highlighter-rouge">this</code>，它可以在方法中使用以指代当前对象。</p>
+
+<hr />
+
+<h2 id="定义get与set方法">定义Get与Set方法</h2>
+
+<p>一个<code class="highlighter-rouge">getter</code>是一个获取某个特定属性的值的方法。一个<code class="highlighter-rouge">etter</code>是一个设定某个属性的值的方法。</p>
+
+<p>定义<code class="highlighter-rouge">getter</code>和<code class="highlighter-rouge">setter</code>的语法采用<strong>对象字面量语法</strong>。</p>
+
+<h3 id="使用对象初始化器定义">使用对象初始化器定义</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">a</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+  <span class="kd">get</span> <span class="nx">b</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="kd">set</span> <span class="nx">c</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">2</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// 7</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span> <span class="c1">// 8</span>
+<span class="nx">o</span><span class="p">.</span><span class="nx">c</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// 25</span>
+
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">o</code>对象的属性如下：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">o.a</code> — 数字</li>
+  <li><code class="highlighter-rouge">o.b</code> — 返回 <code class="highlighter-rouge">o.a + 1</code> 的 <code class="highlighter-rouge">getter</code></li>
+  <li><code class="highlighter-rouge">o.c</code> — 由  <code class="highlighter-rouge">o.c</code> 的值所设置 <code class="highlighter-rouge">o.a</code> 值的 setter`</li>
+</ul>
+
+<blockquote>
+  <p><code class="highlighter-rouge">getter</code>方法必须是无参数的，<code class="highlighter-rouge">setter</code>方法只接受一个参数</p>
+</blockquote>
+
+<h3 id="使用objectdefineproperties的方法">使用Object.defineProperties的方法</h3>
+
+<p>使用<code class="highlighter-rouge">Object.defineProperties</code>的方法可以对一个已创建的对象在任何时候为其添加<code class="highlighter-rouge">getter</code>或<code class="highlighter-rouge">setter</code>方法。这个方法的<em>第一个参数</em>是你想定义<code class="highlighter-rouge">getter</code>或<code class="highlighter-rouge">setter</code>方法的对象，<em>第二个参数</em>是一个对象，这个对象的属性名用作<code class="highlighter-rouge">getter</code>或<code class="highlighter-rouge">setter</code>的名字，属性名对应的属性值用作定义<code class="highlighter-rouge">getter</code>或<code class="highlighter-rouge">setter</code>方法的函数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="na">a</span><span class="p">:</span><span class="mi">0</span> <span class="p">}</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="na">get</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="p">},</span>
+    <span class="dl">"</span><span class="s2">c</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="na">set</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">o</span><span class="p">.</span><span class="nx">c</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1">// Runs the setter, which assigns 10 / 2 (5) to the 'a' property</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span> <span class="c1">// Runs the getter, which yields a + 1 or 6</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="删除属性-1">删除属性</h2>
+
+<p>可以用<code class="highlighter-rouge">delete</code>操作符<strong>删除一个不是继承而来</strong>的属性。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Creates a new object, myobj, with two properties, a and b.</span>
+<span class="kd">var</span> <span class="nx">myobj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">;</span>
+<span class="nx">myobj</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="nx">myobj</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+
+<span class="c1">//Removes the a property, leaving myobj with only the b property.</span>
+<span class="k">delete</span> <span class="nx">myobj</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>如果一个全局变量不是用<code class="highlighter-rouge">var</code>关键字来声明的话，也可以使用<code class="highlighter-rouge">delete</code>来删除。如：<code class="highlighter-rouge">g = 12; delete g;</code></p>
+</blockquote>
+
+<p>编辑备注：</p>
+
+<ul>
+  <li>2017-03-14第一次编辑</li>
+  <li>2017-03-22第二次编辑</li>
+</ul>
+:ET

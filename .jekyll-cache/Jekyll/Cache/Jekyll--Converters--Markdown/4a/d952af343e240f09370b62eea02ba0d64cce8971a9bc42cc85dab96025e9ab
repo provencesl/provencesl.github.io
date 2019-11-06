@@ -1,0 +1,11 @@
+I"
+<p>有些<code class="highlighter-rouge">CSS</code>属性有些是可以继承的，有些是不可以继承的。在多个规则定义了相同的<code class="highlighter-rouge">CSS</code>属性，并且这些规则都应用在页面的同一元素上，有时候，会产生冲突。对于现代浏览器，有一种<code class="highlighter-rouge">cascade</code>的机制，用来进行冲突判定。</p>
+
+<p>有两种情况会导致样式冲突：</p>
+
+<ul>
+  <li>继承，从多个祖辈那里继承相同的属性，针对标签样式的继承</li>
+  <li>同一个元素有多个样式。比如说，我们为一个段落定义了<code class="highlighter-rouge">Class</code>样式，又定义了<code class="highlighter-rouge">&lt;p&gt;</code>标签样式</li>
+</ul>
+
+:ET

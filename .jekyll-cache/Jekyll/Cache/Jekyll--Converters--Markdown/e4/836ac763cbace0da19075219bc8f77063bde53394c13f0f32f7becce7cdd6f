@@ -1,0 +1,10 @@
+I"9<ul id="markdown-toc">
+  <li><a href="#异步-io" id="markdown-toc-异步-io">异步 I/O</a></li>
+</ul>
+
+<h2 id="异步-io">异步 I/O</h2>
+
+<p>在<code class="highlighter-rouge">Node</code>中，绝大多数的操作都是以异步的方式进行调用。 这样的意义在于：在<code class="highlighter-rouge">Node</code>中，我们可以从语言层面很自然地进行并行<code class="highlighter-rouge">I/O</code>操作。</p>
+
+<p>每个调用之间无须等待之前的<code class="highlighter-rouge">I/O</code>调用结束，极大提高了效率。</p>
+:ET

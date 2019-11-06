@@ -1,0 +1,20 @@
+I"k
+<blockquote>
+  <p>A JAVASCRIPT LIBRARY FOR BUILDING USER INTERFACES. <a href="https://facebook.github.io/react/">来源</a></p>
+</blockquote>
+
+<p>React 就是定义用户界面的 UI 库。</p>
+
+<p>接着，我们要从<strong>更高的一个立意</strong>来理解 React。很自然的对比，就是 <code class="highlighter-rouge">jQuery vs React</code>。在使用 jQuery 时，设计的理念是<em>通过 CSS 规则找到一个元素，然后操纵这个节点做一些事情</em>，这是个非常容易理解的理念。但是，打一个比方，我们将一个应用比作建房子。那么如果使用 jQuery，就意味着你必须事无巨细地告诉它“如何去做”，这是很累的，因为 jQuery 是一个没有文化的建筑工人。</p>
+
+<p><strong>React 专注于 view 层</strong>。 它提供一个新的思维方式，就是关注<strong>视图层的渲染</strong>，将<em>如何去做</em>转变为<em>想要显示什么</em>。有一个公式可以表现：</p>
+
+<p align="center"><i>UI</i> = render(data)</p>
+
+<blockquote>
+  <p>这里的 <code class="highlighter-rouge">render()</code> 应该是个 <strong>纯函数</strong>，这是个函数式编程的概念。只接收 data，然后进行用户界面的渲染。</p>
+</blockquote>
+
+<p>所以，想要更新 UI，要做的就是更新 data，对应的就是 React 中的 state 的概念。</p>
+
+:ET

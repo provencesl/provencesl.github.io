@@ -1,0 +1,285 @@
+I"}f<ul id="markdown-toc">
+  <li><a href="#dedicated-workers" id="markdown-toc-dedicated-workers">Dedicated workers</a>    <ul>
+      <li><a href="#worker-特性检测" id="markdown-toc-worker-特性检测">worker 特性检测</a></li>
+      <li><a href="#使用-worker" id="markdown-toc-使用-worker">使用 worker</a></li>
+      <li><a href="#专用-worker-消息的接收和发送" id="markdown-toc-专用-worker-消息的接收和发送">专用 worker 消息的接收和发送</a></li>
+      <li><a href="#终止-worker" id="markdown-toc-终止-worker">终止 worker</a></li>
+      <li><a href="#引入-subworker" id="markdown-toc-引入-subworker">引入 subworker</a></li>
+      <li><a href="#worker-的全局作用域" id="markdown-toc-worker-的全局作用域">worker 的全局作用域</a></li>
+    </ul>
+  </li>
+  <li><a href="#shared-workers" id="markdown-toc-shared-workers">Shared workers</a>    <ul>
+      <li><a href="#生成一个-shared-worker" id="markdown-toc-生成一个-shared-worker">生成一个 Shared worker</a></li>
+      <li><a href="#共享-worker-中消息的接收和发送" id="markdown-toc-共享-worker-中消息的接收和发送">共享 worker 中消息的接收和发送</a></li>
+      <li><a href="#例子" id="markdown-toc-例子">例子</a></li>
+    </ul>
+  </li>
+  <li><a href="#service-workers" id="markdown-toc-service-workers">Service workers</a></li>
+</ul>
+
+<p>Web Worker 的引入是因为 JavaScript 的单线程问题，使大计算量的问题会造成页面阻塞。为此，HTML 5 制订了 Web Worker 标准，通过创建<strong>工作线程</strong>来进行计算。</p>
+
+<p>Web Workers 一般说来分为三类：</p>
+
+<ul>
+  <li>Dedicated workers: 专用 workers，Dedicated workers 只能被创建它的 JavaScript 所调用。它们是专门为某个特定的页面服务的，不能在页面中共享。</li>
+  <li>Shared workers: 共享 workers，Shared worker 可以多个浏览器上下文中调用，所有这些浏览器上下文必须同源(相同的协议，主机和端口号)。</li>
+  <li>Service workers</li>
+</ul>
+
+<!-- more -->
+
+<h2 id="dedicated-workers">Dedicated workers</h2>
+
+<h3 id="worker-特性检测">worker 特性检测</h3>
+
+<p>为了处理向下兼容，这样是有必要的。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">Worker</span><span class="p">){</span>
+    <span class="c1">//do something</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="使用-worker">使用 worker</h3>
+
+<p>实例化 Worker 对象，并传入要执行的 JavaScript 文件名。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">worker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Worker</span><span class="p">(</span><span class="dl">"</span><span class="s2">worker.js</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="专用-worker-消息的接收和发送">专用 worker 消息的接收和发送</h3>
+
+<p>Worker 是通过 message 和 error 事件与页面通信的。通过 postMessage() 传递数据，该数据保存在 event.data 中。</p>
+
+<blockquote>
+  <p>也就是说，postMessage() 可以进行父子数据传递，message 和 error 事件都可以在父子之间发生。</p>
+</blockquote>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>Count numbers: <span class="nt">&lt;output</span> <span class="na">id=</span><span class="s">"result"</span><span class="nt">&gt;&lt;/output&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"startWorker()"</span><span class="nt">&gt;</span>Start Worker<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;button</span> <span class="na">onclick=</span><span class="s">"stopWorker()"</span><span class="nt">&gt;</span>Stop Worker<span class="nt">&lt;/button&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="kd">var</span> <span class="nx">worker</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">startWorker</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">Worker</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">worker</span><span class="p">)</span><span class="o">==</span><span class="dl">"</span><span class="s2">undefined</span><span class="dl">"</span><span class="p">){</span>
+    <span class="nx">worker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Worker</span><span class="p">(</span><span class="dl">"</span><span class="s2">worker.js</span><span class="dl">"</span><span class="p">);}</span>
+  <span class="nx">worker</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">result</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerHTML</span><span class="o">=</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+<span class="k">else</span><span class="p">{</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">result</span><span class="dl">"</span><span class="p">).</span><span class="nx">innerHTML</span><span class="o">=</span><span class="dl">"</span><span class="s2">Sorry, your browser does not support Web Workers...</span><span class="dl">"</span><span class="p">;}</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">stopWorker</span><span class="p">(){</span>
+  <span class="nx">worker</span><span class="p">.</span><span class="nx">terminate</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>下面是 worker.js 的代码。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">timedCount</span><span class="p">(){</span>
+  <span class="nx">i</span><span class="o">=</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+  <span class="nx">postMessage</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="dl">"</span><span class="s2">timedCount()</span><span class="dl">"</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">timedCount</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>其中，消息内容是任何能够被序列化的值。</p>
+
+<h3 id="终止-worker">终止 worker</h3>
+
+<p>从主线程中立即终止一个运行中的 worker，可以调用 worker 的 terminate 方法。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">worker</span><span class="p">.</span><span class="nx">terminate</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>在 worker 线程内部，workers 有可以通过自己的 close() 方法进行关闭。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">self</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>self 指向 worker 本身。</p>
+</blockquote>
+
+<h3 id="引入-subworker">引入 subworker</h3>
+
+<p>worker 的全局作用域提供一个 <code class="highlighter-rouge">importScripts()</code>，该方法接受一个或多个 JavaScript 文件，每个加载过程都是异步的，但执行顺序会按照先后执行。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">importScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">foo.js</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">bar.js</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>值得注意的是，这些脚本是在 worker 的全局作用域中运行。</p>
+
+<h3 id="worker-的全局作用域">worker 的全局作用域</h3>
+
+<p>Web worker 所执行的代码和当前页面的代码不共享作用域。所以，Web worker 的代码不能访问 DOM，也无法通过任何的方式影响页面的外观。</p>
+
+<p>Web worker 中的全局对象就是 <code class="highlighter-rouge">workder</code> 本身。</p>
+
+<hr />
+
+<h2 id="shared-workers">Shared workers</h2>
+
+<p>Shared worker 有自己的全局作用域 SharedWorkerGlobalScope。</p>
+
+<h3 id="生成一个-shared-worker">生成一个 Shared worker</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sharedWorker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SharedWorker</span><span class="p">(</span><span class="dl">'</span><span class="s1">sharedWorker.js</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>和 Dedicated worker 一个非常大的区别，<strong>与 shared worker通信必须通过 port 对象</strong>。传递消息前，端口必须被显式打开，打开方式是使用 onmessage 事件处理函数或者 start() 方法。start() 方法的调用只在一种情况下需要，那就是消息事件被 addEventListener() 方法使用。</p>
+
+<p>如果使用 start() 方法打开端口连接时，如果父级线程和 worker 线程需要双向通信，那么它们都需要调用 start() 方法。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">sharedWorker</span><span class="p">.</span><span class="nx">port</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// 父级线程中的调用</span>
+
+<span class="nx">port</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span> <span class="c1">// worker 线程中的调用</span>
+</code></pre></div></div>
+
+<h3 id="共享-worker-中消息的接收和发送">共享 worker 中消息的接收和发送</h3>
+
+<p>postMessage() 方法必须被端口对象调用。其他都和 Dedicated worker 一致。</p>
+
+<h3 id="例子">例子</h3>
+
+<p>比如我们有两个页面 <code class="highlighter-rouge">index.html</code> 和 <code class="highlighter-rouge">index2.html</code> 分别是计算普通乘法和平方的页面。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--index.html 计算普通乘法--&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Shared Woker<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"controls"</span> <span class="na">tabindex=</span><span class="s">"0"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">""</span> <span class="na">action=</span><span class="s">"index.html"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">""</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"number1"</span><span class="nt">&gt;</span>乘数1：<span class="nt">&lt;/label&gt;</span>
+          <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">""</span> <span class="na">value=</span><span class="s">"0"</span> <span class="na">id=</span><span class="s">"number1"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">""</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"number2"</span><span class="nt">&gt;</span>乘数2：<span class="nt">&lt;/label&gt;</span>
+          <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">""</span> <span class="na">value=</span><span class="s">"0"</span> <span class="na">id=</span><span class="s">"number2"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;/form&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"result1"</span><span class="nt">&gt;</span>结果是：0<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"./index2.html"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>Go to another page<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"./multiply.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--index2.html 计算平方--&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Shared Woker<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"controls"</span> <span class="na">tabindex=</span><span class="s">"1"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">""</span> <span class="na">action=</span><span class="s">"index.html"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"number3"</span><span class="nt">&gt;</span>数字3：<span class="nt">&lt;/label&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">""</span> <span class="na">value=</span><span class="s">"0"</span> <span class="na">id=</span><span class="s">"number3"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;/form&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"result2"</span><span class="nt">&gt;</span>Result: 0<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"./square.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">multiply.js</code> 如下:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">first</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#number1</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">second</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#number2</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">result1</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.result1</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!!</span><span class="nb">window</span><span class="p">.</span><span class="nx">SharedWorker</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">myWorker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SharedWorker</span><span class="p">(</span><span class="dl">"</span><span class="s2">./worker.js</span><span class="dl">"</span><span class="p">);</span>
+
+  <span class="nx">first</span><span class="p">.</span><span class="nx">onchange</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(){</span>
+    <span class="nx">myWorker</span><span class="p">.</span><span class="nx">port</span><span class="p">.</span><span class="nx">postMessage</span><span class="p">([</span><span class="nx">first</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">second</span><span class="p">.</span><span class="nx">value</span><span class="p">]);</span>
+  <span class="p">};</span>
+  <span class="nx">second</span><span class="p">.</span><span class="nx">onchange</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(){</span>
+    <span class="nx">myWorker</span><span class="p">.</span><span class="nx">port</span><span class="p">.</span><span class="nx">postMessage</span><span class="p">([</span><span class="nx">first</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">second</span><span class="p">.</span><span class="nx">value</span><span class="p">]);</span>
+  <span class="p">};</span>
+  <span class="nx">myWorker</span><span class="p">.</span><span class="nx">port</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">result1</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">square.js</code> 如下:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">squreNumber</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#number3</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">result2</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.result2</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!!</span><span class="nb">window</span><span class="p">.</span><span class="nx">SharedWorker</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">myWorker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SharedWorker</span><span class="p">(</span><span class="dl">"</span><span class="s2">./worker.js</span><span class="dl">"</span><span class="p">);</span>
+
+  <span class="nx">squreNumber</span><span class="p">.</span><span class="nx">onchange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">myWorker</span><span class="p">.</span><span class="nx">port</span><span class="p">.</span><span class="nx">postMessage</span><span class="p">([</span><span class="nx">squreNumber</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span><span class="nx">squreNumber</span><span class="p">.</span><span class="nx">value</span><span class="p">]);</span>
+  <span class="p">};</span>
+  <span class="nx">myWorker</span><span class="p">.</span><span class="nx">port</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">result2</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这两个页面，共享同一个 worker，代码如下:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">onconnect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">port</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+  <span class="nx">port</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">workResult</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Result: </span><span class="dl">"</span> <span class="o">+</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="nx">port</span><span class="p">.</span><span class="nx">postMessage</span><span class="p">(</span><span class="nx">workResult</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>参考: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#Shared_workers">Using Web Workers</a></p>
+
+<hr />
+
+<h2 id="service-workers">Service workers</h2>
+
+<p>虽然 Service worker 定义为 web worker，但已经不是一个普通的 worker 了。前者如 Dedicated worker 和 Shared worker 主要是进行<strong>并行计算</strong>，解决<strong>耗时的 JS 执行影响 UI 响应</strong>的问题。而 Service worker 主要是为了解决 Web app 的用户体验不如 Native app 的普遍问题而提供的一系列的技术的集合。</p>
+
+<blockquote>
+  <p>Service worker 有点像 Shared worker，但是 Service worker 控制多个页面，而不是页面控制 Shared worker。 – 《Service Worker - first draft published》</p>
+</blockquote>
+
+<blockquote>
+  <p>Service worker 充当 Web app、浏览器和网络代理服务器的角色。基于网络是否可用的情况下，提供良好的离线体验、拦截网络请求和采取合适的行为。 – MDN</p>
+</blockquote>
+
+<p>有关 Service worker 可参考的内容:</p>
+
+<ul>
+  <li><a href="https://jakearchibald.com/2014/service-worker-first-draft/">Service Worker - first draft published</a></li>
+  <li><a href="https://w3c.github.io/ServiceWorker/">Service Workers Nightly</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/27264234">深入了解 Service Worker，看这篇就够了</a></li>
+  <li><a href="https://developer.mozilla.org/en/docs/Web/API/Service_Worker_API">Service Worker API</a></li>
+  <li><a href="https://www.youtube.com/watch?v=4uQMl7mFB6g&amp;feature=youtu.be">The ServiceWorker: The network layer is yours to own</a></li>
+</ul>
+:ET

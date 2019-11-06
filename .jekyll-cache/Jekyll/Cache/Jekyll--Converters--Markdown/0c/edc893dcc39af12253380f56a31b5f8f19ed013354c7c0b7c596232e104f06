@@ -1,0 +1,6 @@
+I"%
+<p><code class="highlighter-rouge">DOM</code>中的<code class="highlighter-rouge">D</code>指的是<code class="highlighter-rouge">document</code>，<code class="highlighter-rouge">O</code>指的是<code class="highlighter-rouge">Object</code>，在<code class="highlighter-rouge">JavaScript</code>语言中，有三种对象类型，分别是<code class="highlighter-rouge">user-defined object</code>、<code class="highlighter-rouge">native object</code>、<code class="highlighter-rouge">host object</code>，对于<code class="highlighter-rouge">host object</code>，指的是浏览器提供的对象，最基础的就是<code class="highlighter-rouge">window</code>本身了。其中的<code class="highlighter-rouge">M</code>，指的就是模型。</p>
+
+<p>那整个模型怎么解释呢？</p>
+
+:ET

@@ -1,0 +1,66 @@
+I"� 
+<p>在<a href="https://www.nowcoder.com/">牛客网</a>中对<code class="highlighter-rouge">JavaScript</code>程序员是很不友好的。在处理输入输出流的时候，总是得不到好的处理。在Windows平台下，在处理外部输入输出的时候也非常不擅长进行调试。所以这里，针对这个些问题，看看有没有解决方法。</p>
+
+<!-- more -->
+
+<p>我们先贴上代码。代码是针对<code class="highlighter-rouge">Windows</code>平台，使用命令行进行调试的程序片段。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Created by timi on 2017/6/14.
+ */</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">resume</span><span class="p">();</span>             <span class="c1">//stdin是可读的输出流，默认是暂停状态。所以想要从stdin读取必须要调用一次process.stdin.resume();</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">);</span>  <span class="c1">//设置字符编码</span>
+
+<span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">input_array</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//监听事件data事件，当有数据过来时触发</span>
+    <span class="nx">input</span> <span class="o">+=</span> <span class="nx">data</span><span class="p">;</span>                          <span class="c1">//读取data(字符串数据)到input</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">data</span> <span class="o">===</span> <span class="dl">'</span><span class="se">\r\n</span><span class="dl">'</span><span class="p">)</span>                    <span class="c1">//如果遇到换行，Linux使用'\n'换行</span>
+        <span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>          <span class="c1">//发射end事件，表示读取结束</span>
+<span class="p">});</span>
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>       <span class="c1">//读取结束</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="dl">'</span><span class="se">\n</span><span class="dl">'</span><span class="p">){</span>                    <span class="c1">//没有输入，直接结束</span>
+        <span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">input_array</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="se">\n</span><span class="dl">"</span><span class="p">);</span>        <span class="c1">//变成数组</span>
+    <span class="kd">var</span> <span class="nx">n</span><span class="p">,</span><span class="nx">input_arr</span><span class="o">=</span><span class="p">[],</span><span class="nx">arr</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">nLine</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="nx">nLine</span> <span class="o">&lt;</span> <span class="nx">input_array</span><span class="p">.</span><span class="nx">length</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">input_array</span><span class="p">[</span><span class="nx">nLine</span><span class="o">++</span><span class="p">].</span><span class="nx">trim</span><span class="p">();</span> <span class="c1">//去掉数组每一行的首尾的空白符</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">line</span> <span class="o">===</span> <span class="dl">''</span><span class="p">){</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">input_arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">'</span><span class="s1"> </span><span class="dl">'</span><span class="p">));</span>    <span class="c1">//变成一个二维数组</span>
+    <span class="p">}</span>
+    <span class="nx">n</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">input_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">);</span>       <span class="c1">//二位数组的第一行</span>
+    <span class="nx">arr</span> <span class="o">=</span> <span class="nx">input_arr</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">e</span><span class="p">));</span><span class="c1">//二维数组的第二行</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">input_array</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">input_arr</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>以下是举例：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12
+1024 1024
+
+12
+1024 1024
+
+
+<span class="o">[</span> <span class="s1">'12\r'</span>, <span class="s1">'1024 1024\r'</span>, <span class="s1">'\r'</span>, <span class="s1">''</span> <span class="o">]</span>
+<span class="o">[</span> <span class="o">[</span> <span class="s1">'12'</span> <span class="o">]</span>, <span class="o">[</span> <span class="s1">'1024'</span>, <span class="s1">'1024'</span> <span class="o">]</span> <span class="o">]</span>
+12
+<span class="o">[</span> 1024, 1024 <span class="o">]</span>
+</code></pre></div></div>
+
+<p>最后的<code class="highlighter-rouge">n</code>和<code class="highlighter-rouge">arr</code>就是我们获得的数据，感觉好麻烦。</p>
+:ET

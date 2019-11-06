@@ -1,0 +1,281 @@
+I"��<ul id="markdown-toc">
+  <li><a href="#基础" id="markdown-toc-基础">基础</a></li>
+  <li><a href="#实例" id="markdown-toc-实例">实例</a>    <ul>
+      <li><a href="#restful-web服务" id="markdown-toc-restful-web服务">RESTful Web服务</a></li>
+      <li><a href="#提供文件服务" id="markdown-toc-提供文件服务">提供文件服务</a></li>
+      <li><a href="#从表单中接受用户输入" id="markdown-toc-从表单中接受用户输入">从表单中接受用户输入</a></li>
+    </ul>
+  </li>
+</ul>
+
+<p><code class="highlighter-rouge">HTTP</code>是<code class="highlighter-rouge">Node</code>的一个核心模块，同时也是一些很底层的<code class="highlighter-rouge">API</code>。</p>
+
+<p><code class="highlighter-rouge">Node</code>有为数不多的<em>内置</em>模块，<code class="highlighter-rouge">HTTP</code>是其中之一，<code class="highlighter-rouge">fs</code>也是。这些内置模块你通常可以在<code class="highlighter-rouge">Node</code>的<a href="https://nodejs.org/en/docs/">官方网站的<code class="highlighter-rouge">DOCS</code></a>获取并了解他们的使用方法和<code class="highlighter-rouge">API</code>。<code class="highlighter-rouge">HTTP</code>的相关<code class="highlighter-rouge">API</code>放在了这里：<a href="https://nodejs.org/dist/latest-v6.x/docs/api/http.html">https://nodejs.org/dist/latest-v6.x/docs/api/http.html</a></p>
+
+<blockquote>
+  <p>这是<code class="highlighter-rouge">v6.11.0</code>的版本，就是写博客的最近版本。可以在官网上获取到最新版本。其中标记为<code class="highlighter-rouge">Stability:2 - Stable</code>的表示为可放心食用的<code class="highlighter-rouge">API</code>，标记为<code class="highlighter-rouge">Stability:1 - Experimental</code>的表示为试验性质的<code class="highlighter-rouge">API</code>，标记为<code class="highlighter-rouge">Stability:0 - Deprecated</code>的表示为被弃用的<code class="highlighter-rouge">API</code>。</p>
+</blockquote>
+
+<p>在文档中很简要地介绍了一句：</p>
+
+<blockquote>
+To use the HTTP server and client one must require('http').
+</blockquote>
+
+<!-- more -->
+
+<h2 id="基础">基础</h2>
+
+<ol>
+  <li>引入<code class="highlighter-rouge">http</code>模块。</li>
+</ol>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ol>
+  <li>创建<code class="highlighter-rouge">HTTP</code>服务器</li>
+</ol>
+
+<p>创建<code class="highlighter-rouge">HTTP</code>服务器要调用<code class="highlighter-rouge">http.createServer()</code>函数。它只有一个回调函数，服务器每次收到<code class="highlighter-rouge">HTTP</code>请求后都会调用这个回调函数。</p>
+
+<p>这个请求回调会收到两个参数，请求对象 – <code class="highlighter-rouge">req</code>，响应对象 – <code class="highlighter-rouge">res</code>。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="c1">// 处理请求</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>服务器每收到一条<code class="highlighter-rouge">HTTP</code>请求，都会用新的<code class="highlighter-rouge">req</code>和<code class="highlighter-rouge">res</code>对象触发回调函数。注意，在触发回调函数之前，<code class="highlighter-rouge">Node</code>会解析请求的<code class="highlighter-rouge">HTTP</code>头，并将他们作为<code class="highlighter-rouge">req</code>对象的一部分提供给回调函数。但<code class="highlighter-rouge">Node</code>不会在回调函数被触发之前对请求体的解析，<code class="highlighter-rouge">HTTP</code>服务器解析完<code class="highlighter-rouge">HTTP</code>头，就将控制权转交给回调函数。</p>
+
+<ol>
+  <li>处理请求</li>
+</ol>
+
+<p>你可以按照自己的需求处理请求，我们这里首先调用<code class="highlighter-rouge">res.write()</code>方法，将会响应一个数据块，然后用<code class="highlighter-rouge">res.end()</code>方法来结束这个响应。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Hello World</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">res.write ()</code>和<code class="highlighter-rouge">res.end ()</code>也能简写成<code class="highlighter-rouge">res.end('Hello World')</code>。</p>
+</blockquote>
+
+<p>在<code class="highlighter-rouge">res.write ()</code>和<code class="highlighter-rouge">res.end ()</code>之前，还可以对<code class="highlighter-rouge">HTTP</code>的响应头部字段进行修改。方法有<code class="highlighter-rouge">res.setHeader(field,value)</code>、<code class="highlighter-rouge">res.getHeader(field)</code>、<code class="highlighter-rouge">res.removeHeader(field)</code>。上面的例子中，我们使用了默认的状态码<code class="highlighter-rouge">200</code>和默认的响应头。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Hello World</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Content-Length</span><span class="dl">'</span><span class="p">,</span> <span class="nx">body</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">text/plain</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ol>
+  <li>绑定一个端口</li>
+</ol>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Hello World</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="p">();</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="实例">实例</h2>
+
+<h3 id="restful-web服务">RESTful Web服务</h3>
+
+<p><code class="highlighter-rouge">REST</code>(Representational State Transfer)是一种使用<code class="highlighter-rouge">HTTP</code>谓词提供精简的<code class="highlighter-rouge">API</code>服务。按照惯例，<code class="highlighter-rouge">HTTP</code>谓词<code class="highlighter-rouge">GET</code>、<code class="highlighter-rouge">POST</code>、<code class="highlighter-rouge">PUT</code>、<code class="highlighter-rouge">DELETE</code>，分别根由<code class="highlighter-rouge">URL</code>指定的资源的获取、创建、更新和移除相对应。</p>
+
+<blockquote>
+  <p>具体的<code class="highlighter-rouge">RESTful</code>服务，我建议参考StackOverflow关于这个的问答: <a href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming">https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming</a></p>
+</blockquote>
+
+<p>其次，我们在这里使用到了<code class="highlighter-rouge">cURL</code>这个工具，代替Web浏览器来于Web服务器交互。</p>
+
+<blockquote>
+  <p><code class="highlighter-rouge">cURL</code>的官网在这里: <a href="https://curl.haxx.se/">https://curl.haxx.se/</a>。<code class="highlighter-rouge">github</code>的地址: <a href="https://github.com/curl/curl">https://github.com/curl/curl</a>。官网有关于<code class="highlighter-rouge">cURL</code>的全部教程。</p>
+</blockquote>
+
+<p><code class="highlighter-rouge">cRUL</code>是个很棒的工具，自己也只是了解一点点。比如我们输入： <code class="highlighter-rouge">curl -I http://xiaokedada.com</code>， 则我们得到：</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Date</span><span class="p">:</span> <span class="s">Thu, 08 Jun 2017 02:08:09 GMT</span>
+<span class="na">Server</span><span class="p">:</span> <span class="s">Apache/2.4.23</span>
+<span class="na">Last-Modified</span><span class="p">:</span> <span class="s">Wed, 07 Jun 2017 14:01:00 GMT</span>
+<span class="na">ETag</span><span class="p">:</span> <span class="s">"13c00c3-8e4d-5515f2a869975"</span>
+<span class="na">Accept-Ranges</span><span class="p">:</span> <span class="s">bytes</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">36429</span>
+<span class="na">Vary</span><span class="p">:</span> <span class="s">Accept-Encoding,User-Agent</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">text/html</span>
+</code></pre></div></div>
+
+<p>更多有关<code class="highlighter-rouge">cURL</code>工具待后续了解，那个时候，也会另开一篇文章吧。还要介绍的一点就是有关<code class="highlighter-rouge">cURL</code>的安装。我们在下载页根据系统找到对应的版本，比如我下载的就是<code class="highlighter-rouge">Win64 x86_64 CAB</code>版本，然后在解压到本地文件夹，在<code class="highlighter-rouge">1386</code>文件夹中找到<code class="highlighter-rouge">CURL.exe</code>，将它拷贝到<code class="highlighter-rouge">Windows/System32</code>文件中。</p>
+
+<p>现在，我们<code class="highlighter-rouge">RESTful</code>的例子如下：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">),</span>
+  <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">url</span><span class="dl">'</span><span class="p">),</span>
+  <span class="nx">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">:</span>    <span class="c1">//请求资源</span>
+      <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="dl">''</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">)</span>   <span class="c1">//对于文本格式的待办事项而言，我们不需要二进制，将它设定为utf8</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">chunk</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//只要读入新的utf8字符串，就能触发data事件</span>
+        <span class="nx">item</span> <span class="o">+=</span> <span class="nx">chunk</span>
+      <span class="p">})</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">OK</span><span class="se">\n</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">})</span>
+      <span class="k">break</span>
+    <span class="k">case</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">:</span>     <span class="c1">//获取资源</span>
+      <span class="nx">items</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">)</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">item</span> <span class="o">+</span> <span class="dl">'</span><span class="se">\n</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">})</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+      <span class="k">break</span>
+    <span class="k">case</span> <span class="dl">'</span><span class="s1">DELETE</span><span class="dl">'</span><span class="p">:</span>
+      <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">).</span><span class="nx">pathname</span>
+      <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">404</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">Invalid item id</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">items</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">Item not found</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="dl">'</span><span class="s1">OK</span><span class="se">\n</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">}</span>
+      <span class="k">break</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>特别注意的是，<code class="highlighter-rouge">url</code>模块可以的<code class="highlighter-rouge">parse()</code>可以解析出<code class="highlighter-rouge">pathname</code>。让我们在<code class="highlighter-rouge">Node</code>的<code class="highlighter-rouge">REPL</code>( Read–Eval–Print Loop)环境，也就是我们的命令行环境验证以下，还是以本博客首页为例。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> require<span class="o">(</span><span class="s1">'url'</span><span class="o">)</span>.parse<span class="o">(</span><span class="s1">'http://xiaokdedada.com'</span><span class="o">)</span><span class="p">;</span>
+Url <span class="o">{</span>
+  protocol: <span class="s1">'http:'</span>,
+  slashes: <span class="nb">true</span>,
+  auth: null,
+  host: <span class="s1">'xiaokdedada.com'</span>,
+  port: null,
+  <span class="nb">hostname</span>: <span class="s1">'xiaokdedada.com'</span>,
+  <span class="nb">hash</span>: null,
+  search: null,
+  query: null,
+  pathname: <span class="s1">'/'</span>,
+  path: <span class="s1">'/'</span>,
+  href: <span class="s1">'http://xiaokdedada.com/'</span> <span class="o">}</span>
+</code></pre></div></div>
+
+<p>为了简单，我们的<code class="highlighter-rouge">RESTful</code>省略了<code class="highlighter-rouge">PUT</code>谓词。我们来验证我们的<code class="highlighter-rouge">RESTful</code>服务器。首先，我们运行我们的<code class="highlighter-rouge">.js</code>文件，开启<code class="highlighter-rouge">3000</code>端口。然后，再开一个命令行:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-d</span> <span class="s2">"Hello World"</span> http://localhost:3000
+OK
+<span class="nv">$ </span>curl <span class="nt">-d</span> <span class="s2">"I am timi"</span> http://localhost:3000
+OK
+<span class="nv">$ </span>curl http://localhost:3000
+0<span class="o">)</span> Hello World
+1<span class="o">)</span> I am timi
+</code></pre></div></div>
+
+<p>很棒是不是？</p>
+
+<h3 id="提供文件服务">提供文件服务</h3>
+
+<p>文件服务通常涉及到的是文件的读写，在程序中，我们通常用的是管道(<code class="highlighter-rouge">pipe</code>)。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+<span class="nx">stream</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span> <span class="c1">//res是响应，res.end()会在stream.pipe()内部调用</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>在<code class="highlighter-rouge">Node</code>中，所有继承了<code class="highlighter-rouge">EventEmitter</code>的类都有可能有<code class="highlighter-rouge">error</code>事件。对于<code class="highlighter-rouge">fs.ReadStream</code>这样的专用<code class="highlighter-rouge">EventEmitter</code>，有预先定义的<code class="highlighter-rouge">data</code>和<code class="highlighter-rouge">end</code>事件。</p>
+</blockquote>
+
+<h3 id="从表单中接受用户输入">从表单中接受用户输入</h3>
+
+<p>我们看这个例子：</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">http</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">qs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">querystring</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span> <span class="o">==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">){</span>        <span class="c1">//所有不是"/"的URL都会得到一个404 Not Found</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">){</span>
+            <span class="k">case</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">:</span>
+                <span class="nx">show</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">:</span>
+                <span class="nx">add</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default</span><span class="p">:</span>
+                <span class="nx">badRequest</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">notFound</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">show</span> <span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;html&gt;&lt;head&gt;&lt;title&gt;Todo List&lt;/title&gt;&lt;/head&gt;&lt;body&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;h1&gt;Todo List&lt;/h1&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;ul&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">items</span><span class="p">.</span><span class="nx">map</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">){</span>
+        <span class="k">return</span> <span class="dl">'</span><span class="s1">&lt;li&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">item</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;/li&gt;</span><span class="dl">'</span>
+    <span class="p">}).</span><span class="nx">join</span><span class="p">(</span><span class="dl">''</span><span class="p">)</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;/ul&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;form method="post" action="/"&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;p&gt;&lt;input type="text" name="item" /&gt;&lt;/p&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;p&gt;&lt;input type="submit" value="Add Item" /&gt;&lt;/p&gt;</span><span class="dl">'</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">text/html</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">Content-Length</span><span class="dl">'</span><span class="p">,</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">byteLength</span><span class="p">(</span><span class="nx">html</span><span class="p">));</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="p">(</span><span class="nx">html</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">notFound</span> <span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">404</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">text/plain</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Not Found</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">badRequest</span> <span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">400</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">text/plain</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span> <span class="p">(</span><span class="dl">'</span><span class="s1">Bad Request</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">add</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">setEncoding</span> <span class="p">(</span><span class="dl">'</span><span class="s1">utf8</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span> <span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">chunk</span><span class="p">){</span><span class="nx">body</span> <span class="o">+=</span> <span class="nx">chunk</span><span class="p">});</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span> <span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">qs</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+        <span class="nx">items</span><span class="p">.</span><span class="nx">push</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">item</span><span class="p">);</span>
+        <span class="nx">show</span> <span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在<code class="highlighter-rouge">add()</code>函数解析请求实体时，我们用到了<code class="highlighter-rouge">Node</code>的<code class="highlighter-rouge">querystring</code>模块。官方文档中是这样介绍的:</p>
+
+<blockquote>
+  <p>The querystring module provides utilities for parsing and formatting URL query strings.</p>
+</blockquote>
+
+<p>看一下我们在<code class="highlighter-rouge">REPL</code>上的解析。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> var qs <span class="o">=</span> require<span class="o">(</span><span class="s1">'querystring'</span><span class="o">)</span><span class="p">;</span>var body <span class="o">=</span> <span class="s1">'item=timi+I+love+you'</span><span class="p">;</span>qs.parse<span class="o">(</span>body<span class="o">)</span><span class="p">;</span>
+<span class="o">{</span> item: <span class="s1">'timi I love you'</span> <span class="o">}</span>
+</code></pre></div></div>
+:ET

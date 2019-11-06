@@ -1,0 +1,4 @@
+I"j
+<p><code class="highlighter-rouge">JavaScript</code>的所有属性都是公有的，没有显式的方法可以指定某个属性不能被外界某个对象访问。通常的方法是通过<em>命名规则</em>，比如我们在不希望公有的属性名前加上下划线(<code class="highlighter-rouge">_</code>)。此外，还有些其他的方法。</p>
+
+:ET

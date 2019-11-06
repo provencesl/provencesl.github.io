@@ -1,0 +1,664 @@
+I"��<ul id="markdown-toc">
+  <li><a href="#defining-functions--函数定义" id="markdown-toc-defining-functions--函数定义">Defining functions – 函数定义</a>    <ul>
+      <li><a href="#function-declarations--函数声明" id="markdown-toc-function-declarations--函数声明">Function declarations – 函数声明</a></li>
+      <li><a href="#function-expressions--函数表达式" id="markdown-toc-function-expressions--函数表达式">Function expressions – 函数表达式</a></li>
+    </ul>
+  </li>
+  <li><a href="#calling-functions--调用函数" id="markdown-toc-calling-functions--调用函数">Calling functions – 调用函数</a>    <ul>
+      <li><a href="#参数" id="markdown-toc-参数">参数</a></li>
+      <li><a href="#javascript函数没有重载" id="markdown-toc-javascript函数没有重载">JavaScript函数没有重载</a></li>
+    </ul>
+  </li>
+  <li><a href="#this对象" id="markdown-toc-this对象">this对象</a>    <ul>
+      <li><a href="#改变this" id="markdown-toc-改变this">改变this</a>        <ul>
+          <li><a href="#call方法" id="markdown-toc-call方法">call()方法</a></li>
+          <li><a href="#apply方法" id="markdown-toc-apply方法">apply()方法</a></li>
+          <li><a href="#bind方法" id="markdown-toc-bind方法">bind()方法</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#function-scope--函数作用域" id="markdown-toc-function-scope--函数作用域">Function scope – 函数作用域</a></li>
+  <li><a href="#scope-and-the-function-stack--作用域和函数堆栈" id="markdown-toc-scope-and-the-function-stack--作用域和函数堆栈">Scope and the function stack – 作用域和函数堆栈</a>    <ul>
+      <li><a href="#recursion--递归" id="markdown-toc-recursion--递归">Recursion – 递归</a></li>
+      <li><a href="#nested-functions-and-closures--嵌套函数和闭包" id="markdown-toc-nested-functions-and-closures--嵌套函数和闭包">Nested functions and closures – 嵌套函数和闭包</a></li>
+      <li><a href="#preservation-of-variables--保存变量" id="markdown-toc-preservation-of-variables--保存变量">Preservation of variables – 保存变量</a></li>
+      <li><a href="#multiply-nested-functions--多层嵌套函数" id="markdown-toc-multiply-nested-functions--多层嵌套函数">Multiply-nested functions – 多层嵌套函数</a></li>
+      <li><a href="#name-conflicts--命名冲突" id="markdown-toc-name-conflicts--命名冲突">Name conflicts – 命名冲突</a></li>
+    </ul>
+  </li>
+  <li><a href="#closures--闭包" id="markdown-toc-closures--闭包">Closures – 闭包</a></li>
+  <li><a href="#using-the-arguments-object--使用arguments对象" id="markdown-toc-using-the-arguments-object--使用arguments对象">Using the arguments object – 使用arguments对象</a></li>
+  <li><a href="#function-parameter--函数参数" id="markdown-toc-function-parameter--函数参数">Function parameter – 函数参数</a>    <ul>
+      <li><a href="#default-parameter" id="markdown-toc-default-parameter">default parameter</a></li>
+      <li><a href="#rest-parameter" id="markdown-toc-rest-parameter">rest parameter</a></li>
+    </ul>
+  </li>
+  <li><a href="#arrow-functions--箭头函数" id="markdown-toc-arrow-functions--箭头函数">Arrow functions – 箭头函数</a>    <ul>
+      <li><a href="#更简洁的函数" id="markdown-toc-更简洁的函数">更简洁的函数</a></li>
+      <li><a href="#this的词法" id="markdown-toc-this的词法">this的词法</a></li>
+      <li><a href="#箭头函数的语法" id="markdown-toc-箭头函数的语法">箭头函数的语法</a></li>
+    </ul>
+  </li>
+  <li><a href="#iifeimmediately-invoked-function-expression--立即执行函数表达式" id="markdown-toc-iifeimmediately-invoked-function-expression--立即执行函数表达式">IIFE(Immediately Invoked Function Expression) – 立即执行函数表达式</a></li>
+</ul>
+
+<p>在<code class="highlighter-rouge">JavaScript</code>中，函数其实就是对象。使函数不同于其他对象的<em>决定性</em>特点时<strong>函数存在一个被称之为<code class="highlighter-rouge">[[Call]]</code>的内部属性</strong>。内部属性无法通过代码访问，而是定义了代码执行时的行为。</p>
+
+<blockquote>
+  <p><code class="highlighter-rouge">ECMAScript</code>为对象定义了多种内部属性，这些内部属性都使用<code class="highlighter-rouge">[[]]</code>来标记。</p>
+</blockquote>
+
+<p><code class="highlighter-rouge">[[Call]]</code>属性是函数独有的，表明该对象可以被执行。</p>
+
+<p>你可以像使用对象一样使用函数，可以将它们赋给变量，在对象中添加它们，将它们当成参数传递给别的函数，或从别的函数中返回。函数就是值。</p>
+
+<p>A function is a <code class="highlighter-rouge">JavaScript</code> procedure - <strong>a set of statements that performs a task or calculates a value</strong>.</p>
+
+<!-- more -->
+
+<h2 id="defining-functions--函数定义">Defining functions – 函数定义</h2>
+
+<h3 id="function-declarations--函数声明">Function declarations – 函数声明</h3>
+
+<p>A <strong>function definition</strong> (also called a <strong>function declaration</strong>, or <strong>function statement</strong>) consists of the <code class="highlighter-rouge">function</code> keyword, followed by:</p>
+
+<ul>
+  <li>The name of the function</li>
+  <li>A list of arguments(参数) to the function, enclosed in parentheses(括号) and separated by commas(逗号)</li>
+  <li>The JavaScript statements that define the function, enclosed in curly brackets, <code class="highlighter-rouge">{ }</code></li>
+</ul>
+
+<blockquote>
+  <p>注意：在<code class="highlighter-rouge">C++</code>语言中，函数声明和定义可是两码事哦，要记清楚哦。</p>
+</blockquote>
+
+<p>参数以<strong>值传递</strong>的方式传递给被调函数(比如<code class="highlighter-rouge">a number</code>)，如果被调函数改变了这个参数的值，这样的改变不会影响到全局或调用函数。</p>
+
+<p>但是，如果<code class="highlighter-rouge">object</code>作为参数传递(比如<code class="highlighter-rouge">Array</code>、<code class="highlighter-rouge">user-defined object</code>)，而函数改变了该对象的属性，则这种改变对外是可见的。</p>
+
+<blockquote>
+  <p>函数声明会被提升至上下文的顶部，这意味着你可以先使用函数后声明它们。</p>
+</blockquote>
+
+<h3 id="function-expressions--函数表达式">Function expressions – 函数表达式</h3>
+
+<p>Functions can also be created by a function expression.(函数同样可以由函数表达式创建) Such a function can be <strong>anonymous</strong>(匿名的); it does not have to have a name.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="p">(</span><span class="k">return</span> <span class="nx">number</span> <span class="o">*</span> <span class="nx">number</span><span class="p">;)</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">square</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// x gets the value 16</span>
+</code></pre></div></div>
+
+<p>However, a name can be provided with a function expression and can be used inside the function to refer to itself, or in a debugger to identify the function in stack traces:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">factorial</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">fac</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="p">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">fac</span><span class="p">(</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);}</span>
+</code></pre></div></div>
+
+<p>Function expressions are convenient when passing a function as an argument to another function.(当将一个函数作为一个参数传递给另一个函数，函数表达式就十分方便)</p>
+
+<blockquote>
+  <p>当一个函数是一个对象的属性时，称之为<strong>方法</strong>。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="calling-functions--调用函数">Calling functions – 调用函数</h2>
+
+<p>Functions must be in scope when they are called, but the function declaration can be hoisted (appear below the call in the code).(函数必须在被他们被调用的域当中，但是函数声明可以被提升–出现在调用代码的下方)</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="nx">square</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+<span class="cm">/* ... */</span>
+<span class="kd">function</span> <span class="nx">square</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The scope of a function is the function in which it is declared, or the entire program if it is declared at the top level.</p>
+</blockquote>
+
+<blockquote>
+  <p>注意： 函数提升只对函数声明有效，对函数表达式是无效的。</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span> <span class="c1">// square is hoisted with an initial value undefined.</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">square</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span> <span class="c1">// TypeError: square is not a function</span>
+<span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">n</span> <span class="o">*</span> <span class="nx">n</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>函数也是对象</strong>，也有自己的<strong>方法</strong>。<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function">具体参见</a></p>
+</blockquote>
+
+<p>在函数调用过程中，时刻记住函数就是对象，很多行为就变得容易理解了。比如，你可以将函数当作参数传递给其他的函数：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">];</span>
+<span class="nx">numbers</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">first</span><span class="p">,</span> <span class="nx">second</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">first</span> <span class="o">-</span> <span class="nx">second</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">numbers</span><span class="p">);</span> <span class="c1">//"[1,2,4,5,6,7,8,10]"</span>
+
+<span class="nx">numbers</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="nx">numbers</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">numbers</span><span class="p">);</span><span class="c1">//"[1,10,2,4,5,6,7,8]"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>此处，被传递给<code class="highlighter-rouge">sort()</code>的比较函数其实是一个函数表达式，是一个匿名函数。若使用默认的比较函数，会将所有的值都转换成字符串进行比较。</p>
+</blockquote>
+
+<h3 id="参数">参数</h3>
+
+<p>函数的另一个独特之处在于你可以给函数传递任意数量的参数却不造成错误。那是因为函数参数实际上被保存在一个称为<code class="highlighter-rouge">arguments</code>的<em>类似数组</em>(不是数组)的对象中，可以自由增长包含任意个数的值，这些值可通过数字索引来引用。<code class="highlighter-rouge">arguments</code>的<code class="highlighter-rouge">length</code>属性会告诉你目前有多少个值。</p>
+
+<p><code class="highlighter-rouge">arguments</code>对象自动存在于函数中，也就是说，函数的命名参数不过是为了方便，并不真正限制了该函数可接受参数的个数。</p>
+
+<p>另一方面，<code class="highlighter-rouge">JavaScript</code>也没有忽视那么命名参数。函数期望的参数个数保存在函数的<code class="highlighter-rouge">length</code>属性中。因为函数也是对象，所以也具有属性，从而我们不必大惊小怪。</p>
+
+<blockquote>
+  <p>注意：一个是对象<code class="highlighter-rouge">arguments</code>的<code class="highlighter-rouge">length</code>属性，一个是函数<code class="highlighter-rouge">function</code>的<code class="highlighter-rouge">length</code>属性。</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">reflect</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hi!</span><span class="dl">"</span><span class="p">));</span>  <span class="c1">//"Hi!"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hi!</span><span class="dl">"</span><span class="p">,</span> <span class="mi">25</span><span class="p">));</span>  <span class="c1">//"Hi!"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>  <span class="c1">//返回函数期望的参数个数："1"</span>
+
+<span class="nx">reflect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hi!</span><span class="dl">"</span><span class="p">));</span>  <span class="c1">//返回传入的第一个参数 "Hi!"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hi!</span><span class="dl">"</span><span class="p">,</span> <span class="mi">25</span><span class="p">));</span>  <span class="c1">//返回传入的第一个参数"Hi!"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>  <span class="c1">//返回函数期望的参数个数："0"</span>
+</code></pre></div></div>
+
+<p>在某些场合，使用<code class="highlighter-rouge">arguments</code>比命名参数更有效。比如：你不知道会有多少个参数，所以你无法使用命名参数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">sum</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">len</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">){</span>
+    <span class="nx">result</span> <span class="o">+=</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="o">++</span><span class="nx">i</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  <span class="c1">//4</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>  <span class="c1">//6</span>
+</code></pre></div></div>
+
+<h3 id="javascript函数没有重载">JavaScript函数没有重载</h3>
+
+<p>大多数语言都支持重载，但上面也提到，<code class="highlighter-rouge">JavaScript</code>函数可以接受任意数量的参数且参数类型完全没有限制。这说明<code class="highlighter-rouge">JavaScript</code>函数其实根本没有签名(signature)，因此也不存在重载。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">sayMessage</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">sayMessage</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Default message</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">sayMesssage</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello!</span><span class="dl">"</span><span class="p">);</span>  <span class="c1">//"Default message"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>这说明，当试图定义多个同名函数时，只有最后定义的是有效的，之前的函数声明被完全删除。我们可以使用对象来帮助理解：</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sayMessage</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">console.log(message);</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">sayMessage</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="dl">"</span><span class="s2">console.log(</span><span class="dl">"</span><span class="nx">Default</span> <span class="nx">message</span><span class="dl">"</span><span class="s2">);</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">sayMessage</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello!</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>但这并不是说<code class="highlighter-rouge">JavaScript</code>不能<em>模仿函数重载</em>。我们可以使用<code class="highlighter-rouge">arguments</code>对象获取所传入的参数个数(<code class="highlighter-rouge">arguments.length</code>)，然后决定如何处理。</p>
+
+<hr />
+
+<h2 id="this对象">this对象</h2>
+
+<p>我们先看一个例子：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">sayName</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们之前提到，如果<strong>属性值是函数</strong>，则该属性就被称为<strong>方法</strong>。定义好以后，我们可以通过<code class="highlighter-rouge">person.sayName()</code>进行调用。</p>
+
+<p>但是问题之处在于，<code class="highlighter-rouge">sayName()</code>方法直接引用了<code class="highlighter-rouge">persion.name</code>，在方法和对象间建立了<em>紧耦合</em>。</p>
+
+<p><code class="highlighter-rouge">JavaScript</code>所有的函数作用域内都有一个<code class="highlighter-rouge">this</code>对象代表<strong>调用该函数的对象</strong>。在全局作用域内，<code class="highlighter-rouge">this</code>代表全局对象(浏览器里的<code class="highlighter-rouge">window</code>)，当一个函数作为对象的方法被调用时，默认<code class="highlighter-rouge">this</code>的值等于那个对象。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">sayName</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="改变this">改变this</h3>
+
+<p>一般<code class="highlighter-rouge">this</code>会被自动设置，但是可以改变它的值来完成不同的目标。有三种方法：</p>
+
+<h4 id="call方法">call()方法</h4>
+
+<p><code class="highlighter-rouge">call()</code>的第一个参数指定了函数执行时<code class="highlighter-rouge">this</code>的值，其后所有参数都是需要被传入函数的参数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">sayNameForAll</span><span class="p">(</span><span class="nx">label</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">label</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">:</span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">person2</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Micael</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="dl">"</span><span class="s2">global</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//"global:Micael"</span>
+<span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span> <span class="dl">"</span><span class="s2">person1</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//"person1:Nicholas"</span>
+<span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">person2</span><span class="p">,</span> <span class="dl">"</span><span class="s2">person2</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//"preson2:Greg"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>注意：调用函数时在函数名后没有小括号，<strong>因为它被作为对象访问而不是被执行的代码</strong>。</p>
+</blockquote>
+
+<h4 id="apply方法">apply()方法</h4>
+
+<p>与<code class="highlighter-rouge">call()</code>类似，只不过第二个参数接受一个数组或者类似数组的对象。哈哈，没错，就是<code class="highlighter-rouge">arguments</code>对象。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">sayNameForAll</span><span class="p">(</span><span class="nx">label</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">label</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">:</span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">person2</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Micael</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">[</span><span class="dl">"</span><span class="s2">global</span><span class="dl">"</span><span class="p">]);</span> <span class="c1">//"global:Micael"</span>
+<span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">person1</span><span class="p">,</span> <span class="p">[</span><span class="dl">"</span><span class="s2">person1</span><span class="dl">"</span><span class="p">]);</span> <span class="c1">//"person1:Nicholas"</span>
+<span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">person2</span><span class="p">,</span> <span class="p">[</span><span class="dl">"</span><span class="s2">person2</span><span class="dl">"</span><span class="p">]);</span> <span class="c1">//"preson2:Greg"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>如果你有一个数组，用<code class="highlighter-rouge">apply()</code>，如果你只有一个单独的变量，则用<code class="highlighter-rouge">call()</code>。</p>
+</blockquote>
+
+<h4 id="bind方法">bind()方法</h4>
+
+<p>看例子。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">sayNameForAll</span><span class="p">(</span><span class="nx">label</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">label</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">:</span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">person1</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">person2</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span><span class="dl">"</span><span class="s2">Greg</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">sayNameForPerson1</span> <span class="o">=</span> <span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">person1</span><span class="p">);</span>
+<span class="nx">sayNameForPerson1</span><span class="p">(</span><span class="dl">"</span><span class="s2">person1</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//"person1:Nicholas"</span>
+
+<span class="kd">var</span> <span class="nx">sayNameForPerson2</span> <span class="o">=</span> <span class="nx">sayNameForAll</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">person2</span><span class="p">,</span><span class="dl">"</span><span class="s2">person2</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">sayNameForPerson2</span><span class="p">();</span> <span class="c1">//"person2:Greg"</span>
+
+<span class="nx">person2</span><span class="p">.</span><span class="nx">sayName</span> <span class="o">=</span> <span class="nx">sayNameForPerson1</span><span class="p">;</span>
+<span class="nx">person2</span><span class="p">.</span><span class="nx">sayName</span> <span class="p">(</span><span class="dl">"</span><span class="s2">person2</span><span class="dl">"</span><span class="p">);</span>    <span class="c1">//"person2:Nicholas"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">sayNameForPerson1()</code>没有绑定参数，所以你需要传入<code class="highlighter-rouge">label</code>参数用于输出；<code class="highlighter-rouge">sayNameForPerson2()</code>不仅绑定<code class="highlighter-rouge">this</code>为<code class="highlighter-rouge">person2</code>，同时也绑定了第一个参数为<code class="highlighter-rouge">person2</code>，那么你调用<code class="highlighter-rouge">sayNameForPerson2()</code>就不需传入参数；例子最后将<code class="highlighter-rouge">sayNameForPerson1()</code>设置为<code class="highlighter-rouge">person2</code>的<code class="highlighter-rouge">sayName</code>方法，由于<code class="highlighter-rouge">this</code>的值已经绑定，所以输出仍然是<code class="highlighter-rouge">person.name</code>的值。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="function-scope--函数作用域">Function scope – 函数作用域</h2>
+
+<ul>
+  <li>定义在函数内部的变量不能被外部访问，因为这个变量仅仅在函数内有定义</li>
+  <li>函数被定义为<strong>全局</strong>，所以可以访问所有的<strong>全局变量</strong></li>
+  <li>在另一个函数中定义的函数可以访问在其父函数中定义的所有变量和父函数有权访问的变量</li>
+</ul>
+
+<hr />
+
+<h2 id="scope-and-the-function-stack--作用域和函数堆栈">Scope and the function stack – 作用域和函数堆栈</h2>
+
+<h3 id="recursion--递归">Recursion – 递归</h3>
+
+<p>函数可以指向和调用自身，有三种方法：</p>
+
+<ul>
+  <li>使用函数名</li>
+  <li><code class="highlighter-rouge">arguments.callee</code> – 这个属性包含当前正在执行的函数，被<code class="highlighter-rouge">ES5</code>严格模式删除</li>
+  <li>作用域内指向函数的变量名(指使用函数表达式的方式)</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">bar</span><span class="p">()</span> <span class="p">{</span>
+   <span class="c1">// statements go here</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The following are all equivalent:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">bar()</code></li>
+  <li><code class="highlighter-rouge">arguments.callee()</code></li>
+  <li><code class="highlighter-rouge">foo()</code></li>
+</ul>
+
+<p>A function that calls itself is called a <em>recursive</em> function.</p>
+
+<blockquote>
+  <p>将递归算法转换成非递归是可能的，但逻辑更复杂，也会需要使用到<strong>堆栈</strong>。</p>
+</blockquote>
+
+<h3 id="nested-functions-and-closures--嵌套函数和闭包">Nested functions and closures – 嵌套函数和闭包</h3>
+
+<p>可以在一个函数里面嵌套另外一个函数。<strong>嵌套（内部）函数</strong>对其<strong>容器（外部）函数</strong>是私有的。它自身也形成了一个<strong>闭包</strong>(<code class="highlighter-rouge">closure</code>)。A closure is an expression (typically a function) that can have free variables together with an environment that binds those variables (that “closes” the expression).<strong>一个闭包是一个可以自己拥有独立的环境与变量的的表达式(通常是函数)</strong>。</p>
+
+<p>既然<strong>嵌套函数是一个闭包</strong>，就意味着一个嵌套函数可以”继承“容器函数的参数和变量。换句话说，内部函数包含外部函数的作用域。</p>
+
+<ul>
+  <li>内部函数只能在外部函数中访问</li>
+  <li>内部函数形成一个闭包： 内部函数可以访问外部函数的参数和变量，反之则不行</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">outside</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">inside</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">inside</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">fn_inside</span> <span class="o">=</span> <span class="nx">outside</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// Think of it like: give me a function that adds 3 to whatever you give it</span>
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">fn_inside</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// returns 8</span>
+
+<span class="nx">result1</span> <span class="o">=</span> <span class="nx">outside</span><span class="p">(</span><span class="mi">3</span><span class="p">)(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// returns 8</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>因为形成闭包，所以你可以调用外部函数并未外部和内部函数指定参数</p>
+</blockquote>
+
+<h3 id="preservation-of-variables--保存变量">Preservation of variables – 保存变量</h3>
+
+<p>一个闭包必须保存它范围内的所有参数和变量。</p>
+
+<h3 id="multiply-nested-functions--多层嵌套函数">Multiply-nested functions – 多层嵌套函数</h3>
+
+<p>Functions can be multiply-nested.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">A</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">B</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">C</span><span class="p">(</span><span class="nx">z</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">C</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">B</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">A</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// logs 6 (1 + 2 + 3)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>B形成了一个包含A的闭包，B可以访问A的参数和变量</li>
+  <li>C形成一个包含B的闭包</li>
+  <li>所以，C可以访问A和B的任何参数和变量</li>
+  <li>反之则不行</li>
+</ul>
+
+<blockquote>
+  <p>这种递归式成为<strong>域链</strong>(scope chaining)</p>
+</blockquote>
+
+<h3 id="name-conflicts--命名冲突">Name conflicts – 命名冲突</h3>
+
+<p>When two arguments or variables in the scopes of a closure have the same name, there is a <code class="highlighter-rouge">name conflict</code>. More inner scopes take precedence, so the inner-most scope takes the highest precedence, while the outer-most scope takes the lowest(更近的作用域有更高的优先权，所以最近的优先权最高，最远的最低). This is the <strong>scope chain</strong>. The first on the chain is the inner-most scope, and the last is the outer-most scope(链的第一个元素是最里面的域，最后一个元素是最外层的域).</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">outside</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="kd">function</span> <span class="nx">inside</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">inside</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">outside</span><span class="p">()(</span><span class="mi">20</span><span class="p">);</span> <span class="c1">// returns 20 instead of 10</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>命名冲突发生在<code class="highlighter-rouge">return x</code>，此时<code class="highlighter-rouge">inside()</code>参数<code class="highlighter-rouge">x</code>与<code class="highlighter-rouge">outside()</code>的变量<code class="highlighter-rouge">x</code>发生了冲突。此时域链是<code class="highlighter-rouge">{inside,outside,global object}</code>，所以<code class="highlighter-rouge">inside()</code>的<code class="highlighter-rouge">x</code>有最高的优先权，所以返回的是传递给内部函数的<code class="highlighter-rouge">20</code>。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="closures--闭包">Closures – 闭包</h2>
+
+<p>闭包是JavaScript中最强大的特性之一。JavaScript允许函数嵌套，并且内部函数可以访问定义在外部函数中的所有变量和函数，以及外部函数能访问的所有变量和函数。但是，外部函数却不能够访问定义在内部函数中的变量和函数。这给内部函数的变量提供了一定的安全性。而且，当内部函数生存周期大于外部函数时，由于内部函数可以访问外部函数的作用域，定义在外部函数的变量和函数的生存周期就会大于外部函数本身。<strong>当内部函数以某一种方式被任何一个外部函数作用域访问时，一个闭包就产生了</strong>。</p>
+
+<p>外部函数的参数和变量对内嵌函数来说是可取得的，而除了通过内嵌函数本身，没有其它任何方法可以取得内嵌的变量。内嵌函数的内嵌变量就像内嵌函数的保险柜。它们会为内嵌函数保留<em>稳定</em>而又安全的数据参与运行。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">pet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>          <span class="c1">//外部函数定义了一个变量"name"</span>
+  <span class="kd">var</span> <span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//内部函数可以访问 外部函数定义的"name"</span>
+    <span class="k">return</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c1">//返回这个内部函数，从而将其暴露在外部函数作用域</span>
+  <span class="k">return</span> <span class="nx">getName</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">myPet</span> <span class="o">=</span> <span class="nx">pet</span><span class="p">(</span><span class="dl">"</span><span class="s2">Vivie</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">myPet</span><span class="p">();</span>                            <span class="c1">// 返回结果 "Vivie"</span>
+</code></pre></div></div>
+
+<p>闭包中的神奇变量<code class="highlighter-rouge">this</code>是非常诡异的。使用它必须十分的小心，因为<code class="highlighter-rouge">this</code>指代什么完全取决于<strong>函数在何处被调用</strong>，而不是在何处被定义。</p>
+
+<hr />
+
+<h2 id="using-the-arguments-object--使用arguments对象">Using the arguments object – 使用arguments对象</h2>
+
+<p>函数的参数被保存为一个类似于数组的对象中。在函数内，可以使用如下方式找到传入的参数：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">i</code>是序号编号，以<code class="highlighter-rouge">0</code>开始。参数的数量由<code class="highlighter-rouge">arguments.length</code>表示。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="function-parameter--函数参数">Function parameter – 函数参数</h2>
+
+<p>从<code class="highlighter-rouge">ECMAScript 6</code>开始，有两个新的类型参数：默认参数(default parameter)和剩余参数(rest parameter).</p>
+
+<h3 id="default-parameter">default parameter</h3>
+
+<p>In JavaScript, parameters of functions default to <code class="highlighter-rouge">undefined</code>. 你也可以直接在函数头设置默认参数。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">multiply</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span><span class="o">*</span><span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">multiply</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// 5</span>
+</code></pre></div></div>
+
+<h3 id="rest-parameter">rest parameter</h3>
+
+<p>剩余参数语法允许将不确定数量的参数表示为数组。</p>
+
+<p>语法：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="p">...</span><span class="nx">theArgs</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="arrow-functions--箭头函数">Arrow functions – 箭头函数</h2>
+
+<p>An <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions">arrow function expression</a> has a shorter syntax compared to function expressions and lexically binds the <code class="highlighter-rouge">this</code> value.(箭头函数表达式相比函数表达式具有较短的语法并以词法的方式绑定<code class="highlighter-rouge">this</code>)</p>
+
+<p>箭头函数<strong>总是匿名的</strong>。</p>
+
+<p>造成箭头函数引入的两个原因：</p>
+
+<ul>
+  <li>更简洁的函数</li>
+  <li><code class="highlighter-rouge">this</code></li>
+</ul>
+
+<h3 id="更简洁的函数">更简洁的函数</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="dl">"</span><span class="s2">Hydrogen</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Helium</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Lithium</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">Beryllium</span><span class="dl">"</span>
+<span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">){</span> <span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span> <span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a2</span><span class="p">);</span> <span class="c1">// logs [ 8, 6, 7, 9 ]</span>
+
+<span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="nx">s</span> <span class="o">=&gt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span> <span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a3</span><span class="p">);</span> <span class="c1">// logs [ 8, 6, 7, 9 ]</span>
+</code></pre></div></div>
+
+<h3 id="this的词法">this的词法</h3>
+
+<p>在箭头函数出现之前，每一个新函数都重新定义了自己的<code class="highlighter-rouge">this</code>值。(例如，构造函数的 <code class="highlighter-rouge">this</code> 指向了一个新的对象；严格模式下的函数的 <code class="highlighter-rouge">this</code> 值为 <code class="highlighter-rouge">undefined</code>；如果函数是作为对象的方法被调用的，则其 <code class="highlighter-rouge">this</code> 指向了那个调用它的对象)</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Person</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// The Person() constructor defines `this` as itself.</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="nx">growUp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// In nonstrict mode, the growUp() function defines `this` </span>
+    <span class="c1">// as the global object, which is different from the `this`</span>
+    <span class="c1">// defined by the Person() constructor.</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>在<code class="highlighter-rouge">ECMAScript 3/5</code>里，通过把<code class="highlighter-rouge">this</code>的值赋值给一个变量可以修复这个问题。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Person</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nb">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span> <span class="c1">// Some choose `that` instead of `self`. </span>
+                   <span class="c1">// Choose one and be consistent.</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="nx">growUp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// The callback refers to the `self` variable of which</span>
+    <span class="c1">// the value is the expected object.</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nx">age</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>箭头功能捕捉闭包上下文的<code class="highlighter-rouge">this</code>值，所以下面的代码工作正常:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Person</span><span class="p">(){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nx">setInterval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="o">++</span><span class="p">;</span> <span class="c1">// |this| properly refers to the person object</span>
+  <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h3 id="箭头函数的语法">箭头函数的语法</h3>
+
+<p>基础语法：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nx">param1</span><span class="p">,</span> <span class="nx">param2</span><span class="p">,</span> <span class="err">…</span><span class="p">,</span> <span class="nx">paramN</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">statements</span> <span class="p">}</span>
+<span class="p">(</span><span class="nx">param1</span><span class="p">,</span> <span class="nx">param2</span><span class="p">,</span> <span class="err">…</span><span class="p">,</span> <span class="nx">paramN</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">expression</span>
+         <span class="c1">// equivalent to:  =&gt; { return expression; }</span>
+
+<span class="c1">// 如果只有一个参数，圆括号是可选的:</span>
+<span class="p">(</span><span class="nx">singleParam</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">statements</span> <span class="p">}</span>
+<span class="nx">singleParam</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">statements</span> <span class="p">}</span>
+
+<span class="c1">// 无参数的函数需要使用圆括号:</span>
+<span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">statements</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>高级语法：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 返回对象字面量时应当用圆括号将其包起来:</span>
+<span class="nx">params</span> <span class="o">=&gt;</span> <span class="p">({</span><span class="na">foo</span><span class="p">:</span> <span class="nx">bar</span><span class="p">})</span>
+
+<span class="c1">// 支持 Rest parameters 和 default parameters:</span>
+<span class="p">(</span><span class="nx">param1</span><span class="p">,</span> <span class="nx">param2</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">statements</span> <span class="p">}</span>
+<span class="p">(</span><span class="nx">param1</span> <span class="o">=</span> <span class="nx">defaultValue1</span><span class="p">,</span> <span class="nx">param2</span><span class="p">,</span> <span class="err">…</span><span class="p">,</span> <span class="nx">paramN</span> <span class="o">=</span> <span class="nx">defaultValueN</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">statements</span> <span class="p">}</span>
+
+<span class="c1">// 参数列表中的解构赋值也是被支持的</span>
+<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="p">([</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">{</span><span class="na">x</span><span class="p">:</span> <span class="nx">c</span><span class="p">}</span> <span class="o">=</span> <span class="p">{</span><span class="na">x</span><span class="p">:</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
+<span class="nx">f</span><span class="p">();</span>  <span class="c1">// 6</span>
+</code></pre></div></div>
+
+<h2 id="iifeimmediately-invoked-function-expression--立即执行函数表达式">IIFE(Immediately Invoked Function Expression) – 立即执行函数表达式</h2>
+
+<p>传统的方法，函数的定义和执行分开写。为了能够在函数定义之后立即执行，我们使用<code class="highlighter-rouge">IIFE</code>这种语法：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}());</span>
+
+<span class="c1">// or</span>
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">})();</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>上面这两种写法都是可以的。</p>
+</blockquote>
+
+<p>也可以为<code class="highlighter-rouge">IIFE</code>传递参数：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">who</span><span class="p">,</span> <span class="nx">when</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">I met </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">who</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> on </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">when</span><span class="p">);</span>
+<span class="p">}</span> <span class="p">(</span><span class="dl">"</span><span class="s2">Joe Black</span><span class="dl">"</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()));</span>
+</code></pre></div></div>
+
+<p>参考：</p>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Immediately-invoked_function_expression">https://en.wikipedia.org/wiki/Immediately-invoked_function_expression</a></li>
+  <li><a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/">http://benalman.com/news/2010/11/immediately-invoked-function-expression/</a></li>
+</ul>
+
+<blockquote>
+  <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions">更多解析参见：</a></p>
+</blockquote>
+
+<p>编辑备注：</p>
+
+<ul>
+  <li>2017-03-07第一次编辑</li>
+  <li>2017-03-21第二次编辑</li>
+</ul>
+:ET

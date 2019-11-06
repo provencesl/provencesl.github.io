@@ -1,0 +1,210 @@
+I"�[<ul id="markdown-toc">
+  <li><a href="#数组对象--array-object" id="markdown-toc-数组对象--array-object">数组对象 – Array object</a>    <ul>
+      <li><a href="#创建数组" id="markdown-toc-创建数组">创建数组</a></li>
+      <li><a href="#填充数组--populating-an-array" id="markdown-toc-填充数组--populating-an-array">填充数组 – populating an array</a></li>
+      <li><a href="#引用数组元素--referring-to-array-elements" id="markdown-toc-引用数组元素--referring-to-array-elements">引用数组元素 – referring to array elements</a></li>
+      <li><a href="#遍历数组--interating-over-array" id="markdown-toc-遍历数组--interating-over-array">遍历数组 – interating over array</a>        <ul>
+          <li><a href="#常规操作" id="markdown-toc-常规操作">常规操作</a></li>
+          <li><a href="#使用-forin操作" id="markdown-toc-使用-forin操作">使用 for…in操作</a></li>
+          <li><a href="#foreach-方法提供了遍历数组元素的其他方法" id="markdown-toc-foreach-方法提供了遍历数组元素的其他方法">forEach() 方法提供了遍历数组元素的其他方法</a></li>
+        </ul>
+      </li>
+      <li><a href="#类数组" id="markdown-toc-类数组">类数组</a></li>
+    </ul>
+  </li>
+  <li><a href="#数组的方法" id="markdown-toc-数组的方法">数组的方法</a></li>
+  <li><a href="#多维数组--multi-demensional-arrays" id="markdown-toc-多维数组--multi-demensional-arrays">多维数组 – multi-demensional arrays</a></li>
+</ul>
+
+<p>以索引排序的数据组合，包括<strong>Arrays</strong>、<strong>Array object</strong>和<strong>TypeArray</strong>。</p>
+
+<p>An <code class="highlighter-rouge">array</code> is an ordered set of values that you refer to with a name(数组名) and an index(索引).</p>
+
+<p><code class="highlighter-rouge">JavaScript</code>中没有明确的数组数据类型。但是，我们可以通过使用内置<code class="highlighter-rouge">Array</code>对象和它的方法对数组进行操作。</p>
+
+<!-- more -->
+
+<blockquote>
+  <p>定义了七种数据类型：<code class="highlighter-rouge">Boolean</code>、<code class="highlighter-rouge">null</code>、<code class="highlighter-rouge">undefined</code>、<code class="highlighter-rouge">Number</code>、<code class="highlighter-rouge">String</code>、<code class="highlighter-rouge">Symbol</code>、<code class="highlighter-rouge">Object</code></p>
+</blockquote>
+
+<h2 id="数组对象--array-object">数组对象 – Array object</h2>
+
+<h3 id="创建数组">创建数组</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">elementN</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">elementN</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">elementN</span><span class="p">];</span><span class="c1">//使用字面值的方式</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">var arr = [4]</code>与<code class="highlighter-rouge">var arr = new Array(4)</code>不是等价的，后者是指数组的长度。所以，通常使用<strong>字面值</strong>初始化数组常常是首选。</p>
+</blockquote>
+
+<p>为了创建一个长度不为<code class="highlighter-rouge">0</code>，但是又没有任何元素的数组，可选以下任何一种方式：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">arrayLength</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">arrayLength</span><span class="p">);</span>
+
+<span class="c1">// This has exactly the same effect</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">arr</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="nx">arrayLength</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>除了如上所示创建新定义的变量，数组也可以作为一个属性(property)分配给一个新的或者已存在的对象(object)：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="c1">// ...</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">prop</span> <span class="o">=</span> <span class="p">[</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">elementN</span><span class="p">];</span>
+
+<span class="c1">// OR</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span><span class="na">prop</span><span class="p">:</span> <span class="p">[</span><span class="nx">element0</span><span class="p">,</span> <span class="nx">element1</span><span class="p">,</span> <span class="p">....,</span> <span class="nx">elementN</span><span class="p">]}</span>
+</code></pre></div></div>
+
+<p>如果你希望用单个元素初始化一个数组，而这个元素恰好又是数字，那么你必须使用<strong>字面值来初始化数组</strong>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">42</span><span class="p">];</span>      <span class="c1">// 创建一个只有唯一元素的数组:</span>
+                     <span class="c1">// the number 42.</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span> <span class="c1">// 创建一个没有元素的数组,</span>
+                     <span class="c1">// 但是数组的长度被设置成42.</span>
+
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="mf">9.2</span><span class="p">);</span> <span class="c1">// RangeError: Invalid array length</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.2</span><span class="p">];</span>      <span class="c1">// 创建一个元素为9.2的数组</span>
+</code></pre></div></div>
+
+<h3 id="填充数组--populating-an-array">填充数组 – populating an array</h3>
+
+<p>使用赋值。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">emp</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">emp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Casey Jones</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">emp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Phil Lesh</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">emp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">August West</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>如果索引值不是一个整型数值，那么将作为代表数组对象的一个属性创建。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">arr</span><span class="p">[</span><span class="mf">3.4</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Oranges</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>                <span class="c1">// 0</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="mf">3.4</span><span class="p">));</span>   <span class="c1">// true</span>
+</code></pre></div></div>
+
+<p>如果创建的是<em>稀疏数组</em>，即含有空白或空缺单元的数组，要格外注意。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1">// undefined</span>
+<span class="nx">a</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="c1">//3</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>另外，值得注意的是：这与显示将<code class="highlighter-rouge">a[1] = undefined</code>也是有所区别的。</p>
+</blockquote>
+
+<h3 id="引用数组元素--referring-to-array-elements">引用数组元素 – referring to array elements</h3>
+
+<p>元素的索引从<code class="highlighter-rouge">0</code>开始。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">one</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">two</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">three</span><span class="dl">"</span><span class="p">];</span>
+<span class="nx">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>  <span class="c1">// three</span>
+
+
+<span class="c1">//在JavaScript中，数组也是对象，所以可以使用方括号来访问数组的属性</span>
+<span class="nx">arr</span><span class="p">[</span><span class="dl">"</span><span class="s2">length</span><span class="dl">"</span><span class="p">];</span>  <span class="c1">// 3</span>
+</code></pre></div></div>
+
+<h3 id="遍历数组--interating-over-array">遍历数组 – interating over array</h3>
+
+<h4 id="常规操作">常规操作</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">green</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">blue</span><span class="dl">'</span><span class="p">];</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">colors</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">colors</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="使用-forin操作">使用 for…in操作</h4>
+
+<p>Since <code class="highlighter-rouge">JavaScript</code> elements are saved as standard object properties, it is not advisable to iterate through JavaScript arrays using <code class="highlighter-rouge">for...in</code>loops because normal elements and all enumerable properties will be listed.(什么意思？)</p>
+
+<h4 id="foreach-方法提供了遍历数组元素的其他方法">forEach() 方法提供了遍历数组元素的其他方法</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">green</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">blue</span><span class="dl">'</span><span class="p">];</span>
+<span class="nx">colors</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>被传递给<code class="highlighter-rouge">forEach()</code>的函数会在数组的每个元素上执行一次，元素作为参数传递给寒素。<strong>未赋值的值不会在<code class="highlighter-rouge">forEach()循环</code></strong>。</p>
+
+<p>注意，在数组定义时省略的元素不会在<code class="highlighter-rouge">forEach()</code>遍历时被列出，但是手动赋值为<code class="highlighter-rouge">undefined</code>的元素是会被列出的：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">first</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">second</span><span class="dl">'</span><span class="p">,</span> <span class="p">,</span> <span class="dl">'</span><span class="s1">fourth</span><span class="dl">'</span><span class="p">];</span>
+
+<span class="c1">// returns ['first', 'second', 'fourth'];</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+<span class="p">})</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">array[2] is undefined</span><span class="dl">'</span><span class="p">);</span> <span class="p">}</span> <span class="c1">// true</span>
+
+<span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">first</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">second</span><span class="dl">'</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">,</span> <span class="dl">'</span><span class="s1">fourth</span><span class="dl">'</span><span class="p">];</span>
+
+<span class="c1">// returns ['first', 'second', undefined, 'fourth'];</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="类数组">类数组</h3>
+
+<p>有一些<code class="highlighter-rouge">DOM</code>查询操作，会返回<code class="highlighter-rouge">DOM</code>元素列表，他们并不是真正意义上的数组，十分类似而已。另一个例子是通过<code class="highlighter-rouge">arguments</code>对象将函数的参数当作列表来访问。这些都是类数组。</p>
+
+<hr />
+
+<h2 id="数组的方法">数组的方法</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">concat()</code> 连接两个数组并返回一个新的数组</li>
+  <li><code class="highlighter-rouge">join(deliminator = ',')</code> 将数组的所有元素连接成一个字符串</li>
+  <li><code class="highlighter-rouge">push()</code> 在数组末尾添加一个或多个元素，并返回数组操作后的长度</li>
+  <li><code class="highlighter-rouge">pop()</code> 从数组移出最后一个元素，并返回该元素</li>
+  <li><code class="highlighter-rouge">shift()</code> 从数组移出第一个元素，并返回该元素</li>
+  <li><code class="highlighter-rouge">unshift()</code> 在数组开头添加一个或多个元素，并返回数组的新长度</li>
+  <li><code class="highlighter-rouge">slice(start_index, upto_index)</code> 从数组提取一个片段，并作为一个新数组返回</li>
+  <li><code class="highlighter-rouge">splice(index, count_to_remove, addElement1, addElement2, ...)</code> 从数组移出一些元素，（可选）并替换它们</li>
+  <li><code class="highlighter-rouge">reverse()</code> 颠倒数组元素的顺序：第一个变成最后一个，最后一个变成第一个</li>
+  <li><code class="highlighter-rouge">sort()</code> 给数组元素排序</li>
+  <li><code class="highlighter-rouge">indexOf(searchElement[, fromIndex])</code> 在数组中搜索searchElement并返回第一个匹配的索引</li>
+  <li><code class="highlighter-rouge">lastIndexOf(searchElement[, fromIndex])</code> 和<code class="highlighter-rouge">indexOf</code>差不多，但是是从结尾开始，并且是反向搜索</li>
+  <li><code class="highlighter-rouge">forEach(callback[, thisObject])</code> 在数组每个元素项上执行callback</li>
+  <li><code class="highlighter-rouge">map(callback[, thisObject])</code> 在数组的每个单元项上执行callback函数，并把返回包含回调函数返回值的新数组</li>
+  <li><code class="highlighter-rouge">filter(callback[, thisObject])</code> 返回一个包含所有在回调函数上返回为true的元素的新数组</li>
+  <li><code class="highlighter-rouge">every(callback[, thisObject])</code> 当数组中每一个元素在callback上被返回true时就返回true</li>
+  <li><code class="highlighter-rouge">some(callback[, thisObject])</code> 只要数组中有一项在callback上被返回true，就返回true</li>
+  <li><code class="highlighter-rouge">reduce(callback[, initialValue])</code> 使用回调函数 callback(firstValue, secondValue) 把数组列表计算成一个单一值</li>
+  <li><code class="highlighter-rouge">reduceRight(callback[, initalvalue])</code> 和 reduce()相似，但是是从最后一个元素开始的</li>
+</ul>
+
+<hr />
+
+<h2 id="多维数组--multi-demensional-arrays">多维数组 – multi-demensional arrays</h2>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">a</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">[</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">,</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">j</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">]</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+Row 0: [0,0] [0,1] [0,2] [0,3]
+Row 1: [1,0] [1,1] [1,2] [1,3]
+Row 2: [2,0] [2,1] [2,2] [2,3]
+Row 3: [3,0] [3,1] [3,2] [3,3]
+*/</span>
+</code></pre></div></div>
+:ET

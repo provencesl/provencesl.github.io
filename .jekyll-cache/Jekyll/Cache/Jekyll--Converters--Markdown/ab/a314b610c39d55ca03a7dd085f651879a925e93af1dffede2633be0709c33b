@@ -1,0 +1,21 @@
+I"T
+<p>Angular系列教程:</p>
+
+<ul>
+  <li><a href="/2017/07/06/Angular-Second">Angular4第二课 – 基本概念解析</a></li>
+  <li><a href="/2017/07/12/Angular-Third">Angular4第三课 – 从Heroes的栗子看Angular</a></li>
+</ul>
+
+<blockquote>
+  <p>One framework. Mobile &amp; desktop.<sup><a href="https://angular.io/">来源</a></sup></p>
+</blockquote>
+
+<p>而Angular是什么呢？我看到这句话</p>
+
+<blockquote>
+  <p>Angular is a platform that makes it easy to build applications with the web. Angular combines declarative templates, dependency injection, end to end tooling, and integrated best practices to solve development challenges.<sup><a href="https://angular.io/docs">来源</a></sup></p>
+</blockquote>
+
+<p>上面说，Angular是一个框架，还整合了声明式模板、依赖注入和端对端工具。具体点呢？</p>
+
+:ET

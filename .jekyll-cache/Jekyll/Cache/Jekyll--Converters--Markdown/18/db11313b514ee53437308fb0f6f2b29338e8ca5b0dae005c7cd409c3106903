@@ -1,0 +1,22 @@
+I"7
+<p><code class="highlighter-rouge">Gulp</code>是一个基于<code class="highlighter-rouge">Node.js</code>的流式构建工具。可以使用它进行项目管理，方便地执行一些常见的任务。下面的文章按以下两点组织。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">gulp</code>的基本知识</li>
+  <li><code class="highlighter-rouge">gulp</code>执行的常见任务</li>
+</ul>
+
+<p>首先，贴出一些可供参考的网站：</p>
+
+<ul>
+  <li><a href="http://gulpjs.com/"><code class="highlighter-rouge">gulp</code>官网</a></li>
+  <li><a href="https://github.com/gulpjs/gulp"><code class="highlighter-rouge">gulp</code>github 地址</a></li>
+  <li><a href="http://gulpjs.com/plugins/"><code class="highlighter-rouge">gulp</code>官方插件地址</a></li>
+  <li><a href="http://www.ydcss.com/archives/18#lesson6"><code class="highlighter-rouge">gulp</code>详细入门教程</a></li>
+</ul>
+
+<p>使用<code class="highlighter-rouge">gulp</code>的基本步骤是：</p>
+
+<p>安装<code class="highlighter-rouge">node.js</code> -&gt; 全局安装<code class="highlighter-rouge">gulp</code> -&gt; 在项目里安装<code class="highlighter-rouge">gulp</code>和<code class="highlighter-rouge">gulp</code>插件 -&gt; 配置<code class="highlighter-rouge">gulpfile.js</code>文件 -&gt; 运行任务</p>
+
+:ET

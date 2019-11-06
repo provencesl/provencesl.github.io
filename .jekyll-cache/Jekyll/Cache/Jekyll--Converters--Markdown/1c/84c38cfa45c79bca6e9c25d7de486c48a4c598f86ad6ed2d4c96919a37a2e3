@@ -1,0 +1,12 @@
+I"�
+<blockquote>
+  <p>TypeScript is a typed superset of JavaScript that compiles to plain JavaScript<sup><a href="http://www.typescriptlang.org/index.html">来源</a></sup>.</p>
+</blockquote>
+
+<p>这意味着所有的<code class="highlighter-rouge">ES6</code>代码都是完全有效的且可编译的TypeScript代码(通俗一点，就是任何合法的JavaScript程序都是合法的TypeScript程序)。</p>
+
+<p><strong>为什么我们需要使用TypeScript呢？</strong>目前广泛应用的JavaScript标准还是ES5，在如今大规模JavaScript应用中，由于它缺乏很多必要的特性，一些可维护性问题就暴露出来了。ES6旨在解决上述可维护性问题，但并没有完全实现，其次该标准的广泛采用，也是个漫长的过程。TypeScript应运而生，其中类型检查是它的一个非常重要的特性。</p>
+
+<p><strong>如何学习TypeScript？</strong>目前我推荐的是<a href="http://www.typescriptlang.org/index.html">官方的语言主页</a>和该语言开源仓库的<a href="https://github.com/Microsoft/TypeScript/wiki">wiki主页</a>，我尤其推荐后者，非常便于学习和查询。</p>
+
+:ET

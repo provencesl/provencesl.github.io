@@ -1,0 +1,10 @@
+I"�
+<p>在<a href="/2017/07/20/Clean-Code">编写自己的代码库</a>中我曾经表达了自己对 JavaScript 的理解。今日(2017.10.21)阅读 Nicholas C.Zakes 的 《Understanding ES6》，Redux 的创造者 Dan Abramov 在序言中提到：</p>
+
+<blockquote>
+  <p>JavaScript was not a toy language.</p>
+</blockquote>
+
+<p>是的，JavaScript 并不是(或者说不再是)一门“玩具”语言了。所以不，本文主要聚焦于 ES6 的一些 new feature，以及表达一些自我的理解。</p>
+
+:ET

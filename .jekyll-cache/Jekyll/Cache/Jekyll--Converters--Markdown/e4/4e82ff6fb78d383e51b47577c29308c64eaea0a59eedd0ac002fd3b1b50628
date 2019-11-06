@@ -1,0 +1,11 @@
+I"�
+<p>Angular系列教程:</p>
+
+<ul>
+  <li><a href="/2017/07/04/First-Meet-Angular">Angular4第一课 – 启动</a></li>
+  <li><a href="/2017/07/06/Angular-Second">Angular4第二课 – 基本概念解析</a></li>
+</ul>
+
+<p>为了学习Angular，实现了主页教程的<code class="highlighter-rouge">Heroes</code>例子。代码放在仓库<a href="https://github.com/maoxiaoke/Angular4-heroes">Angular4-heroes</a>下。但是，希望写单独为此写一篇的目的在于，这是一个非常好的例子，通过这个例子，我们可以详细地了解Angular有关<strong>表单</strong>、<strong>服务</strong>、<strong>注入</strong>、<strong>HTTP</strong>、<strong>路由</strong>等概念，所以非常值得初学者学习。</p>
+
+:ET

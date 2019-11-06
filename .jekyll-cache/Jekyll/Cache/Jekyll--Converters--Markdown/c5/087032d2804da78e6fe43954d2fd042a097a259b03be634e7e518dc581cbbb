@@ -1,0 +1,327 @@
+I"�s<ul id="markdown-toc">
+  <li><a href="#destructuring--解构" id="markdown-toc-destructuring--解构">Destructuring – 解构</a></li>
+  <li><a href="#求模与求余运算" id="markdown-toc-求模与求余运算">求模与求余运算</a>    <ul>
+      <li><a href="#求余运算符--remainder" id="markdown-toc-求余运算符--remainder">求余运算符<code class="highlighter-rouge">%</code> – Remainder</a></li>
+      <li><a href="#求模运算" id="markdown-toc-求模运算">求模运算</a></li>
+      <li><a href="#总结" id="markdown-toc-总结">总结</a></li>
+      <li><a href="#若只想要要得到整数商呢" id="markdown-toc-若只想要要得到整数商呢">若只想要要得到整数商呢？</a></li>
+    </ul>
+  </li>
+  <li><a href="#exponentiation-operator--指数运算符" id="markdown-toc-exponentiation-operator--指数运算符">Exponentiation operator – 指数运算符</a></li>
+  <li><a href="#conditional-operator---条件运算符" id="markdown-toc-conditional-operator---条件运算符">Conditional operator –  条件运算符</a></li>
+  <li><a href="#unary-operators--一元操作符" id="markdown-toc-unary-operators--一元操作符">Unary operators – 一元操作符</a>    <ul>
+      <li><a href="#delete" id="markdown-toc-delete">delete</a>        <ul>
+          <li><a href="#deleting-array-elements--删除数组元素" id="markdown-toc-deleting-array-elements--删除数组元素">Deleting array elements – 删除数组元素</a></li>
+        </ul>
+      </li>
+      <li><a href="#typedof" id="markdown-toc-typedof">typedof</a></li>
+      <li><a href="#void" id="markdown-toc-void">void</a></li>
+      <li><a href="#relational-operators--关系操作符" id="markdown-toc-relational-operators--关系操作符">Relational operators – 关系操作符</a>        <ul>
+          <li><a href="#in-operator" id="markdown-toc-in-operator">in operator</a></li>
+          <li><a href="#instanceof" id="markdown-toc-instanceof">instanceof</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#expressions--表达式" id="markdown-toc-expressions--表达式">Expressions – 表达式</a>    <ul>
+      <li><a href="#primary-expressions" id="markdown-toc-primary-expressions">Primary expressions</a>        <ul>
+          <li><a href="#this" id="markdown-toc-this">this</a></li>
+        </ul>
+      </li>
+      <li><a href="#left-hand-side-expressions--左值表达式" id="markdown-toc-left-hand-side-expressions--左值表达式">Left-hand-side expressions – 左值表达式</a>        <ul>
+          <li><a href="#new" id="markdown-toc-new">new</a></li>
+          <li><a href="#super" id="markdown-toc-super">super</a></li>
+          <li><a href="#spread-operator" id="markdown-toc-spread-operator">Spread operator</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>常见的表达式和运算符都已经了解了，所以主要是一些不同的以及需要注意的点。</p>
+
+<!-- more -->
+
+<h2 id="destructuring--解构">Destructuring – 解构</h2>
+
+<p>对于更复杂的赋值, 这个解构赋值<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment"><code class="highlighter-rouge">destructuring assignment</code></a>语法是一个能从数组或对象对应的数组结构或对象字面量里提取数据的<code class="highlighter-rouge">Javascript</code>表达式。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">one</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">two</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">three</span><span class="dl">"</span><span class="p">];</span>
+
+<span class="c1">// 不使用解构</span>
+<span class="kd">var</span> <span class="nx">one</span>   <span class="o">=</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">two</span>   <span class="o">=</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">three</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="c1">// 使用解构</span>
+<span class="kd">var</span> <span class="p">[</span><span class="nx">one</span><span class="p">,</span> <span class="nx">two</span><span class="p">,</span> <span class="nx">three</span><span class="p">]</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="求模与求余运算">求模与求余运算</h2>
+
+<h3 id="求余运算符--remainder">求余运算符<code class="highlighter-rouge">%</code> – Remainder</h3>
+
+<p><code class="highlighter-rouge">JavaScript</code>中的<code class="highlighter-rouge">%</code>就是求余运算，返回求余结果。</p>
+
+<p>即：<code class="highlighter-rouge">result = number1 % number2</code></p>
+
+<p>返回的符号由<code class="highlighter-rouge">number1</code>的符号确定，返回值的大小在<code class="highlighter-rouge">0</code>和<code class="highlighter-rouge">number2</code>的绝对值之间。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">-</span><span class="mi">19</span> <span class="o">/</span> <span class="o">-</span><span class="mi">2</span>  <span class="c1">// output: -1</span>
+<span class="mi">19</span> <span class="o">/</span> <span class="mf">6.7</span>    <span class="c1">//output: 5.6</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">JavaScript</code>中的<code class="highlighter-rouge">/</code>是普通的除法运算。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">5</span> <span class="o">/</span> <span class="mi">3</span>   <span class="c1">//output: 1.6666666666666667</span>
+<span class="o">-</span><span class="mi">5</span> <span class="o">/-</span><span class="mi">3</span>  <span class="c1">//outpuy: 1.6666666666666667</span>
+</code></pre></div></div>
+
+<h3 id="求模运算">求模运算</h3>
+
+<p><code class="highlighter-rouge">JavaScript</code>中的求模运算可以采用以下方法实现：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Number</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">mod</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">n</span><span class="p">){</span>
+    <span class="k">return</span> <span class="p">((</span><span class="k">this</span> <span class="o">%</span> <span class="nx">n</span><span class="p">)</span> <span class="o">+</span> <span class="nx">n</span><span class="p">)</span> <span class="o">%</span> <span class="nx">n</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="o">-</span><span class="mi">13</span><span class="p">).</span><span class="nx">mod</span><span class="p">(</span><span class="mi">64</span><span class="p">));</span>  <span class="c1">// 51</span>
+</code></pre></div></div>
+
+<h3 id="总结">总结</h3>
+
+<p>对于整型数<code class="highlighter-rouge">a</code>，<code class="highlighter-rouge">b</code>来说，取模运算或者求余运算的方法都是：</p>
+
+<ul>
+  <li>求整数商： <code class="highlighter-rouge">c = a/b</code></li>
+  <li>计算模或者余数： <code class="highlighter-rouge">r = a - c*b</code>.</li>
+</ul>
+
+<p><strong>求模运算和求余运算在第一步不同</strong>: 取余运算在取<code class="highlighter-rouge">c</code>的值时，向<code class="highlighter-rouge">0</code>方向舍入；而取模运算在计算<code class="highlighter-rouge">c</code>的值时，向负无穷方向舍入。</p>
+
+<p>举例： 计算<code class="highlighter-rouge">-7 Mod 4</code>, 那么<code class="highlighter-rouge">a = -7; b = 4</code></p>
+
+<ul>
+  <li>第一步：求整数商<code class="highlighter-rouge">c</code>，进行<strong>求模运算</strong> <code class="highlighter-rouge">c = -2</code>(向负无穷方向舍入)，进行<strong>求余运算</strong> <code class="highlighter-rouge">c = -1</code>(向<code class="highlighter-rouge">0</code>方向舍入)</li>
+  <li>第二步：由公式<code class="highlighter-rouge">r = a - c*b</code>，由于<code class="highlighter-rouge">c</code>值不一样，求模时<code class="highlighter-rouge">r = 1</code>，求余时<code class="highlighter-rouge">r = -3</code></li>
+</ul>
+
+<p>因此，当<code class="highlighter-rouge">a</code>和<code class="highlighter-rouge">b</code>符号一致时，求模运算和求余运算所得的<code class="highlighter-rouge">c</code>的值一致，因此结果一致。当<strong>符号不一致时，结果不一样</strong>。求模运算结果的符号和<code class="highlighter-rouge">b</code>一致，求余运算结果的符号和<code class="highlighter-rouge">a</code>一致。</p>
+
+<blockquote>
+  <p>不同语言对<code class="highlighter-rouge">%</code>的含义是不同的，<code class="highlighter-rouge">Python</code>是<strong>取模</strong>，<code class="highlighter-rouge">C/C++</code>是<strong>取余</strong>，<code class="highlighter-rouge">JavaScript</code>是<strong>取余</strong></p>
+</blockquote>
+
+<h3 id="若只想要要得到整数商呢">若只想要要得到整数商呢？</h3>
+
+<p><code class="highlighter-rouge">JavaScript</code>有一个全局对象<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/parseInt"><code class="highlighter-rouge">parseInt()</code></a>可以帮助我们解决这个问题。</p>
+
+<p>语法是：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">parseInt</span> <span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">radix</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>内置对象<code class="highlighter-rouge">Number</code>的方法<code class="highlighter-rouge">parseInt()</code>和这个结果是一致的。</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">parseInt</span><span class="p">(</span><span class="mi">7</span> <span class="o">/</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// 3</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">JavaScript</code>的内置<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math"><code class="highlighter-rouge">Math</code></a>还提供一些其他的方法：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Math.ceil(x)</code>: 返回向上取整</li>
+  <li><code class="highlighter-rouge">Math.round(x)</code>: 返回四舍五入后的整数</li>
+  <li><code class="highlighter-rouge">Math.floor(x)</code>: 返回向下取整</li>
+</ul>
+
+<hr />
+
+<h2 id="exponentiation-operator--指数运算符">Exponentiation operator – 指数运算符</h2>
+
+<p><code class="highlighter-rouge">JavaScript</code>还提供指数运算符<code class="highlighter-rouge">**</code>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2</span> <span class="o">**</span> <span class="mi">3</span>  <span class="c1">// 8</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="conditional-operator---条件运算符">Conditional operator –  条件运算符</h2>
+
+<p>语法如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">condition</span> <span class="p">?</span> <span class="nx">val1</span> <span class="p">:</span> <span class="nx">val2</span>
+</code></pre></div></div>
+
+<p>If condition is <code class="highlighter-rouge">true</code>, the operator has the value of <code class="highlighter-rouge">val1</code>. Otherwise it has the value of <code class="highlighter-rouge">val2</code>.</p>
+
+<h2 id="unary-operators--一元操作符">Unary operators – 一元操作符</h2>
+
+<h3 id="delete">delete</h3>
+
+<p>The <code class="highlighter-rouge">delete</code> operator deletes an object, an object’s property, or an element at a specified index in an array.(删除一个对象，或一个对象的属性，或一个数组中的元素或键值) The syntax is:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">delete</span> <span class="nx">objectName</span><span class="p">;</span>
+<span class="k">delete</span> <span class="nx">objectName</span><span class="p">.</span><span class="nx">property</span><span class="p">;</span>
+<span class="k">delete</span> <span class="nx">objectName</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+<span class="k">delete</span> <span class="nx">property</span><span class="p">;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The fourth form is legal only within a <code class="highlighter-rouge">with</code> statement, to delete a property from an object.</p>
+</blockquote>
+
+<p>你能使用<code class="highlighter-rouge">delete</code>删除各种各样的隐式声明(implicity declared)， 但是被<code class="highlighter-rouge">var</code>声明的除外。</p>
+
+<p>如果<code class="highlighter-rouge">delete</code>操作成功, 属性或者元素会变成<code class="highlighter-rouge">undefined</code>. 如果<code class="highlighter-rouge">delete</code>可行会返回<code class="highlighter-rouge">true</code>，如果不成功返回<code class="highlighter-rouge">false</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">43</span><span class="p">;</span>
+<span class="nx">myobj</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">();</span>
+<span class="nx">myobj</span><span class="p">.</span><span class="nx">h</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>    <span class="c1">// create property h</span>
+<span class="k">delete</span> <span class="nx">x</span><span class="p">;</span>       <span class="c1">// returns true (can delete if declared implicitly)</span>
+<span class="k">delete</span> <span class="nx">y</span><span class="p">;</span>       <span class="c1">// returns false (cannot delete if declared with var)</span>
+<span class="k">delete</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span> <span class="c1">// returns false (cannot delete predefined properties)</span>
+<span class="k">delete</span> <span class="nx">myobj</span><span class="p">.</span><span class="nx">h</span><span class="p">;</span> <span class="c1">// returns true (can delete user-defined properties)</span>
+<span class="k">delete</span> <span class="nx">myobj</span><span class="p">;</span>   <span class="c1">// returns true (can delete if declared implicitly)</span>
+</code></pre></div></div>
+
+<h4 id="deleting-array-elements--删除数组元素">Deleting array elements – 删除数组元素</h4>
+
+<p>删除数组中的元素时，<strong>数组的长度是不变的</strong>，例如<code class="highlighter-rouge">delete a[3], a[4]</code>，<code class="highlighter-rouge">a[4]</code> 和<code class="highlighter-rouge">a[3]</code>仍然存在，只是变成了<code class="highlighter-rouge">undefined</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">trees</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="dl">"</span><span class="s2">redwood</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">bay</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">cedar</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">oak</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">maple</span><span class="dl">"</span><span class="p">);</span>
+<span class="k">delete</span> <span class="nx">trees</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// this does not get executed（不会被执行）</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>如果想让数组中存在一个元素但是是<code class="highlighter-rouge">undefined</code>值，使用<code class="highlighter-rouge">undefined</code>关键字而不是<code class="highlighter-rouge">delete</code>操作.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">trees</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="dl">"</span><span class="s2">redwood</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">bay</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">cedar</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">oak</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">maple</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">trees</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="mi">3</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// this gets executed（会被执行）</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="typedof">typedof</h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof"><code class="highlighter-rouge">typeof</code></a>的语法形式如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typeof</span> <span class="nx">operand</span>
+<span class="k">typeof</span> <span class="p">(</span><span class="nx">operand</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="void">void</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">void</span> <span class="p">(</span><span class="nx">expression</span><span class="p">)</span>
+<span class="k">void</span> <span class="nx">expression</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">void</code>运算符,表明一个运算没有返回值。</p>
+
+<p>下面的代码创建了一个超链接，当用户单击它时，提交一个表单。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="dl">"</span><span class="s2">javascript:void(document.form.submit())</span><span class="dl">"</span><span class="o">&gt;</span>
+<span class="nx">Click</span> <span class="nx">here</span> <span class="nx">to</span> <span class="nx">submit</span><span class="o">&lt;</span><span class="sr">/a</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<h3 id="relational-operators--关系操作符">Relational operators – 关系操作符</h3>
+
+<h4 id="in-operator">in operator</h4>
+
+<p>如果指定的<strong>属性</strong>(property)在指定的对象(object)中会返回<code class="highlighter-rouge">true</code>,语法如下:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">propNameOrNumber</span> <span class="k">in</span> <span class="nx">objectName</span>
+</code></pre></div></div>
+
+<p>例子：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">trees</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="dl">"</span><span class="s2">redwood</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">bay</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">cedar</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">oak</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">maple</span><span class="dl">"</span><span class="p">);</span>
+<span class="mi">0</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">;</span>        <span class="c1">// returns true</span>
+<span class="mi">3</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">;</span>        <span class="c1">// returns true</span>
+<span class="mi">6</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">;</span>        <span class="c1">// returns false</span>
+<span class="dl">"</span><span class="s2">bay</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">;</span>    <span class="c1">// returns false (you must specify the index number,</span>
+                   <span class="c1">// not the value at that index)</span>
+<span class="dl">"</span><span class="s2">length</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">trees</span><span class="p">;</span> <span class="c1">// returns true (length is an Array property)</span>
+
+<span class="c1">// Predefined objects</span>
+<span class="dl">"</span><span class="s2">PI</span><span class="dl">"</span> <span class="k">in</span> <span class="nb">Math</span><span class="p">;</span>          <span class="c1">// returns true</span>
+<span class="kd">var</span> <span class="nx">myString</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="dl">"</span><span class="s2">coral</span><span class="dl">"</span><span class="p">);</span>
+<span class="dl">"</span><span class="s2">length</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">myString</span><span class="p">;</span>  <span class="c1">// returns true</span>
+
+<span class="c1">// Custom objects</span>
+<span class="kd">var</span> <span class="nx">mycar</span> <span class="o">=</span> <span class="p">{</span><span class="na">make</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Honda</span><span class="dl">"</span><span class="p">,</span> <span class="na">model</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Accord</span><span class="dl">"</span><span class="p">,</span> <span class="na">year</span><span class="p">:</span> <span class="mi">1998</span><span class="p">};</span>
+<span class="dl">"</span><span class="s2">make</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">mycar</span><span class="p">;</span>  <span class="c1">// returns true</span>
+<span class="dl">"</span><span class="s2">model</span><span class="dl">"</span> <span class="k">in</span> <span class="nx">mycar</span><span class="p">;</span> <span class="c1">// returns true</span>
+</code></pre></div></div>
+
+<h4 id="instanceof">instanceof</h4>
+
+<p><code class="highlighter-rouge">instanceof operator</code>, 如果对象是某种指定类型(object type)返回<code class="highlighter-rouge">true</code>。语法如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">objectName</span> <span class="k">instanceof</span> <span class="nx">objectType</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>当你需要确认一个对象在运行时的类型时使用<code class="highlighter-rouge">instanceof</code>。例如, 抓取异常, 你可以根据抛出异常的类型分类处理异常代码。</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">theDay</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">theDay</span> <span class="k">instanceof</span> <span class="nb">Date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// statements to execute 执行</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="expressions--表达式">Expressions – 表达式</h2>
+
+<p>An expression is any valid unit of code that resolves to a value.</p>
+
+<p>·JavaScript· has the following expression categories:</p>
+
+<ul>
+  <li><strong>Arithmetic</strong>: evaluates to a number, for example 3.14159. (Generally uses arithmetic operators.)</li>
+  <li><strong>String</strong>: evaluates to a character string, for example, “Fred” or “234”. (Generally uses string operators.)</li>
+  <li><strong>Logical</strong>: evaluates to true or false. (Often involves logical operators.)</li>
+  <li><strong>Primary expressions</strong>: Basic keywords and general expressions in JavaScript.</li>
+  <li><strong>Left-hand-side expressions</strong>: Left values are the destination of an assignment.</li>
+</ul>
+
+<h3 id="primary-expressions">Primary expressions</h3>
+
+<h4 id="this">this</h4>
+
+<p>使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/this"><code class="highlighter-rouge">this</code></a> keyword关键字来指代当前对象(current object)，通常，<code class="highlighter-rouge">this</code>指代的是方法中正在被调用的对象。用法如下</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="p">[</span><span class="dl">"</span><span class="s2">propertyName</span><span class="dl">"</span><span class="p">]</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">propertyName</span>
+</code></pre></div></div>
+
+<h3 id="left-hand-side-expressions--左值表达式">Left-hand-side expressions – 左值表达式</h3>
+
+<p>Left values are the destination of an assignment.</p>
+
+<h4 id="new">new</h4>
+
+<p>你可以使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new"><code class="highlighter-rouge">new</code></a> operator 创建一个自定义类型或者是预置类型的对象实例。用法如下：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">objectName</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">objectType</span><span class="p">([</span><span class="nx">param1</span><span class="p">,</span> <span class="nx">param2</span><span class="p">,</span> <span class="p">...,</span> <span class="nx">paramN</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<h4 id="super">super</h4>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/super"><code class="highlighter-rouge">super</code></a>关键字可以用来调用一个对象父类的函数，它在用来调用一个类的父类的构造函数时非常有用。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">super</span><span class="p">([</span><span class="nx">arguments</span><span class="p">]);</span> <span class="c1">// calls the parent constructor. super.functionOnParent([arguments]);</span>
+</code></pre></div></div>
+
+<h4 id="spread-operator">Spread operator</h4>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Spread_operator"><code class="highlighter-rouge">spread</code></a> operator允许一个表达式在原地展开，当需要多个参数(比如函数调用时)或者多个值(比如字面量数组)。</p>
+:ET

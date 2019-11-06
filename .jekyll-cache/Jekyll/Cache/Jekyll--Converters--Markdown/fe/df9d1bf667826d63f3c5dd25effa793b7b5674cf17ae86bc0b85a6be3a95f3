@@ -1,0 +1,15 @@
+I"�
+<p><code class="highlighter-rouge">AJAX</code> stands for <code class="highlighter-rouge">A</code>synchronous <code class="highlighter-rouge">J</code>avaScript and <code class="highlighter-rouge">X</code>ML. 它是使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest"><code class="highlighter-rouge">XMLHttpRequest</code></a>对象与服务器端脚本进行通信。它可以发送以及接收各种格式的信息，包括<code class="highlighter-rouge">JSON</code>，<code class="highlighter-rouge">XML</code>，<code class="highlighter-rouge">HTML</code>，甚至文本文件。</p>
+
+<blockquote>
+  <p><code class="highlighter-rouge">XMLHttpRequest</code>是一个<code class="highlighter-rouge">API</code>, 它为客户端提供了在客户端和服务器之间传输数据的功能。它提供了一个通过<code class="highlighter-rouge">URL</code>来获取数据的简单方式，并且不会使整个页面刷新。<strong>这个对象充当着浏览器中的脚本（客户端）和服务器之间的中间人的角色</strong>。以往的请求都是由浏览器发出，而<code class="highlighter-rouge">JavaScript</code>通过这个对象可以自己发送请求，同时也自己处理响应。</p>
+</blockquote>
+
+<p>The two major features of <code class="highlighter-rouge">AJAX</code>:</p>
+
+<ul>
+  <li>向服务器发出请求，而不重新加载页面</li>
+  <li>接收和处理服务器中的数据</li>
+</ul>
+
+:ET

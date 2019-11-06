@@ -1,0 +1,16 @@
+I"x
+<p><code class="highlighter-rouge">HTTP</code>是<code class="highlighter-rouge">Node</code>的一个核心模块，同时也是一些很底层的<code class="highlighter-rouge">API</code>。</p>
+
+<p><code class="highlighter-rouge">Node</code>有为数不多的<em>内置</em>模块，<code class="highlighter-rouge">HTTP</code>是其中之一，<code class="highlighter-rouge">fs</code>也是。这些内置模块你通常可以在<code class="highlighter-rouge">Node</code>的<a href="https://nodejs.org/en/docs/">官方网站的<code class="highlighter-rouge">DOCS</code></a>获取并了解他们的使用方法和<code class="highlighter-rouge">API</code>。<code class="highlighter-rouge">HTTP</code>的相关<code class="highlighter-rouge">API</code>放在了这里：<a href="https://nodejs.org/dist/latest-v6.x/docs/api/http.html">https://nodejs.org/dist/latest-v6.x/docs/api/http.html</a></p>
+
+<blockquote>
+  <p>这是<code class="highlighter-rouge">v6.11.0</code>的版本，就是写博客的最近版本。可以在官网上获取到最新版本。其中标记为<code class="highlighter-rouge">Stability:2 - Stable</code>的表示为可放心食用的<code class="highlighter-rouge">API</code>，标记为<code class="highlighter-rouge">Stability:1 - Experimental</code>的表示为试验性质的<code class="highlighter-rouge">API</code>，标记为<code class="highlighter-rouge">Stability:0 - Deprecated</code>的表示为被弃用的<code class="highlighter-rouge">API</code>。</p>
+</blockquote>
+
+<p>在文档中很简要地介绍了一句：</p>
+
+<blockquote>
+To use the HTTP server and client one must require('http').
+</blockquote>
+
+:ET

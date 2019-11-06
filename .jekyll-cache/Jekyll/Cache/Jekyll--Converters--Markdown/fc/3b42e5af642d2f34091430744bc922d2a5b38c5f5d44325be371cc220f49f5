@@ -1,0 +1,16 @@
+I"�
+<p>数据库有<em>关系型数据库</em>(RDBMS)，关系型数据库相对比较高端，也有很多种，但开源的我们一般都使用<code class="highlighter-rouge">MySQL</code>或者<code class="highlighter-rouge">PostgreSQL</code>。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">MySQL</code>一般会使用比较流行的<code class="highlighter-rouge">Felix Geisendorfer</code>的<code class="highlighter-rouge">mysql</code>模块</li>
+  <li><code class="highlighter-rouge">PostgreSQL</code>一般使用<code class="highlighter-rouge">Brian Carlson</code>的<code class="highlighter-rouge">node-postgres</code>模块</li>
+</ul>
+
+<p>非关系型数据库在最近几年隐隐有复兴之势，他们称为<code class="highlighter-rouge">NoSQL</code>数据库，即：Not Only SQL。可以这么说，关系型数据库为了可靠性牺牲了性能，而很多<code class="highlighter-rouge">NoSQL</code>数据库把性能放在了第一位。两个非常流行的<code class="highlighter-rouge">NoSQL</code>数据库，就是<code class="highlighter-rouge">Redis</code>和<code class="highlighter-rouge">MongoDB</code>。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Redis</code>一般使用<code class="highlighter-rouge">Matt Ranney</code>的<code class="highlighter-rouge">redis</code>模块</li>
+  <li><code class="highlighter-rouge">MongoDB</code>最成熟最活跃的是<code class="highlighter-rouge">Charistian Amor Kvalheim</code>的<code class="highlighter-rouge">mongodb</code>模块</li>
+</ul>
+
+:ET

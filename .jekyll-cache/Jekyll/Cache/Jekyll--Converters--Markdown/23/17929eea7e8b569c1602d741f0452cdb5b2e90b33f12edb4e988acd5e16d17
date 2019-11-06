@@ -1,0 +1,8 @@
+I"�
+<p>图也是一种非线性的数据结构，是网络结构的抽象模型，是一组由<em>边</em>连接的<em>节点</em>。图的表示法:</p>
+
+<p><code class="highlighter-rouge">G = (V,E)</code>，其中<code class="highlighter-rouge">V</code>表示一组节点，<code class="highlighter-rouge">E</code>表示一组边。</p>
+
+<p>图论的理解有点难度，这里也是介绍一些基本点，仅仅包括图的表示和遍历。因为图论又有好多图，实在是好累。</p>
+
+:ET

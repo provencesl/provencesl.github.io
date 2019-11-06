@@ -1,0 +1,8 @@
+I"�
+<p>集合是由一组无序的且唯一的项组成的。集合这个结构，可以使用数学概念中的<em>有限集合</em>的概念来类比。在JavaScript中，ECMAScript 6使用<code class="highlighter-rouge">Set</code>类对集合进行了实现。</p>
+
+<p>在字典中，存储的是<em>[键,值]</em>对，其中<strong>键名</strong>用来查询特定的元素。可是使用<em>实际的字典</em>作为类比(单词和它们的释义)。在JavaScript中，ECMAScript 6使用<code class="highlighter-rouge">Map</code>类对集合进行了实现。</p>
+
+<p>散列表(hash table)是实现字典操作的一种有效的数据结构。目的呢，就是为了更方便地查询一个元素。下面会是具体介绍。</p>
+
+:ET

@@ -13,11 +13,12 @@ banner: 拥抱这世界。
 #permalink: /:categories/:year/:month/:day/:title/
 permalink: /:year/:month/:day/:title/
 excerpt_separator:  '<!-- more -->' #文章摘要
+gem: [jekyll,jekyll-paginate,github-pages]
+plugins: [jekyll-paginate]
 paginate: 8
 paginate_path: "page:num"
-gems: [jekyll-paginate]
 exclude: ['README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile']
-github_username: maoxiaoke
+github_username: provencesl
 highlighter: rouge
 markdown: kramdown
 FB:

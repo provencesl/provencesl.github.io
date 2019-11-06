@@ -1,0 +1,8 @@
+I"�
+<p>以索引排序的数据组合，包括<strong>Arrays</strong>、<strong>Array object</strong>和<strong>TypeArray</strong>。</p>
+
+<p>An <code class="highlighter-rouge">array</code> is an ordered set of values that you refer to with a name(数组名) and an index(索引).</p>
+
+<p><code class="highlighter-rouge">JavaScript</code>中没有明确的数组数据类型。但是，我们可以通过使用内置<code class="highlighter-rouge">Array</code>对象和它的方法对数组进行操作。</p>
+
+:ET

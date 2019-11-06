@@ -1,0 +1,521 @@
+I"a�<ul id="markdown-toc">
+  <li><a href="#data-types" id="markdown-toc-data-types">Data types</a>    <ul>
+      <li><a href="#six-data-types-that-are-primitives" id="markdown-toc-six-data-types-that-are-primitives">Six data types that are primitives</a>        <ul>
+          <li><a href="#鉴别原始类型" id="markdown-toc-鉴别原始类型">鉴别原始类型</a></li>
+          <li><a href="#原始方法原始变量原始值" id="markdown-toc-原始方法原始变量原始值">原始方法(原始变量，原始值)</a></li>
+          <li><a href="#变量是没有类型的只有值才有" id="markdown-toc-变量是没有类型的只有值才有">变量是没有类型的，只有值才有</a></li>
+          <li><a href="#基本数据类型的封装" id="markdown-toc-基本数据类型的封装">基本数据类型的封装</a></li>
+        </ul>
+      </li>
+      <li><a href="#reference-type" id="markdown-toc-reference-type">Reference type</a>        <ul>
+          <li><a href="#dereferencing-objects" id="markdown-toc-dereferencing-objects">Dereferencing Objects</a></li>
+          <li><a href="#内建类型" id="markdown-toc-内建类型">内建类型</a></li>
+          <li><a href="#引用类型也有字面量形式" id="markdown-toc-引用类型也有字面量形式">引用类型也有字面量形式</a></li>
+          <li><a href="#鉴别引用类型" id="markdown-toc-鉴别引用类型">鉴别引用类型</a></li>
+          <li><a href="#primitive-wrapper-types--原始封装类型-" id="markdown-toc-primitive-wrapper-types--原始封装类型-"><a name="primitive-wrapper">Primitive Wrapper Types – 原始封装类型 </a></a></li>
+        </ul>
+      </li>
+      <li><a href="#详解" id="markdown-toc-详解">详解</a>        <ul>
+          <li><a href="#number--数字" id="markdown-toc-number--数字">Number – 数字</a></li>
+          <li><a href="#string--字符串" id="markdown-toc-string--字符串">String – 字符串</a></li>
+          <li><a href="#布尔类型" id="markdown-toc-布尔类型">布尔类型</a></li>
+          <li><a href="#其他类型" id="markdown-toc-其他类型">其他类型</a></li>
+        </ul>
+      </li>
+      <li><a href="#data-type-conversion" id="markdown-toc-data-type-conversion">Data type conversion</a></li>
+    </ul>
+  </li>
+  <li><a href="#literals" id="markdown-toc-literals">Literals</a>    <ul>
+      <li><a href="#array-literals" id="markdown-toc-array-literals">Array literals</a></li>
+      <li><a href="#boolean-literals" id="markdown-toc-boolean-literals">Boolean literals</a></li>
+      <li><a href="#integers" id="markdown-toc-integers">Integers</a></li>
+      <li><a href="#floating-point-literals" id="markdown-toc-floating-point-literals">Floating-point literals</a></li>
+      <li><a href="#object-literals" id="markdown-toc-object-literals">Object literals</a></li>
+      <li><a href="#regexp-literals" id="markdown-toc-regexp-literals">RegExp literals</a></li>
+      <li><a href="#string-literals" id="markdown-toc-string-literals">String literals</a>        <ul>
+          <li><a href="#using-special-characters-in-strings" id="markdown-toc-using-special-characters-in-strings">Using special characters in strings</a></li>
+          <li><a href="#escaping-characters" id="markdown-toc-escaping-characters">Escaping characters</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>关于数据类型和数据结构的概念，可以参考<a href="https://en.wikipedia.org/wiki/Data_type">Wiki百科</a>。</p>
+
+<p>在<code class="highlighter-rouge">JavaScript</code>中，对象是语言的中心，连<code class="highlighter-rouge">functions</code>也被视为对象。</p>
+
+<p><code class="highlighter-rouge">JavaScript</code>有两种基本的数据类型： <code class="highlighter-rouge">primitive type</code> and <code class="highlighter-rouge">reference type</code>。两者都是通过对象进行访问的。<em>原始类型</em>保存为简单的数据值，<em>引用类型</em>则保存为对象(<code class="highlighter-rouge">objects</code>)，其本质是<strong>指向内存位置的引用</strong>。</p>
+
+<p>其它的编程语言用栈(<code class="highlighter-rouge">stack</code>)来储存原始类型，用堆(<code class="highlighter-rouge">heap</code>)来储存引用对象。<code class="highlighter-rouge">JavaScript</code>则完全不同：<strong>它使用一个<code class="highlighter-rouge">variable object</code>来追踪变量的生存周期</strong>，原始类型的值被直接保存在变量对象中，而引用类型的值作为一个指针保存在变量对象中，该指针指向实际对象在内存中的存储位置<a href="The Principles of Object-Oriented JavaScript. [美]Nicholas C.Zakas">1</a>。</p>
+
+<blockquote>
+</blockquote>
+
+<!-- more -->
+
+<h2 id="data-types">Data types</h2>
+
+<blockquote>
+  <p>The lastest ECMAScript standard defines <strong>seven(七种)</strong> data types.</p>
+</blockquote>
+
+<h3 id="six-data-types-that-are-primitives">Six data types that are primitives</h3>
+
+<p>原始数据类型指的是按照原样保存一些简单的数据，比如<code class="highlighter-rouge">true</code>、<code class="highlighter-rouge">25</code>。所以的原始类型都可以使用字面量(literal)来代表它们的值，而<em>字面量</em>表示不被存放在变量中的值。</p>
+
+<blockquote>
+  <p>A <strong>primitive</strong>(基元) is data that is not an object and has no methods.</p>
+</blockquote>
+
+<ul>
+  <li><code class="highlighter-rouge">Boolean</code>. <code class="highlighter-rouge">true</code> and <code class="highlighter-rouge">false</code>.</li>
+  <li><code class="highlighter-rouge">null</code>. A special keyword denoting a null value. And <code class="highlighter-rouge">null</code> is not the same as Null, NULL ,or any other variant for JavaScript is case-sensitive.</li>
+  <li><code class="highlighter-rouge">undefined</code>. A top-level property whose value is undefined.</li>
+  <li><code class="highlighter-rouge">Number</code>. 42 or 3.14159.</li>
+  <li><code class="highlighter-rouge">String</code>.</li>
+  <li><code class="highlighter-rouge">Symbol</code> (new in ECMAScript 2015). A data type whose instances are unique and immutable.</li>
+</ul>
+
+<h4 id="鉴别原始类型">鉴别原始类型</h4>
+
+<p>鉴别原始类型的最佳方法是使用<code class="highlighter-rouge">typeof</code>操作符。但<code class="highlighter-rouge">null</code>类型和<code class="highlighter-rouge">function</code>类型可能需要注意：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="kc">null</span><span class="p">);</span><span class="c1">//'object'</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span><span class="cm">/*...*/</span><span class="p">}</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">function</span><span class="dl">"</span> <span class="p">);</span> <span class="c1">//true</span>
+</code></pre></div></div>
+
+<p>你可以使用复合条件来鉴别<code class="highlighter-rouge">null</code>类型或者直接与<code class="highlighter-rouge">null</code>比较。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">(</span><span class="o">!</span><span class="nx">a</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">a</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">Object</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//true</span>
+
+<span class="c1">// or</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="nx">a</span> <span class="o">===</span> <span class="kc">null</span><span class="p">));</span> <span class="c1">//true</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>这被委员会TC39认定为一个错误。</p>
+</blockquote>
+
+<h4 id="原始方法原始变量原始值">原始方法(原始变量，原始值)</h4>
+
+<p>原始类型(<code class="highlighter-rouge">string</code>、<code class="highlighter-rouge">number</code>、<code class="highlighter-rouge">bool</code>有方法，<code class="highlighter-rouge">null</code>和<code class="highlighter-rouge">undefined</code>没有)也拥有方法，但它们并不是对象，<code class="highlighter-rouge">JavaScript</code>只是使它们看上去像对象一样而已。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Nicholas</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">lowercaseName</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h4 id="变量是没有类型的只有值才有">变量是没有类型的，只有值才有</h4>
+
+<p>在<code class="highlighter-rouge">javaScript</code>中，变量是没有类型的，只有值才有。所以变量可以持有任何类型的值。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span>  <span class="nx">a</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+<span class="k">typeof</span> <span class="nx">a</span><span class="p">;</span> <span class="c1">//"number"</span>
+
+<span class="nx">a</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="k">typeof</span> <span class="nx">a</span><span class="p">;</span> <span class="c1">//"boolean"</span>
+</code></pre></div></div>
+
+<h4 id="基本数据类型的封装">基本数据类型的封装</h4>
+
+<p>为了方便我们使用一些通用的方法，JavaScript对基本的三个数据类型进行了封装。</p>
+
+<ul>
+  <li><code class="highlighter-rouge">String()</code></li>
+  <li><code class="highlighter-rouge">Number()</code></li>
+  <li><code class="highlighter-rouge">Boolean()</code></li>
+  <li><code class="highlighter-rouge">Symbol()</code> – <code class="highlighter-rouge">ES6</code></li>
+</ul>
+
+<blockquote>
+  <p>这些<strong>内建函数</strong>也被称为<strong>原生函数</strong>。</p>
+</blockquote>
+
+<p>当然，我们常见的内建函数还包括：</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Array()</code></li>
+  <li><code class="highlighter-rouge">Object()</code></li>
+  <li><code class="highlighter-rouge">Function()</code></li>
+  <li><code class="highlighter-rouge">RegExp()</code></li>
+  <li><code class="highlighter-rouge">Date()</code></li>
+  <li><code class="highlighter-rouge">Error()</code></li>
+</ul>
+
+<p>由于它们的设计上的一致性，我们会统一来描述。</p>
+
+<p><strong>原生函数可以被当作构造函数来使用</strong>，所以创建的是封装对象，是对象。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="dl">"</span><span class="s2">abc</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">a</span><span class="p">);</span> <span class="c1">//"object"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span> <span class="k">instanceof</span> <span class="nb">String</span><span class="p">);</span> <span class="c1">//true</span>
+</code></pre></div></div>
+
+<p>所有<code class="highlighter-rouge">typeof</code>返回值为<code class="highlighter-rouge">object</code>的对象都包含一个内部属性<code class="highlighter-rouge">[[Class]]</code>，这个属性无法直接访问，一般通过<code class="highlighter-rouge">Object.prototype.toString()</code>来查看。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]);</span> <span class="c1">//"[object Array]"</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="sr">/regex-literal/i</span><span class="p">);</span> <span class="c1">//"[object RegExp]"</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="dl">"</span><span class="s2">abc</span><span class="dl">"</span><span class="p">);</span> <span class="c1">//"[object String]"</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span> <span class="c1">//"[object Null]"</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span> <span class="c1">//"[object Undefined]"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>虽然<code class="highlighter-rouge">Null()</code>和<code class="highlighter-rouge">Undefined()</code>这样的原生构造函数不存在，但内部<code class="highlighter-rouge">[[Class]]</code>属性值仍然是<code class="highlighter-rouge">Null</code>和<code class="highlighter-rouge">Undefined</code>。</p>
+</blockquote>
+
+<p>由于基本类型值没有<code class="highlighter-rouge">.length</code>和<code class="highlighter-rouge">.toString()</code>这样的属性和方法，所以JavaScript会自动为基本类型值进行包装，详见本页面的<a href="#primitive-wrapper">原始数据封装</a>。</p>
+
+<hr />
+
+<h3 id="reference-type">Reference type</h3>
+
+<p><em>引用类型</em>指<code class="highlighter-rouge">JavaScipt</code>中的对象(objects)，<em>引用值</em>是引用类型的实例(instances)，和对象是同义词。</p>
+
+<p><em>对象</em>是属性(properties)的无序列表，<em>属性</em>包含键/值。如果一个属性的值是<em>函数(function)</em>，就被成为方法(method)。</p>
+
+<p>我们可以通过使用<code class="highlighter-rouge">new</code>操作符和构造函数来创建对象。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">object1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">object2</span> <span class="o">=</span> <span class="nx">object1</span><span class="p">;</span>
+</code></pre></div></div>
+<blockquote>
+  <p>更多有关创建对象的操作在这里：<a href="/2017/03/22/Objects"><code class="highlighter-rouge">Object</code></a></p>
+</blockquote>
+
+<p>上述代码实例化了一个通用对象，并把它的引用保存在<code class="highlighter-rouge">object1</code>中。<strong>因为引用类型不在变量中直接保存对象，所以<code class="highlighter-rouge">object1</code>变量实际上并不包含对象的实例，而是一个指向内存中实际对象所在位置的指针(或者说引用)</strong>，所以将<code class="highlighter-rouge">object1</code>的值赋值给<code class="highlighter-rouge">object2</code>变量，使得两个变量各获得一份指针的拷贝，指向内存中同一对象。这是对象与原始值之间的一个基本差别。</p>
+
+<h4 id="dereferencing-objects">Dereferencing Objects</h4>
+
+<p>虽然<code class="highlighter-rouge">JavaScript</code>有<code class="highlighter-rouge">garbage-colletced language</code>，但是最好在不使用对象时将引用解除。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">object1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+<span class="c1">//do something</span>
+<span class="nx">object1</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="内建类型">内建类型</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">Array</code> - 数组类型</li>
+  <li><code class="highlighter-rouge">Dage</code> - 日期和时间类型</li>
+  <li><code class="highlighter-rouge">Error</code> - 运行期错误类型</li>
+  <li><code class="highlighter-rouge">Function</code> - 函数类型</li>
+  <li><code class="highlighter-rouge">Object</code> - 通用对象类型</li>
+  <li><code class="highlighter-rouge">RegExp</code> - 正则表达式类型</li>
+</ul>
+
+<h4 id="引用类型也有字面量形式">引用类型也有字面量形式</h4>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Object literal</span>
+<span class="kd">var</span> <span class="nx">book</span> <span class="o">=</span> <span class="p">{</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">The Kate Runner</span><span class="dl">"</span><span class="p">,</span>
+			<span class="dl">"</span><span class="s2">year</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2014</span><span class="p">};</span>
+
+<span class="c1">//Array literal</span>
+<span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">red</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">bule</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">green</span><span class="dl">"</span><span class="p">];</span>
+
+<span class="c1">//Function literal</span>
+<span class="kd">function</span> <span class="nx">reflect</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+	<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//Regular Expression literal</span>
+<span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\d</span><span class="sr">+/g</span><span class="p">;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>我们基本上都是使用字面量来定义函数</p>
+</blockquote>
+
+<h4 id="鉴别引用类型">鉴别引用类型</h4>
+
+<p>函数最容易鉴别的引用类型，因为对函数使用<code class="highlighter-rouge">typeof</code>操作符时，返回值是<code class="highlighter-rouge">function</code>。</p>
+
+<p>对于其他的引用类型，使用<code class="highlighter-rouge">typeof</code>操作符都返回<code class="highlighter-rouge">object</code>。我们选择使用<code class="highlighter-rouge">instanceof</code>操作符。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="kd">function</span> <span class="nx">reflect</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+	<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">items</span> <span class="k">instanceof</span> <span class="nb">Array</span><span class="p">);</span> <span class="c1">//true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">object</span> <span class="k">instanceof</span> <span class="nb">Object</span><span class="p">);</span> <span class="c1">//true</span>
+<span class="nx">cosole</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reflect</span> <span class="k">instanceof</span> <span class="nb">Function</span><span class="p">);</span> <span class="c1">//true</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><code class="highlighter-rouge">instanceof</code>操作符同样可以鉴别继承类型。然而，<strong>所有的引用类型都继承自<code class="highlighter-rouge">Object</code></strong>，所以<code class="highlighter-rouge">console.log(reflect instanceof Object)</code>返回<code class="highlighter-rouge">true</code>。</p>
+</blockquote>
+
+<p><code class="highlighter-rouge">ECMAScript 5</code>引入了<code class="highlighter-rouge">Array.isArray()</code>来鉴别一个值是否为<code class="highlighter-rouge">Array</code>的实例，当然，这是最佳的方法。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">items</span><span class="p">));</span> <span class="c1">//true</span>
+</code></pre></div></div>
+
+<h4 id="primitive-wrapper-types--原始封装类型-"><a name="primitive-wrapper">Primitive Wrapper Types – 原始封装类型 </a></h4>
+
+<p>原始封装类型有三种(<code class="highlighter-rouge">String</code>、<code class="highlighter-rouge">Number</code>、<code class="highlighter-rouge">Boolean</code>)，使得原始类型用起来像对象一样方便。原始封装类型时引用类型，<strong>当读取<code class="highlighter-rouge">String</code>、<code class="highlighter-rouge">Number</code>、<code class="highlighter-rouge">Boolean</code>时，原始封装类型会自动创建</strong>。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">firstChar</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> 
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">firstChar</span><span class="p">);</span>	<span class="c1">//"N"</span>
+
+<span class="c1">//在背后实际是这样的</span>
+<span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fistChar</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">temp</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fistChar</span><span class="p">);</span>	<span class="c1">//"N"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>为了能让字符串在<code class="highlighter-rouge">charAt(0)</code>工作，创建了一个临时对象，这个对象仅仅用于该语句，并在随后被销毁(这个过程也称之为<code class="highlighter-rouge">autoboxing</code>)。</p>
+</blockquote>
+
+<p>看以下例子:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">name</span><span class="p">.</span><span class="nx">last</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Zakas</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nx">last</span><span class="p">);</span>	<span class="c1">//undefined</span>
+
+<span class="c1">//在操作的背后实际上是这样的</span>
+<span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Nicholas</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+<span class="nx">temp</span><span class="p">.</span><span class="nx">last</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Zakas</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">temp</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">String</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">temp</span><span class="p">.</span><span class="nx">last</span><span class="p">);</span>	<span class="c1">//undefined</span>
+<span class="nx">temp</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>所以说，添加的新的属性是挂载在临时对象上的，试图访问该属性时，另一个不同的临时对象被创建，而新属性并不存在。</p>
+</blockquote>
+
+<hr />
+
+<h3 id="详解">详解</h3>
+
+<h4 id="number--数字">Number – 数字</h4>
+
+<p>根据语言规范，<code class="highlighter-rouge">JavaScript</code>采用<code class="highlighter-rouge">IEEE 754 标准定义的双精度64位格式</code>来表示数字，所以<code class="highlighter-rouge">JavaScript</code>不区分整数值和浮点数值。</p>
+
+<p>小心<code class="highlighter-rouge">NaN</code>(Not a Number)。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">parseInt</span> <span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span> <span class="c1">// 函数返回NaN</span>
+<span class="kc">NaN</span> <span class="o">+</span> <span class="mi">5</span><span class="err">；</span><span class="c1">//返回NaN</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>使用内置函数<code class="highlighter-rouge">isNaN()</code>可以判断一个变量是否为<code class="highlighter-rouge">NaN</code>。<code class="highlighter-rouge">isNaN(NaN);//true</code></p>
+</blockquote>
+
+<p><code class="highlighter-rouge">JavaScript</code>还有两个特殊值：<code class="highlighter-rouge">Infinity</code>(正无穷) 和 <code class="highlighter-rouge">-Infinity</code>(负无穷)</p>
+
+<blockquote>
+  <p>可以使用内置函数<code class="highlighter-rouge">isFinite()</code>来判断一个变量是否是一个<strong>有穷数</strong>，如果类型是<code class="highlighter-rouge">Infinity</code>、<code class="highlighter-rouge">-Infinity</code>、<code class="highlighter-rouge">NaN</code>则返回<code class="highlighter-rouge">false</code>。</p>
+</blockquote>
+
+<h4 id="string--字符串">String – 字符串</h4>
+
+<p><code class="highlighter-rouge">JavaScript</code>中的字符串是一串<code class="highlighter-rouge">Unicode</code>字符序列。<code class="highlighter-rouge">JavaScript</code>字符串是不可更改的。这意味着字符串一旦被创建，就不能被修改。但是，可以基于对原始字符串的操作来创建新的字符串。</p>
+
+<h4 id="布尔类型">布尔类型</h4>
+
+<p>False values – 假值</p>
+
+<ul>
+  <li><code class="highlighter-rouge">false</code></li>
+  <li><code class="highlighter-rouge">0</code></li>
+  <li><code class="highlighter-rouge">""</code> 空字符串</li>
+  <li><code class="highlighter-rouge">NaN</code></li>
+  <li><code class="highlighter-rouge">null</code></li>
+  <li><code class="highlighter-rouge">undefined</code></li>
+</ul>
+
+<h4 id="其他类型">其他类型</h4>
+
+<p><code class="highlighter-rouge">JavaScript</code>中<code class="highlighter-rouge">null</code>和<code class="highlighter-rouge">undefined</code>是不同的。前者表示一个<strong>空值</strong><code class="highlighter-rouge">non-value</code>，必须使用<code class="highlighter-rouge">null</code>关键字才能访问，后者是<code class="highlighter-rouge">undefined</code>（未定义）类型的对象，<strong>表示一个未初始化的值，也就是还没有被分配的值。</strong></p>
+
+<ul>
+  <li><code class="highlighter-rouge">null</code>: 指空值，或者说曾赋过值，但目前没有值</li>
+  <li><code class="highlighter-rouge">undefined</code>: 指没有值，或者说从未赋值</li>
+</ul>
+
+<p><code class="highlighter-rouge">null</code>是一个特殊<em>关键字</em>，不是标识符，不能将其当作变量来使用和赋值。相反，<code class="highlighter-rouge">undefined</code>却是一个标识符，可以被当作变量来使用和赋值。</p>
+
+<p><code class="highlighter-rouge">JavaScript</code>中<code class="highlighter-rouge">undeclared</code>和<code class="highlighter-rouge">undefined</code>也是不同的。<code class="highlighter-rouge">undeclared</code>是指还没有在作用域内声明过的变量。如：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">;</span> <span class="c1">//undefined</span>
+<span class="nx">b</span><span class="p">;</span> <span class="c1">//ReferenceError: b is not defined.</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>解释器解释成<code class="highlighter-rouge">is not defined</code>并不是<code class="highlighter-rouge">undefined</code>的意思，而是指<code class="highlighter-rouge">undeclared</code>，令人抓狂。</p>
+</blockquote>
+
+<p><code class="highlighter-rouge">JavaScript</code>允许声明变量但不对其赋值，一个未被赋值的变量就是<code class="highlighter-rouge">undefined</code>类型。还有一点需要说明的是，<code class="highlighter-rouge">undefined</code>实际上是一个不允许修改的常量。</p>
+
+<h3 id="data-type-conversion">Data type conversion</h3>
+
+<p><strong>JavaScript is a dynamically typed language</strong>. That means you don’t have to specify the data type of a variable when you declare it.</p>
+
+<blockquote>
+  <p>In expressions involving numeric and string values with the <code class="highlighter-rouge">+</code> operator, JavaScript converts numeric values to strings.</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">x</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">The answer is</span><span class="dl">"</span> <span class="o">+</span> <span class="mi">42</span><span class="p">;</span> <span class="c1">//"The answer is 42"</span>
+</code></pre></div></div>
+
+<p><strong>In statements involving other operators, JavaScript does not convert numeric values to strings.</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">37</span><span class="dl">"</span> <span class="o">-</span> <span class="mi">7</span> <span class="c1">//30</span>
+<span class="dl">"</span><span class="s2">37</span><span class="dl">"</span> <span class="o">+</span> <span class="mi">7</span> <span class="c1">//377</span>
+</code></pre></div></div>
+
+<p>Functions <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt"><code class="highlighter-rouge">parseInt()</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat"><code class="highlighter-rouge">parseFloat()</code></a> is used for converting strings to numbers.</p>
+
+<h2 id="literals">Literals</h2>
+
+<blockquote>
+  <p>Literals are fixed values, not variables, that you literally provide in your script.</p>
+</blockquote>
+
+<ul>
+  <li><a href="#array-literals">Array literals</a></li>
+  <li><a href="#boolean-literals">Boolean literals</a></li>
+  <li><a href="#floating-point-literals">Floating-point literals</a></li>
+  <li><a href="#integers">Integers</a></li>
+  <li><a href="#object-literals">Object literals</a></li>
+  <li><a href="#regexp-literals">RegExp literals</a></li>
+  <li><a href="#string-literals">String literals</a></li>
+</ul>
+
+<h3 id="array-literals">Array literals</h3>
+
+<p>An array literal is a list of zero or more expressions, each of which represents an array element, enclosed in square brackets (<code class="highlighter-rouge">[]</code>).</p>
+
+<blockquote>
+  <p>Note: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Using_object_initializers">An array literal is a type of object initializer.</a></p>
+</blockquote>
+
+<p><strong>Extra commas in array literals</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">var</span> <span class="nx">fish</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Lion</span><span class="dl">"</span><span class="p">,</span> <span class="p">,</span> <span class="dl">"</span><span class="s2">Angel</span><span class="dl">"</span><span class="p">];</span> <span class="c1">//fish[1] is undefined</span>
+</code></pre></div></div>
+
+<p>is the same as:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">var</span> <span class="nx">fish</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Lion</span><span class="dl">"</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">,</span><span class="dl">"</span><span class="s2">Angel</span><span class="dl">"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p>If you include a trailling(尾随) comma at the end of elements, the comma is ignored.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">var</span> <span class="nx">myList</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">home</span><span class="dl">'</span><span class="p">,</span> <span class="p">,</span> <span class="dl">'</span><span class="s1">school</span><span class="dl">'</span><span class="p">,];</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The length of the array is three. And trailing commas can create errors in older browser versions.</p>
+</blockquote>
+
+<h3 id="boolean-literals">Boolean literals</h3>
+
+<p>The Boolean type has two literal values: <code class="highlighter-rouge">true</code> and <code class="highlighter-rouge">false</code>.</p>
+
+<h3 id="integers">Integers</h3>
+
+<ul>
+  <li>Decimal integer literal consists of a sequence of digits without a leading 0 (zero).</li>
+  <li>Leading 0 (zero) on an integer literal, or leading 0o (or 0O) indicates it is in octal. Octal integers can include only the digits 0-7.</li>
+  <li>Leading 0x (or 0X) indicates hexadecimal. Hexadecimal integers can include digits (0-9) and the letters a-f and A-F.</li>
+  <li>Leading 0b (or 0B) indicates binary. Binary integers can include digits only 0 and 1.</li>
+</ul>
+
+<h3 id="floating-point-literals">Floating-point literals</h3>
+
+<p>A floating-point literal can have the following parts:</p>
+
+<ul>
+  <li>A decimal integer which can be signed (preceded by <code class="highlighter-rouge">+</code> or <code class="highlighter-rouge">-</code>),</li>
+  <li>A decimal point (<code class="highlighter-rouge">.</code>),</li>
+  <li>A fraction (another decimal number),</li>
+  <li>An exponent.</li>
+</ul>
+
+<h3 id="object-literals">Object literals</h3>
+<p>An object literal is a list of zero or more pairs of property names and associated values of an object, enclosed in curly braces <code class="highlighter-rouge">{}</code>.</p>
+
+<blockquote>
+  <p>You should not use an object literal at the beginning of a statement. This will lead to an error or not behave as you expect.</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	var sales = "Toyota";
+	function carTypes(name) { ... }
+	
+	var car = {myCar: "Saturn", getCar: carType("Honda"), special: sales};
+</code></pre></div></div>
+
+<blockquote>
+  <p>The first element of the car object defines a property <code class="highlighter-rouge">myCar</code>, and assigns to ti a new string value <code class="highlighter-rouge">"Saturn"</code>. It’s called pairs of (property/value). the second element, the <code class="highlighter-rouge">getCar</code> property, is immediately assigned the result of invoking the function <code class="highlighter-rouge">carTypes("Honda")</code>; the third element, the <code class="highlighter-rouge">special</code> property, uses an existing variable <code class="highlighter-rouge">sales</code>.</p>
+</blockquote>
+
+<p>Additionally, you can use a numeric or string literal for the name of a property or nest an object inside another.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">var</span> <span class="nx">car</span> <span class="o">=</span> <span class="p">{</span> <span class="na">manyCars</span><span class="p">:</span> <span class="p">{</span><span class="na">a</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Saab</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jeep</span><span class="dl">"</span><span class="p">},</span> <span class="mi">7</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Mazda</span><span class="dl">"</span> <span class="p">};</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">car</span><span class="p">.</span><span class="nx">manyCars</span><span class="p">.</span><span class="nx">b</span><span class="p">);</span> <span class="c1">//Jeep</span>
+</code></pre></div></div>
+
+<p>Object <strong>property names</strong> can be any string, including the empty string.</p>
+
+<blockquote>
+  <p>If the property name would not be a valid JavaScript identifier or number, it must be enclosed in quotes. Property names that are not valid identifiers also cannot be accessed as a dot <code class="highlighter-rouge">.</code> property, but can be accessed and set with the array-like notation <code class="highlighter-rouge">[]</code>.</p>
+</blockquote>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">var</span> <span class="nx">unusualPropertyNames</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="dl">"</span><span class="s2">!</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Bang!</span><span class="dl">"</span>
+	<span class="p">}</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">unusualPropertyNames</span><span class="p">.</span><span class="o">!</span><span class="p">);</span> <span class="c1">// SyntaxError: Unexpected token !</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">unusualPropertyNames</span><span class="p">[</span><span class="dl">"</span><span class="s2">!</span><span class="dl">"</span><span class="p">]);</span> <span class="c1">// Bang!</span>
+</code></pre></div></div>
+
+<h3 id="regexp-literals">RegExp literals</h3>
+
+<p>A regex literal is a pattern enclosed between slashes.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	var re = /ab+c/;
+</code></pre></div></div>
+
+<h3 id="string-literals">String literals</h3>
+
+<p>A string literal is zero or more characters enclosed in double <code class="highlighter-rouge">"</code> or single <code class="highlighter-rouge">'</code> quotation marks.</p>
+
+<p>You can call any of the methods of the String object on a string literal value : JavaScript automatically converts the string literal to a temporary String object, calls the method, then discards the temporary String object.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>console.log("John's cat".length);
+</code></pre></div></div>
+
+<h4 id="using-special-characters-in-strings">Using special characters in strings</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">\n</code></li>
+  <li><code class="highlighter-rouge">\t</code></li>
+  <li><code class="highlighter-rouge">\b</code></li>
+  <li>…</li>
+</ul>
+
+<h4 id="escaping-characters">Escaping characters</h4>
+
+<p><code class="highlighter-rouge">\</code> is used as a Escaping characters(转义字符).</p>
+
+<p>编辑备注：</p>
+
+<ul>
+  <li>2017-01-18第一次编辑</li>
+  <li>2017-03-21第二次编辑</li>
+</ul>
+:ET

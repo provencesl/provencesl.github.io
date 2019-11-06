@@ -1,0 +1,6 @@
+I"J
+<p>最近经常用到<code class="highlighter-rouge">Array.prototype.map()</code>和<code class="highlighter-rouge">Array.prototype.reduce()</code>函数，根据自己的理解，在此处记录。</p>
+
+<p>这两个都是内置对象<code class="highlighter-rouge">Array</code>的两个函数，用法也存在相似性。</p>
+
+:ET

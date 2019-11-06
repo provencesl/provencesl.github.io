@@ -1,0 +1,22 @@
+I"R
+<blockquote>
+  <p>Connect is an extensible HTTP server framework for node using “plugins” known as middleware.</p>
+</blockquote>
+
+<p>这是引自Connect<a href="https://github.com/senchalabs/connect">官方仓库</a>的一段文字，可以看到：Connect是一个服务器端框架。在Connnect中，中间件是一个函数，它拦截<code class="highlighter-rouge">HTTP</code>服务器提供的请求和响应对象，执行特定的逻辑，然后结束响应或者把她传递给下一个中间件组件。
+<br />
+<a href="http://expressjs.com/">Express</a>也是一个Web框架，官方是这样介绍的：</p>
+
+<blockquote>
+  <p>Fast, unopinionated, minimalist web framework for Node.js.</p>
+</blockquote>
+
+<p>前期版本中，Express框架是构建在Connect之上，但是在最新的<code class="highlighter-rouge">4.x</code>版本中，我们<a href="http://expressjs.com/en/guide/migrating-4.html">引述了下面这段话</a>：</p>
+
+<blockquote>
+  <p>Express 4 no longer depends on Connect, and removes all built-in middleware from its core, except for the express.static function. This means that Express is now an independent routing and middleware web framework, and Express versioning and releases are not affected by middleware updates.</p>
+</blockquote>
+
+<p>但是，对Connect的介绍仍对我们理解Express很有帮助。</p>
+
+:ET

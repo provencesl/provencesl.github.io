@@ -1,0 +1,8 @@
+I"D
+<blockquote>
+  <p>本文部分内容来自 《Introduction to JavaScript Object Notation》，<a href="http://www.json.org/">http://www.json.org/</a>。</p>
+</blockquote>
+
+<p>JSON (<strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation)，是一种轻量级的数据交换格式<sup><a href="http://www.json.org/">来源</a></sup>。<strong>源于</strong> JavaScript 的一个子集。但是它<strong>独立于</strong>编程语言。JSON 之父是 <a href="https://en.wikipedia.org/wiki/Douglas_Crockford">Douglas Crockford</a>。</p>
+
+:ET

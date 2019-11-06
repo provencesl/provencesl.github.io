@@ -1,0 +1,13 @@
+I"{
+<p>关于数据类型和数据结构的概念，可以参考<a href="https://en.wikipedia.org/wiki/Data_type">Wiki百科</a>。</p>
+
+<p>在<code class="highlighter-rouge">JavaScript</code>中，对象是语言的中心，连<code class="highlighter-rouge">functions</code>也被视为对象。</p>
+
+<p><code class="highlighter-rouge">JavaScript</code>有两种基本的数据类型： <code class="highlighter-rouge">primitive type</code> and <code class="highlighter-rouge">reference type</code>。两者都是通过对象进行访问的。<em>原始类型</em>保存为简单的数据值，<em>引用类型</em>则保存为对象(<code class="highlighter-rouge">objects</code>)，其本质是<strong>指向内存位置的引用</strong>。</p>
+
+<p>其它的编程语言用栈(<code class="highlighter-rouge">stack</code>)来储存原始类型，用堆(<code class="highlighter-rouge">heap</code>)来储存引用对象。<code class="highlighter-rouge">JavaScript</code>则完全不同：<strong>它使用一个<code class="highlighter-rouge">variable object</code>来追踪变量的生存周期</strong>，原始类型的值被直接保存在变量对象中，而引用类型的值作为一个指针保存在变量对象中，该指针指向实际对象在内存中的存储位置<a href="The Principles of Object-Oriented JavaScript. [美]Nicholas C.Zakas">1</a>。</p>
+
+<blockquote>
+</blockquote>
+
+:ET

@@ -1,0 +1,15 @@
+I"�
+<p><code class="highlighter-rouge">Sass</code>是怎么来的？我是这样理解的，有那么一群进入前端领域的攻城狮，发现<code class="highlighter-rouge">css</code>竟然不是程序语言，那怎么在其他前端攻城狮面前装逼呢？那能不能让<code class="highlighter-rouge">css</code>能听懂程序语言的指令呢？然后呢，他们就整了一套<code class="highlighter-rouge">css</code>预处理器，把编程的语法引入进来，然后美言之：<code class="highlighter-rouge">less is more</code>。</p>
+
+<p><code class="highlighter-rouge">Sass</code>更让人寻味的地方是它处理的是<code class="highlighter-rouge">.scss</code>文件。为什么不把后缀名改成<code class="highlighter-rouge">.sass</code>呢？</p>
+
+<p>下面是<code class="highlighter-rouge">Sass</code>的网络资源：</p>
+
+<ul>
+  <li>其一当然是官方网站：<a href="http://sass-lang.com/">http://sass-lang.com/</a></li>
+  <li>官方参考文档： <a href="http://sass-lang.com/documentation/file.SASS_REFERENCE.html">http://sass-lang.com/documentation/file.SASS_REFERENCE.html</a></li>
+</ul>
+
+<p>现在，让我们开始<code class="highlighter-rouge">Sass</code>的旅途。</p>
+
+:ET
